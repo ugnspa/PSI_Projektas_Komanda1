@@ -1,0 +1,14 @@
+﻿.footer-text{
+    text-align: center;
+    border-style:solid;
+    border-width: 2px;
+}
+.info-bar{
+    font-size: 17px;
+    padding-left: 20px;
+    text-align: left;
+}
+.info-bar th{
+    font-size: 25px;
+}
+.info-bar 

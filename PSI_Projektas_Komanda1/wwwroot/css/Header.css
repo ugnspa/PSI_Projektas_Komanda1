@@ -1,0 +1,76 @@
+﻿header {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0 0 0;
+}
+
+.currency-bar {
+    background-color: #2eafd9;
+    padding: 5px 275px 5px 0px;
+    text-align: right;
+}
+
+.logo-bar {
+    padding: 20px 0;
+    background-color: #0084b0;
+    border-bottom-style: solid;
+    border-bottom-color: lightblue;
+    border-bottom-width: 4px;
+    padding: 15px 50px
+}
+.nav-item{
+    font-size:20px;
+    margin:0 10px;
+}
+
+.menu-bar {
+    background-color: #f7f7f7;
+}
+
+
+.currency-table .form-select {
+    width: 120px;
+    margin: 0 25px;
+} 
+
+.logo {
+    max-width: 250px;
+    height: auto;
+}
+.logo2 {
+    max-width: 40px;
+    height: 40px; 
+    margin-left: 15px;
+}
+
+.currency-table {
+    text-align: right;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.search-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+}
+
+    .search-form input {
+        flex-grow: 1;
+        margin-right: 10px;
+        display: flex;
+        flex-direction: row;
+    }
+
+@media (max-width: 768px) {
+    .logo-bar .col:first-child {
+        flex-basis: 100%;
+        margin-bottom: 10px;
+    }
+
+    .logo-bar .col:last-child {
+        flex-basis: 100%;
+    }
+}
