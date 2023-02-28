@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class AirConditioner
+public class AirConditioner : Item
 {
 	public double MaxArea { get; set; }
 	public int MinTemp { get; set; } // Celsius

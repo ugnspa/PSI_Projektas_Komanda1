@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class Stove
+public class Stove : Item
 {
 	public int Count { get; set; }
 	public bool Electric { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class Microwave
+public class Microwave : Item
 {
 	public double Volume { get; set; }
 	public Microwave(int id, string brand, string model, string name, string desciption, int amount, double volume) : 
