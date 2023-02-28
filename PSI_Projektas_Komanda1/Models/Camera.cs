@@ -6,7 +6,7 @@ public class Camera : Item
 	public Camera(int id, string brand, string model, string name, string desciption, int amount, int megaPixels) : 
 		base(id, brand, model, name, desciption, amount)
 	{
-		this.MegaPixels = megaPixels
+		this.MegaPixels = megaPixels;
 
     }
 	
