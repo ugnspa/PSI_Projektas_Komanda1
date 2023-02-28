@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class Fridge
+public class Fridge : Item
 {
 	public bool Freezer { get; set; }
 	public double Volume { get; set; }

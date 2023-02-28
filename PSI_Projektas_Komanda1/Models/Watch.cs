@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class Watch
+public class Watch : Item
 {
 	public static bool Smart { get; set; }
 	public static int DaysCharged { get; set; } // Ammount of days without charging

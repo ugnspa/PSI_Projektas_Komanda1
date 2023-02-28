@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class TV
+public class TV : Item
 {
 	public double Diagonal { get; set; }
 	public TV(int id, string brand, string model, string name, string desciption, int amount, double diagonal) : 

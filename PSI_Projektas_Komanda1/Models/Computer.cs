@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class Computer
+public class Computer : Item
 {
 	public string Processor { get; set; }
 	public string Motherboard { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class Oven
+public class Oven : Item
 {
 	public double Volume { get; set; }
 	public string Type { get; set; }
