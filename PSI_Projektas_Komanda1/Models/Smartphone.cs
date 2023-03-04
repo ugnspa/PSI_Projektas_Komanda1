@@ -17,4 +17,19 @@ public class Smartphone : Item
 	}
 
 	public Smartphone() : base () { }
+
+  public override List<string> Print()
+    {
+        List<string> list = new List<string>();
+        list.Add("Gamintojas: " + Brand);
+        list.Add("Modelis: " + Model);
+		list.Add("Procesorius: " + Processor);
+		list.Add("GPU: " + GPU);
+		list.Add("Ram: " + Ram + " GB");
+		list.Add("Atmintis: " + Memory + " GB");
+		list.Add("Id: " + Id.ToString());
+        list.Add("Kiekis: " + Amount.ToString());
+        list.Add("Aprašymas: " + Description);
+        return list;
+    }
 }

@@ -1,6 +1,40 @@
 ﻿@{
     ViewData["Title"] = "Categories";
 }
+<style>
+    .myDiv {
+        width: 400px;
+        flex: 1;
+        padding: 7em;
+        float: left;
+	}
+    .div2{
+        display: flex;
+        flex-wrap: wrap;
+        
+    }
+</style>
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<h2>Prekės</h2>
+<div class="div2">
+    
+    @foreach(Item item in ViewBag.Items)
+    {
+        <div class="myDiv">
+        <p>@item.Name
+            <div><img src="~/css/pictures/cart.png" alt="cart" class="logo2"></div>
+        @foreach(string str in item.Print())
+        {
+
+            <ul>
+                 <li>@str</li>
+            </ul>
+            
+         
+        }
+        </p>
+        </div>
+    }
+    
+</div>
