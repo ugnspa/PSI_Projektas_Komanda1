@@ -10,8 +10,8 @@ public class Dishwasher : Item
 	}
 	
 	public Dishwasher() { }
-
-	public override List<string> Print()
+  
+  public override List<string> Print()
 	{
 		List<string> list = new List<string>();
 		list.Add("Gamintojas: " + Brand);
@@ -22,10 +22,4 @@ public class Dishwasher : Item
 		list.Add("Aprašymas: " + Description);
 		return list;
     }
-
-    /*public override string ToString()
-    {
-        return string.Format("Prekės id: {0}  Gamintojas: {1} /n Modelis: {2} /n Pavadinimas: {3} /n Aprašymas: {4} /n Tūris: {5}",
-            Id, Brand, Model, Name, Description, Volume);
-    }*/
 }

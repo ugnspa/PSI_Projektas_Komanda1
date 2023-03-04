@@ -15,7 +15,7 @@ public class Fridge : Item
 	
 	public Fridge() { }
 
-    public override List<string> Print()
+  public override List<string> Print()
     {
         List<string> list = new List<string>();
         list.Add("Gamintojas: " + Brand);

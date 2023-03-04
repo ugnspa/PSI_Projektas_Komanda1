@@ -17,7 +17,7 @@ public class AirConditioner : Item
 	
 	public AirConditioner() { }
 
-    public override List<string> Print()
+  public override List<string> Print()
     {
         List<string> list = new List<string>();
         list.Add("Gamintojas: " + Brand);

@@ -22,6 +22,14 @@ namespace PSI_Projektas_Komanda1.Controllers
         {
             return View();
         }
+        public IActionResult Categories()
+        {
+            return View();
+        }
+        public IActionResult Contact()
+        {
+            return View();
+        }
 
 
         public IActionResult Categories()
