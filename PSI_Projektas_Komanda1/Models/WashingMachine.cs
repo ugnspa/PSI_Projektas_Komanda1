@@ -1,15 +1,15 @@
 ﻿using System;
 
-public class WasgingMashine : Item
+public class WashingMashine : Item
 {
 	public double Volume { get; set; }
-	public WasgingMashine(int id, string brand, string model, string name, string desciption, int amount, double volume) : 
-		base(id, brand, model, name, desciption, amount)
+	public WashingMashine(string pic,int id, string brand, string model, string name, string desciption, int amount, double volume) : 
+		base(pic,id, brand, model, name, desciption, amount)
 	{
 		this.Volume = volume;
 	}
 	
-	public WasgingMashine() { }
+	public WashingMashine() { }
 
   public override List<string> Print()
     {

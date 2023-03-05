@@ -6,11 +6,63 @@ namespace PSI_Projektas_Komanda1.Controllers
 {
     public class HomeController : Controller
     {
+        List<Item> items = new List<Item>();
+
+        public void ReadItems()
+        {
+            Item computer = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
+                5, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
+            Item computer1 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
+               5, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
+            Item computer2 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
+               5, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
+            Item computer3 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
+               5, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
+            Item computer4 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
+               5, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
+
+            Item smartphone = new Smartphone("/css/pictures/iphone.jpg", 2, "Apple", "iPhone", "Apple iPhone 13", "The iPhone 13 display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle.", 100, "Hexa-core", 4, "A15 Bionic", 128);
+
+            items.Add(computer);
+            items.Add(computer1);
+            items.Add(computer2);
+            items.Add(computer3);
+            items.Add(computer4);
+            items.Add(smartphone);
+        }
+
+        public List<Item> filterByType(Type type)
+        {
+            List<Item> filtered = new List<Item>();
+            foreach (Item item in items)
+            {
+                if (type.Equals(item.GetType())) filtered.Add(item);
+            }
+            return filtered;
+        }
+
+        public List<Item> filterByManyTypes(List<Type> types)
+        {
+            List<Item> filtered = new List<Item>();
+            foreach (Item item in items)
+            {
+                for (int i = 0; i < types.Count; i++)
+                {
+                    if (types[i].Equals(item.GetType())) {
+                        filtered.Add(item);
+                        break;
+                    }
+                }
+            }
+            return filtered;
+        }
+
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            ReadItems();
         }
 
         public IActionResult Index()
@@ -30,43 +82,12 @@ namespace PSI_Projektas_Komanda1.Controllers
 	
 	  public IActionResult Store()
         {
-            var computer = new Computer(1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
-                5, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
-
-            var smartphone = new Smartphone(2, "Apple", "iPhone", "Apple iPhone 13", "The iPhone 13 display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle.", 100, "Hexa-core", 4, "A15 Bionic", 128);
-
-            var viewModel = new HomeViewModel
-            {
-                Computer = computer,
-                Smartphone = smartphone,
-                ComputerImageUrl = "https://i.dell.com/is/image/DellContent//content/dam/images/products/laptops-and-2-in-1s/inspiron/15-5510-non-touch/in5510nt-cnb-00055lf110-gy-backlit.psd?fmt=png-alpha&pscan=auto&scl=1&hei=402&wid=631&qlt=100,1&resMode=sharp2&size=631,402&chrss=full", // Replace with the URL of your image
-                SmartphoneImageUrl = "https://media.croma.com/image/upload/v1664009258/Croma%20Assets/Communication/Mobiles/Images/243459_0_ljp1lm.png"
-            };          
-            return View(viewModel);
+            return View(items);
         }
 
 
         public IActionResult Categories()
-        {
-            ViewBag.Items = new List<Item>()
-            {
-                new Dishwasher(111, "LG", "s1", "Indaplovė1", "------------------------------------------------------------------------------------------------------------", 6, 80.5),
-                new Dishwasher(112, "Samsung", "s2", "Indaplovė2", "--------------------------------------------------------------------------------------------------------", 5, 81.6),
-                new Camera(211, "Samsung", "s3", "Kamera1", "--------------------------", 8, 20),
-                new Microwave(311, "LG", "s4", "Mikrobangė", "-------------------------------", 20, 500),
-                new Microwave(311, "LG", "s4", "Mikrobangė", "-------------------------------", 20, 500),
-                new Microwave(311, "LG", "s4", "Mikrobangė", "-------------------------------", 20, 500),
-                new Microwave(311, "LG", "s4", "Mikrobangė", "-------------------------------", 20, 500),
-
-				new Microwave(311, "LG", "s4", "Mikrobangė", "-------------------------------", 20, 500),
-				new Microwave(311, "LG", "s4", "Mikrobangė", "-------------------------------", 20, 500),
-				new Microwave(311, "LG", "s4", "Mikrobangė", "-------------------------------", 20, 500),
-				new Microwave(311, "LG", "s4", "Mikrobangė", "-------------------------------", 20, 500),
-				new Microwave(311, "LG", "s4", "Mikrobangė", "-------------------------------", 20, 500),
-				new Microwave(311, "LG", "s4", "Mikrobangė", "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------", 20, 500),
-
-
-			};
+        {          
 
             return View();
         }
@@ -79,6 +100,101 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        //Web models
+        public IActionResult Smartphones()
+        {
+            return View(filterByType(typeof(Smartphone)));
+        }
+        public IActionResult Watches()
+        {
+            return View(filterByType(typeof(Watch)));
+        }
+        public IActionResult Computers()
+        {
+            return View(filterByType(typeof(Computer)));
+        }
+        public IActionResult Tvs()
+        {
+            return View(filterByType(typeof(TV)));
+        }
+        public IActionResult Cameras()
+        {
+            return View(filterByType(typeof(Camera)));
+        }
+        public IActionResult Fridges()
+        {
+            return View(filterByType(typeof(Fridge))); ;
+        }
+        public IActionResult Dishwashers()
+        {
+            return View(filterByType(typeof(Dishwasher)));
+        }
+        public IActionResult Microwaves()
+        {
+            return View(filterByType(typeof(Microwave)));
+        }
+        public IActionResult Stoves()
+        {
+            return View(filterByType(typeof(Stove)));
+        }
+        public IActionResult Ovens()
+        {
+            return View(filterByType(typeof(Oven))); 
+        }
+        public IActionResult VacuumCleaners()
+        {
+            return View(filterByType(typeof(Vacuum)));
+        }
+        public IActionResult WashingMachines()
+        {
+            return View(filterByType(typeof(WashingMashine)));
+        }
+        public IActionResult Dryers()
+        {
+            return View(filterByType(typeof(Dryer))); ;
+        }
+        public IActionResult AirConditioners()
+        {
+            return View(filterByType(typeof(AirConditioner)));
+        }
+        public IActionResult HeatingSystems()
+        {
+            return View(filterByType(typeof(HeatingSystem)));
+        }
+        public IActionResult Electronics()
+        {
+            List<Type> types = new List<Type>();
+            types.Add(typeof(Smartphone));
+            types.Add(typeof(Watch));
+            types.Add(typeof(Computer));
+            types.Add(typeof(TV));
+            types.Add(typeof(Camera));
+
+            return View(filterByManyTypes(types));
+        }
+        public IActionResult KitchenAppliances()
+        {
+            List<Type> types = new List<Type>();
+            types.Add(typeof(Fridge));
+            types.Add(typeof(Dishwasher));
+            types.Add(typeof(Microwave));
+            types.Add(typeof(Stove));
+            types.Add(typeof(Oven));
+
+            return View(filterByManyTypes(types));
+        }
+        public IActionResult HouseholdAppliances()
+        {
+            List<Type> types = new List<Type>();
+            types.Add(typeof(Vacuum));
+            types.Add(typeof(WashingMashine));
+            types.Add(typeof(Dryer));
+            types.Add(typeof(AirConditioner));
+            types.Add(typeof(HeatingSystem));
+
+            return View(filterByManyTypes(types));
         }
     }
 }
