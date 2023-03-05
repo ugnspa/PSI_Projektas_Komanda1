@@ -12,4 +12,18 @@ public class Watch : Item
 	}
 	
 	public Watch() { }
+
+  public override List<string> Print()
+    {
+        List<string> list = new List<string>();
+        list.Add("Gamintojas: " + Brand);
+        list.Add("Modelis: " + Model);
+		if (Smart) list.Add("Smart: taip");
+		else list.Add("Smart: ne");
+		list.Add("Gali būti nekratas " + DaysCharged + " dienų");
+        list.Add("Id: " + Id.ToString());
+        list.Add("Kiekis: " + Amount.ToString());
+        list.Add("Aprašymas: " + Description);
+        return list;
+    }
 }

@@ -13,4 +13,19 @@ public class Stove : Item
 	}
 	
 	public Stove() { }
+
+  public override List<string> Print()
+    {
+        List<string> list = new List<string>();
+        list.Add("Gamintojas: " + Brand);
+        list.Add("Modelis: " + Model);
+		if (Electric)
+			list.Add("Elektrinė: taip");
+		else
+			list.Add("Elektrinė: ne");
+        list.Add("Id: " + Id.ToString());
+        list.Add("Kiekis: " + Amount.ToString());
+        list.Add("Aprašymas: " + Description);
+        return list;
+    }
 }
