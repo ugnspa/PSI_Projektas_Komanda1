@@ -16,4 +16,18 @@ public class AirConditioner : Item
 	}
 	
 	public AirConditioner() { }
+
+  public override List<string> Print()
+    {
+        List<string> list = new List<string>();
+        list.Add("Gamintojas: " + Brand);
+        list.Add("Modelis: " + Model);
+        list.Add("Didžiausias plotas: " + MaxArea.ToString());
+        list.Add("Mažiausia temperatūra: " + MinTemp.ToString() + " ℃");
+		list.Add("Didžiausia temperatūra: " + MinTemp.ToString() + " ℃");
+		list.Add("Id: " + Id.ToString());
+        list.Add("Kiekis: " + Amount.ToString());
+        list.Add("Aprašymas: " + Description);
+        return list;
+    }
 }

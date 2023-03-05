@@ -10,4 +10,16 @@ public class Dryer : Item
 	}
 	
 	public Dryer() { }
+
+  public override List<string> Print()
+    {
+        List<string> list = new List<string>();
+        list.Add("Gamintojas: " + Brand);
+        list.Add("Modelis: " + Model);
+        list.Add("Tūris: " + Volume);
+        list.Add("Id: " + Id.ToString());
+        list.Add("Kiekis: " + Amount.ToString());
+        list.Add("Aprašymas: " + Description);
+        return list;
+    }
 }
