@@ -45,26 +45,26 @@
                                         <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Store">Store</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-controller="Home" asp-action="Categories">Categories</a>
+                                        <a id="navbarDropdown" class="nav-link" asp-controller="Home" asp-action="Categories">Categories</a>
                                         <div id="categories-dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
                                             <table id="table-dropdown" class="table table-hover table-bordered">
                                                 <thead>
                                                     <tr>
                                                         <th><a class="nav-link" asp-controller="Home" asp-action="Electronics">Electronics</a></th>
-                                                        <th><a class="nav-link" asp-controller="Home" asp-action="Kitchen_Appliances">Kitchen Appliances</a></th>
-                                                        <th><a class="nav-link" asp-controller="Home" asp-action="Household_Appliances">Household Appliances</a></th>
+                                                        <th><a class="nav-link" asp-controller="Home" asp-action="KitchenAppliances">Kitchen Appliances</a></th>
+                                                        <th><a class="nav-link" asp-controller="Home" asp-action="HouseholdAppliances">Household Appliances</a></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Smartphone">Smartphones</a></td>
+                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Smartphones">Smartphones</a></td>
                                                         <td><a class="nav-link" asp-controller="Home" asp-action="Fridges">Fridges</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Vacuum_Cleaners">Vacuum Cleaners</a></td>
+                                                        <td><a class="nav-link" asp-controller="Home" asp-action="VacuumCleaners">Vacuum Cleaners</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Watchess">Watches</a></td>
+                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Watches">Watches</a></td>
                                                         <td><a class="nav-link" asp-controller="Home" asp-action="Dishwashers">Dishwashers</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Washing_Machines">Washing Machines</a></td>
+                                                        <td><a class="nav-link" asp-controller="Home" asp-action="WashingMachines">Washing Machines</a></td>
                                                     </tr>
                                                     <tr>
                                                         <td><a class="nav-link" asp-controller="Home" asp-action="Computers">Computers</a></td>
@@ -74,12 +74,12 @@
                                                     <tr>
                                                         <td><a class="nav-link" asp-controller="Home" asp-action="Tvs">Tvs</a></td>
                                                         <td><a class="nav-link" asp-controller="Home" asp-action="Stoves">Stoves</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Air_Conditioner">Air Conditioner</a></td>
+                                                        <td><a class="nav-link" asp-controller="Home" asp-action="AirConditioners">Air Conditioner</a></td>
                                                     </tr>
                                                     <tr>
                                                         <td><a class="nav-link" asp-controller="Home" asp-action="Cameras">Cameras</a></td>
                                                         <td><a class="nav-link" asp-controller="Home" asp-action="Ovens">Ovens</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Heating_Systems">Heating Systems</a></td>
+                                                        <td><a class="nav-link" asp-controller="Home" asp-action="HeatingSystems">Heating Systems</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -110,7 +110,7 @@
         </div>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
@@ -154,17 +154,17 @@
 </html>
 <script>
     $(document).ready(function () {
-        $('#categories-dropdown').hide(); // Hide the dropdown initially
-
-        // When the Categories button is hovered, toggle the dropdown
-        $('.nav-item a[href$="Categories"]').hover(function (e) {
-            e.preventDefault();
-            $('#categories-dropdown').slideToggle();
-        });
-
-        // When a category link is clicked, hide the dropdown
-        $('#categories-dropdown a').click(function (e) {
-            $('#categories-dropdown').slideUp();
-        });
+        // When hovering over the categories button, show the table
+        $('#navbarDropdown').hover(
+            function () {
+                $('#categories-dropdown').slideDown();
+            },
+            function () {
+                // When mouse leaves the table or the button, hide the table
+                $('#categories-dropdown').mouseleave(function () {
+                    $('#categories-dropdown').slideUp();
+                });
+            }
+        );
     });
 </script>

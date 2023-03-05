@@ -10,9 +10,9 @@ public class Computer : Item
 	public int PowerSupplyWattage { get; set; } // Watts
 
 
-	public Computer(int id, string brand, string model, string name, string desciption, int amount, 
+	public Computer(string pic,int id, string brand, string model, string name, string desciption, int amount, 
 		string processor, string motherboard, string gpu, int ram, int memory, int powerSupplyWattage) : 
-		base(id, brand, model, name, desciption, amount)
+		base(pic,id, brand, model, name, desciption, amount)
 	{
 		this.Processor = processor;
 		this.Motherboard = motherboard;
