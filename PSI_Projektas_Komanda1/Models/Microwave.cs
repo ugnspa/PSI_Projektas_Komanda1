@@ -3,8 +3,8 @@
 public class Microwave : Item
 {
 	public double Volume { get; set; }
-	public Microwave(int id, string brand, string model, string name, string desciption, int amount, double volume) : 
-		base(id, brand, model, name, desciption, amount)
+	public Microwave(string pic,int id, string brand, string model, string name, string desciption, int amount, double volume) : 
+		base(pic,id, brand, model, name, desciption, amount)
 	{
 		this.Volume = volume;
 	}
