@@ -3,8 +3,8 @@
 public class HeatingSystem : Item
 {
 	public double MaxArea { get; set; }
-	public HeatingSystem(int id, string brand, string model, string name, string desciption, int amount, double maxArea) : 
-		base(id, brand, model, name, desciption, amount)
+	public HeatingSystem(string pic,int id, string brand, string model, string name, string desciption, int amount, double maxArea) : 
+		base(pic,id, brand, model, name, desciption, amount)
 	{
 		this.MaxArea = maxArea;
 	}

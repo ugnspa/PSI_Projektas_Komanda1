@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Kitchen Appliances";
+    int itemsPerPage = 30;
+    int totalPages = (int)Math.Ceiling((double)Model.Count / itemsPerPage);
+    int currentPage = Convert.ToInt32(Context.Request.Query["page"]);
+    if (currentPage == 0 || currentPage > totalPages)
+    {
+        currentPage = 1;
+    }
+    int numItemsOnCurrentPage = Math.Min(Model.Count - (currentPage - 1) * itemsPerPage, itemsPerPage);
+    int numRowsOnCurrentPage = (int)Math.Ceiling((double)numItemsOnCurrentPage / 3);
+    int bodyHeight = numRowsOnCurrentPage * 1000;
+    if (currentPage == totalPages && numItemsOnCurrentPage % 3 != 0)
+    {
+        bodyHeight -= (3 - numItemsOnCurrentPage % 3) * 1000;
+    }
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/body.css">
+</head>
+<h1>@ViewData["Title"]</h1>
+<div class="container">
+    <main role="main" style="height: @bodyHeight px;">
+        <div class="div2" style="height=@bodyHeight;">
+            @for (int i = (currentPage - 1) * itemsPerPage; i < currentPage * itemsPerPage && i < Model.Count; i++)
+            {
+                <div class="myDiv">
+                    <h2>@Model[i].Name</h2>
+                    <div><img src=@Model[i].Picture alt=@Model[i].Model></div>
+                    @foreach (string str in @Model[i].Print())
+                    {
+                        <ul class="myList">
+                            <li>@str</li>
+                        </ul>
+                    }
+                </div>
+            }
+        </div>
+        <div class="pagination">
+            @if (totalPages > 1)
+            {
+                for (int i = 1; i <= totalPages; i++)
+                {
+                    <a href="?page=@i" class="@((i == currentPage) ? "active" : "")">@i</a>
+                }
+            }
+        </div>
+    </main>
+</div>
+
