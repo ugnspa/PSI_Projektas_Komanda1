@@ -5,8 +5,8 @@ public class Fridge : Item
 	public bool Freezer { get; set; }
 	public double Volume { get; set; }
 	public double FreezerVolume { get; set; } = 0;
-	public Fridge(string pic,int id, string brand, string model, string name, string desciption, int amount, bool freezer, double volume, double freezerVolume = 0) : 
-		base(pic, id, brand, model, name, desciption, amount)
+	public Fridge(string pic,int id, string brand, string model, string name, string desciption, int amount, decimal price, bool freezer, double volume, double freezerVolume = 0) : 
+		base(pic, id, brand, model, name, desciption, amount, price)
 	{
 		this.Freezer = freezer;
 		this.Volume = volume;
@@ -29,6 +29,7 @@ public class Fridge : Item
         list.Add("Id: " + Id.ToString());
         list.Add("Kiekis: " + Amount.ToString());
         list.Add("Aprašymas: " + Description);
+        list.Add("Kaina: " + Price);
         return list;
     }
 }

@@ -3,8 +3,8 @@
 public class Microwave : Item
 {
 	public double Volume { get; set; }
-	public Microwave(string pic,int id, string brand, string model, string name, string desciption, int amount, double volume) : 
-		base(pic,id, brand, model, name, desciption, amount)
+	public Microwave(string pic,int id, string brand, string model, string name, string desciption, int amount, double volume, decimal price) : 
+		base(pic,id, brand, model, name, desciption, amount, price)
 	{
 		this.Volume = volume;
 	}
@@ -20,7 +20,7 @@ public class Microwave : Item
         list.Add("Id: " + Id.ToString());
         list.Add("Kiekis: " + Amount.ToString());
         list.Add("Aprašymas: " + Description);
-
+        list.Add("Kaina: " + Price);
         return list;
     }
 }
