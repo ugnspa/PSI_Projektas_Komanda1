@@ -6,9 +6,9 @@ public class AirConditioner : Item
 	public int MinTemp { get; set; } // Celsius
 	public int MaxTemp { get; set; } // Celsius
 
-	public AirConditioner(string pic,int id, string brand, string model, string name, string desciption, int amount,
-        double maxArea, int minTemp, int maxtemp) : 
-		base(pic,id, brand, model, name, desciption, amount)
+	public AirConditioner(string pic, int id, string brand, string model, string name, string desciption, int amount, 
+        decimal price, double maxArea, int minTemp, int maxtemp) : 
+        base(pic, id, brand, model, name, desciption, amount, price)
 	{
 		this.MaxArea = maxArea;
         this.MaxTemp = maxtemp;
@@ -28,6 +28,7 @@ public class AirConditioner : Item
 		list.Add("Id: " + Id.ToString());
         list.Add("Kiekis: " + Amount.ToString());
         list.Add("Aprašymas: " + Description);
+        list.Add("Kaina: " + Price);
         return list;
     }
 }

@@ -3,8 +3,9 @@
 public class HeatingSystem : Item
 {
 	public double MaxArea { get; set; }
-	public HeatingSystem(string pic,int id, string brand, string model, string name, string desciption, int amount, double maxArea) : 
-		base(pic,id, brand, model, name, desciption, amount)
+	public HeatingSystem(string pic, int id, string brand, string model, string name, string desciption, int amount, 
+        decimal price, double maxArea) : 
+        base(pic, id, brand, model, name, desciption, amount, price)
 	{
 		this.MaxArea = maxArea;
 	}
@@ -20,6 +21,7 @@ public class HeatingSystem : Item
         list.Add("Id: " + Id.ToString());
         list.Add("Kiekis: " + Amount.ToString());
         list.Add("Aprašymas: " + Description);
+        list.Add("Kaina: " + Price);
         return list;
     }
 }

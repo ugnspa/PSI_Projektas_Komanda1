@@ -9,8 +9,9 @@ public abstract class Item
 	public string Name { get; set; }
     public string Description { get; set; }
 	public int Amount { get; set; }
+    public decimal Price { get; set; }
 
-    public Item(string pic,int id, string brand, string model, string name, string desciption, int amount)
+    public Item(string pic,int id, string brand, string model, string name, string desciption, int amount, decimal price)
     {
         this.Picture = pic;
         this.Id = id;
@@ -18,7 +19,8 @@ public abstract class Item
         this.Model = model;
         this.Name = name;
         this.Description = desciption;
-        this.Amount = amount;   
+        this.Amount = amount;
+        this.Price = price;
     }
 
     public Item()

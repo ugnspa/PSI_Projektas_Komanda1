@@ -3,8 +3,9 @@
 public class Dishwasher : Item
 {
 	public double Volume { get; set; }
-	public Dishwasher(string pic,int id, string brand, string model, string name, string desciption, int amount, double volume) : 
-		base(pic,id, brand, model, name, desciption, amount)
+	public Dishwasher(string pic, int id, string brand, string model, string name, string desciption, int amount, 
+		decimal price, double volume) : 
+		base(pic, id, brand, model, name, desciption, amount, price)
 	{
 		this.Volume = volume;
 	}
@@ -20,6 +21,7 @@ public class Dishwasher : Item
 		list.Add("Tūris: " + Volume.ToString());
 		list.Add("Kiekis: " + Amount.ToString());
 		list.Add("Aprašymas: " + Description);
-		return list;
+        list.Add("Kaina: " + Price);
+        return list;
     }
 }
