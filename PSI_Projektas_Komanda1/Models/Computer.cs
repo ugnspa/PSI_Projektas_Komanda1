@@ -10,9 +10,9 @@ public class Computer : Item
 	public int PowerSupplyWattage { get; set; } // Watts
 
 
-	public Computer(string pic,int id, string brand, string model, string name, string desciption, int amount, 
+	public Computer(string pic,int id, string brand, string model, string name, string desciption, int amount, decimal price,
 		string processor, string motherboard, string gpu, int ram, int memory, int powerSupplyWattage) : 
-		base(pic,id, brand, model, name, desciption, amount)
+		base(pic,id, brand, model, name, desciption, amount, price)
 	{
 		this.Processor = processor;
 		this.Motherboard = motherboard;
@@ -38,6 +38,7 @@ public class Computer : Item
         list.Add("Id: " + Id.ToString());
         list.Add("Kiekis: " + Amount.ToString());
         list.Add("Aprašymas: " + Description);
+		list.Add("Kaina: " + Price);
         return list;
     }
 }

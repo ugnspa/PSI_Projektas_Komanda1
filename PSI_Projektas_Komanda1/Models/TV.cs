@@ -3,8 +3,8 @@
 public class TV : Item
 {
 	public double Diagonal { get; set; }
-	public TV(string pic,int id, string brand, string model, string name, string desciption, int amount, double diagonal) : 
-		base(pic,id, brand, model, name, desciption, amount)
+	public TV(string pic,int id, string brand, string model, string name, string desciption, int amount, decimal price, double diagonal) : 
+		base(pic,id, brand, model, name, desciption, amount, price)
 	{
 		this.Diagonal = diagonal;
 	}
@@ -20,6 +20,7 @@ public class TV : Item
         list.Add("Id: " + Id.ToString());
         list.Add("Kiekis: " + Amount.ToString());
         list.Add("Aprašymas: " + Description);
+        list.Add("Kaina: " + Price);
         return list;
     }
 }
