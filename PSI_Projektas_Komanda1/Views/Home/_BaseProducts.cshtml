@@ -1,8 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Computers";
-}
-@await Html.PartialAsync("~/Views/Home/_BaseProducts.cshtml", (List<Item>)Model)
-@*@using Microsoft.AspNetCore.Http
+﻿@using Microsoft.AspNetCore.Http
 @{
     int itemsPerPage = 30;
     int totalPages = (int)Math.Ceiling((double)Model.Count / itemsPerPage);
@@ -13,13 +9,12 @@
     }
     int numItemsOnCurrentPage = Math.Min(Model.Count - (currentPage - 1) * itemsPerPage, itemsPerPage);
     int numRowsOnCurrentPage = (int)Math.Ceiling((double)numItemsOnCurrentPage / 3);
-    int bodyHeight = numRowsOnCurrentPage * 1000;
+    int bodyHeight = numRowsOnCurrentPage * 1100;
     if (currentPage == totalPages && numItemsOnCurrentPage % 3 != 0)
     {
-        bodyHeight -= (3 - numItemsOnCurrentPage % 3) * 1000;
+        bodyHeight -= (3 - numItemsOnCurrentPage % 3) * 1100;
     }
 }
-
 <head>
     <link rel="stylesheet" href="~/css/body.css">
 </head>
@@ -30,7 +25,7 @@
             @for (int i = (currentPage - 1) * itemsPerPage; i < currentPage * itemsPerPage && i < Model.Count; i++)
             {
                 <div class="myDiv">
-                    <h2>@Model[i].Name</h2>
+                    <h2 id="myH2">@Model[i].Name</h2>
                     <div><img src=@Model[i].Picture alt=@Model[i].Model></div>
                     @foreach (string str in @Model[i].Print())
                     {
@@ -51,4 +46,6 @@
             }
         </div>
     </main>
-</div>*@
+</div>
+
+
