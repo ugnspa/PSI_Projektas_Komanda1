@@ -209,63 +209,78 @@ namespace PSI_Projektas_Komanda1.Controllers
         //Web models
         public IActionResult Smartphones()
         {
-            return View(filterByType(typeof(Smartphone)));
+            var model = filterByType(typeof(Smartphone));
+            return View("~/Views/Home/Smartphones.cshtml", model);
         }
         public IActionResult Watches()
         {
-            return View(filterByType(typeof(Watch)));
+            var model = filterByType(typeof(Watch));
+            return View("~/Views/Home/Watches.cshtml", model);
         }
         public IActionResult Computers()
         {
-            return View(filterByType(typeof(Computer)));
+            var model = filterByType(typeof(Computer));
+            return View("~/Views/Home/Computers.cshtml", model);
         }
         public IActionResult Tvs()
         {
-            return View(filterByType(typeof(TV)));
+            var model = filterByType(typeof(TV));
+            return View("~/Views/Home/Tvs.cshtml", model);
         }
         public IActionResult Cameras()
         {
-            return View(filterByType(typeof(Camera)));
+            var model = filterByType(typeof(Camera));
+            return View("~/Views/Home/Cameras.cshtml", model);
         }
         public IActionResult Fridges()
         {
-            return View(filterByType(typeof(Fridge))); ;
+            var model = filterByType(typeof(Fridge));
+            return View("~/Views/Home/Fridges.cshtml", model);
         }
         public IActionResult Dishwashers()
         {
-            return View(filterByType(typeof(Dishwasher)));
+            var model = filterByType(typeof(Dishwasher));
+            return View("~/Views/Home/Dishwashers.cshtml", model);
         }
         public IActionResult Microwaves()
         {
-            return View(filterByType(typeof(Microwave)));
+            var model = filterByType(typeof(Microwave));
+            return View("~/Views/Home/Microwaves.cshtml", model);
         }
         public IActionResult Stoves()
         {
-            return View(filterByType(typeof(Stove)));
+            var model = filterByType(typeof(Stove));
+            return View("~/Views/Home/Stoves.cshtml", model);
         }
         public IActionResult Ovens()
         {
-            return View(filterByType(typeof(Oven))); 
+            var model = filterByType(typeof(Oven));
+            return View("~/Views/Home/Ovens.cshtml", model);
         }
         public IActionResult VacuumCleaners()
         {
-            return View(filterByType(typeof(Vacuum)));
+            var model = filterByType(typeof(Vacuum));
+            return View("~/Views/Home/VacuumCleaners.cshtml", model);
         }
         public IActionResult WashingMachines()
         {
-            return View(filterByType(typeof(WashingMashine)));
+            var model = filterByType(typeof(WashingMashine));
+            return View("~/Views/Home/WashingMachines.cshtml", model);
         }
         public IActionResult Dryers()
         {
-            return View(filterByType(typeof(Dryer))); ;
+            var model = filterByType(typeof(Dryer));
+            return View("~/Views/Home/Dryers.cshtml", model);
         }
         public IActionResult AirConditioners()
         {
-            return View(filterByType(typeof(AirConditioner)));
+            var model = filterByType(typeof(AirConditioner));
+            return View("~/Views/Home/AirConditioners.cshtml", model);
         }
         public IActionResult HeatingSystems()
         {
-            return View(filterByType(typeof(HeatingSystem)));
+            var model = filterByType(typeof(HeatingSystem));
+            return View("~/Views/Home/HeatingSystems.cshtml", model); ;
         }
         public IActionResult Electronics()
         {
@@ -276,7 +291,8 @@ namespace PSI_Projektas_Komanda1.Controllers
             types.Add(typeof(TV));
             types.Add(typeof(Camera));
 
-            return View(filterByManyTypes(types));
+            var model = filterByManyTypes(types);
+            return View("~/Views/Home/Electronics.cshtml", model);
         }
         public IActionResult KitchenAppliances()
         {
@@ -287,7 +303,8 @@ namespace PSI_Projektas_Komanda1.Controllers
             types.Add(typeof(Stove));
             types.Add(typeof(Oven));
 
-            return View(filterByManyTypes(types));
+            var model = filterByManyTypes(types);
+            return View("~/Views/Home/KitchenAppliances.cshtml", model);
         }
         public IActionResult HouseholdAppliances()
         {
@@ -298,7 +315,8 @@ namespace PSI_Projektas_Komanda1.Controllers
             types.Add(typeof(AirConditioner));
             types.Add(typeof(HeatingSystem));
 
-            return View(filterByManyTypes(types));
+            var model = filterByManyTypes(types);
+            return View("~/Views/Home/HousholdAppliances.cshtml", model);
         }
     }
 }
