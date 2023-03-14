@@ -4,8 +4,9 @@ public class Watch : Item
 {
 	public bool Smart { get; set; }
 	public int DaysCharged { get; set; } // Ammount of days without charging
-	public Watch(string pic,int id, string brand, string model, string name, string desciption, int amount, bool smart, int daysCharged) : 
-		base(pic,id, brand, model, name, desciption, amount)
+	public Watch(string pic, int id, string brand, string model, string name, string desciption, int amount, 
+		decimal price, bool smart, int daysCharged) :
+		base(pic, id, brand, model, name, desciption, amount, price)
 	{
 		this.Smart = smart;
 		this.DaysCharged = daysCharged;
@@ -24,6 +25,7 @@ public class Watch : Item
         list.Add("Id: " + Id.ToString());
         list.Add("Kiekis: " + Amount.ToString());
         list.Add("Aprašymas: " + Description);
+        list.Add("Kaina: " + Price);
         return list;
     }
 }
