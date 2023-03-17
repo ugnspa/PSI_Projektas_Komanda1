@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Http
 @{
-    int itemsPerPage = 30;
+    int itemsPerPage = Convert.ToInt32(Context.Request.Query["itemsPerPage"].FirstOrDefault() ?? "30");
     int totalPages = (int)Math.Ceiling((double)Model.Count / itemsPerPage);
     int currentPage = Convert.ToInt32(Context.Request.Query["page"]);
     if (currentPage == 0 || currentPage > totalPages)
@@ -37,13 +37,21 @@
             }
         </div>
         <div class="pagination">
+            <span>Page:</span>
             @if (totalPages > 1)
             {
                 for (int i = 1; i <= totalPages; i++)
                 {
-                    <a href="?page=@i" class="@((i == currentPage) ? "active" : "")">@i</a>
+                    <a href="?page=@i&itemsPerPage=@itemsPerPage" class="@((i == currentPage) ? "active" : "")">@i</a>
                 }
             }
+        </div>
+        <div class="items-per-page">
+                <span>Items per page:</span>
+                <button type="button" class="btn @((itemsPerPage == 15) ? "active" : "")" onclick="location.href='?page=@currentPage&itemsPerPage=15'">15</button>
+                <button type="button" class="btn @((itemsPerPage == 30) ? "active" : "")" onclick="location.href='?page=@currentPage&itemsPerPage=30'">30</button>
+                <button type="button" class="btn @((itemsPerPage == 45) ? "active" : "")" onclick="location.href='?page=@currentPage&itemsPerPage=45'">45</button>
+                <button type="button" class="btn @((itemsPerPage == 60) ? "active" : "")" onclick="location.href='?page=@currentPage&itemsPerPage=60'">60</button>
         </div>
     </main>
 </div>
