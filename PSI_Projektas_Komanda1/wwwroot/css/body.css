@@ -69,6 +69,7 @@ body {
 
 
 
+
 .div2 {
     margin: 1em;
     display: flex;
@@ -95,3 +96,34 @@ body {
             background-color: #4CAF50;
             color: white;
         }
+
+
+.items-per-page span {
+    margin-right: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.items-per-page button {
+    border: none;
+    margin-right: 10px;
+    font-size: 16px;
+    color: black;
+    background-color: #ddd;
+    border-radius: 5px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+    .items-per-page button.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+.container {
+    margin-bottom: 25px;
+}
+
+body .items-per-page {
+    text-align: right;
+    margin-top: 20px;
+}
