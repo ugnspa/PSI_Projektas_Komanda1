@@ -4,8 +4,8 @@ public class Oven : Item
 {
 	public double Volume { get; set; }
 	public string Type { get; set; }
-	public Oven(string pic,int id, string brand, string model, string name, string desciption, int amount, double volume, string type) : 
-		base(pic,id, brand, model, name, desciption, amount)
+	public Oven(string pic,int id, string brand, string model, string name, string desciption, int amount, double volume, string type, decimal price) : 
+		base(pic,id, brand, model, name, desciption, amount, price)
 	{
 		this.Volume = volume;
 		this.Type = type;
@@ -23,6 +23,7 @@ public class Oven : Item
         list.Add("Id: " + Id.ToString());
         list.Add("Kiekis: " + Amount.ToString());
         list.Add("Aprašymas: " + Description);
+        list.Add("Kaina: " + Price);
         return list;
     }
 }

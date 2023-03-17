@@ -7,8 +7,8 @@ public class Smartphone : Item
 	public string GPU { get; set; }
 	public int Memory { get; set; } //In GB	
 	public Smartphone(string pic,int id, string brand, string model, string name, string desciption, 
-		int amount, string processor, int ram, string gpu, int memory) : 
-		base(pic,id, brand, model, name, desciption, amount)
+		int amount, decimal price, string processor, int ram, string gpu, int memory) : 
+		base(pic,id, brand, model, name, desciption, amount, price)
 	{
 		this.Processor = processor;
 		this.Ram = ram;
@@ -30,6 +30,7 @@ public class Smartphone : Item
 		list.Add("Id: " + Id.ToString());
         list.Add("Kiekis: " + Amount.ToString());
         list.Add("Aprašymas: " + Description);
+        list.Add("Kaina: " + Price);
         return list;
     }
 }

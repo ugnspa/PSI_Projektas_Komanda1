@@ -6,7 +6,7 @@
     display: inline-block;
     vertical-align: top;
     text-align: center;
-    height: 1000px;
+    height: 1100px;
     background-color: #f8faff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-family: 'Roboto Mono', monospace;
@@ -14,7 +14,7 @@
     letter-spacing: 2px;
     border: 1px solid #d4e7f4;
     border-radius: 10px;
-    perspective: 1000px;
+    perspective: 1100px;
     transition: transform 0.5s ease;
 }
 
@@ -36,6 +36,12 @@
         .myDiv img:hover {
             animation: shake 0.5s ease-in-out;
         }
+    .myDiv h2 {
+        height: 100px;
+        font-size: calc(20px + (26 - 20) * ((100vw - 300px) / (1600 - 300)));
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
 .myList {
     font-size: 0.8em;
@@ -58,6 +64,7 @@ body {
     padding: 0;
     height: calc(100vh - 100px);
 }
+
 
 
 
@@ -89,3 +96,39 @@ body {
             background-color: #4CAF50;
             color: white;
         }
+    .pagination span {
+        margin-right: 10px;
+        margin-top: 12px;
+        font-weight: bold;
+        color: #333;
+    }
+
+.items-per-page span {
+    margin-right: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.items-per-page button {
+    border: none;
+    margin-right: 10px;
+    font-size: 16px;
+    color: black;
+    background-color: #ddd;
+    border-radius: 5px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+    .items-per-page button.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+.container {
+    margin-bottom: 25px;
+}
+
+body .items-per-page {
+    text-align: right;
+    margin-top: 20px;
+}
