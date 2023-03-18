@@ -270,7 +270,7 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult WashingMachines()
         {
-            return View(filterByType(typeof(WashingMachine)));
+            return View(filterByType(typeof(WashingMashine)));
         }
         public IActionResult Dryers()
         {
@@ -310,7 +310,7 @@ namespace PSI_Projektas_Komanda1.Controllers
         {
             List<Type> types = new List<Type>();
             types.Add(typeof(Vacuum));
-            types.Add(typeof(WashingMachine));
+            types.Add(typeof(WashingMashine));
             types.Add(typeof(Dryer));
             types.Add(typeof(AirConditioner));
             types.Add(typeof(HeatingSystem));
