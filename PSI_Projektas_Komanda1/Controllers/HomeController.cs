@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PSI_Projektas_Komanda1.Models;
 using System.Diagnostics;
+using PSI_Projektas_Komanda1.Repositories;
 
 namespace PSI_Projektas_Komanda1.Controllers
 {
@@ -92,47 +93,63 @@ namespace PSI_Projektas_Komanda1.Controllers
             
             Item smartphone = new Smartphone("/css/pictures/iphone.jpg", 2, "Apple", "iPhone", "Apple iPhone 13", "The iPhone 13 display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle.", 100, 699, "Hexa-core", 4, "A15 Bionic", 128);
 
-            items.Add(computer);
-            items.Add(computer1);
-            items.Add(computer2);
-            items.Add(computer3);
-            items.Add(computer4);
-            items.Add(computer5);
-            items.Add(computer6);
-            items.Add(computer7);
-            items.Add(computer8);
-            items.Add(computer9);
-            items.Add(computer10);
-            items.Add(computer11);
-            items.Add(computer12);
-            items.Add(computer13);
-            items.Add(computer14);
-            items.Add(computer15);
-            items.Add(computer16);
-            items.Add(computer17);
-            items.Add(computer18);
-            items.Add(computer19);
-            items.Add(computer20);
-            items.Add(computer21);
-            items.Add(computer22);
-            items.Add(computer23);
-            items.Add(computer24);
-            items.Add(computer25);
-            items.Add(computer26);
-            items.Add(computer27);
-            items.Add(computer28);
-            items.Add(computer29);
-            items.Add(computer30);
-            items.Add(computer31);
-            items.Add(computer32);
-            items.Add(computer33);
-            items.Add(computer34);
-            items.Add(computer35);
-            items.Add(computer36);
-            items.Add(computer37);
-            items.Add(computer38);
+            //items.Add(computer);
+            //items.Add(computer1);
+            //items.Add(computer2);
+            //items.Add(computer3);
+            //items.Add(computer4);
+            //items.Add(computer5);
+            //items.Add(computer6);
+            //items.Add(computer7);
+            //items.Add(computer8);
+            //items.Add(computer9);
+            //items.Add(computer10);
+            //items.Add(computer11);
+            //items.Add(computer12);
+            //items.Add(computer13);
+            //items.Add(computer14);
+            //items.Add(computer15);
+            //items.Add(computer16);
+            //items.Add(computer17);
+            //items.Add(computer18);
+            //items.Add(computer19);
+            //items.Add(computer20);
+            //items.Add(computer21);
+            //items.Add(computer22);
+            //items.Add(computer23);
+            //items.Add(computer24);
+            //items.Add(computer25);
+            //items.Add(computer26);
+            //items.Add(computer27);
+            //items.Add(computer28);
+            //items.Add(computer29);
+            //items.Add(computer30);
+            //items.Add(computer31);
+            //items.Add(computer32);
+            //items.Add(computer33);
+            //items.Add(computer34);
+            //items.Add(computer35);
+            //items.Add(computer36);
+            //items.Add(computer37);
+            //items.Add(computer38);
+            //items.Add(smartphone);
 
-            items.Add(smartphone);
+
+            items = AirConditionerRepo.ReadAirConditioners();
+            items.AddRange(CameraRepo.ReadCameras());
+            items.AddRange(ComputerRepo.ReadComputers());
+            items.AddRange(DishwasherRepo.ReadDiswashers());
+            items.AddRange(DryerRepo.ReadDryers());
+            items.AddRange(FridgeRepo.ReadFridges());
+            items.AddRange(HeatingSystemRepo.ReadHeatingSystems());
+            items.AddRange(MicrowaveRepo.ReadMicrowaves());
+            items.AddRange(OvenRepo.ReadOvens());
+            items.AddRange(SmartphoneRepo.ReadSmartphones());
+            items.AddRange(StoveRepo.ReadStoves());
+            items.AddRange(TVRepo.ReadTVs());
+            items.AddRange(VacuumRepo.ReadVacuums());
+            items.AddRange(WashingMachineRepo.ReadWashingMachines());
+            items.AddRange(WatchRepo.ReadWatches());
         }
 
         public List<Item> filterByType(Type type)
