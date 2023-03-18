@@ -1,6 +1,9 @@
-﻿@using Microsoft.AspNetCore.Http
-@{
+﻿@{
     ViewData["Title"] = "Computers";
+}
+@await Html.PartialAsync("~/Views/Home/_BaseProducts.cshtml", (List<Item>)Model)
+@*@using Microsoft.AspNetCore.Http
+@{
     int itemsPerPage = 30;
     int totalPages = (int)Math.Ceiling((double)Model.Count / itemsPerPage);
     int currentPage = Convert.ToInt32(Context.Request.Query["page"]);
@@ -48,4 +51,4 @@
             }
         </div>
     </main>
-</div>
+</div>*@
