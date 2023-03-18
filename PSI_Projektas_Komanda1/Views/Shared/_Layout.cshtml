@@ -96,12 +96,17 @@
                         </nav>
                     </div>
                     <div class="col-4 d-flex justify-content-end align-items-center" style="padding-right: 100px">
-                        <form class="search-form me-3">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search">
-                                <button class="btn btn-primary">Search</button>
-                            </div>
-                        </form>
+                        @using (Html.BeginForm("SearchForName", "Home"))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <form class="search-form me-3">
+                                        <div class="input-group">
+                                    <input type="text" name="searchPhrase" class="form-control" placeholder="Search">
+                                            <button class="btn btn-primary">Search</button>
+
+                                        </div>
+                                    </form>
+                                }
                         <button class="btn btn-primary" style="margin-left: 50px">Cart</button>
                         <img src="~/css/pictures/cart.png" alt="cart" class="logo2">
                     </div>

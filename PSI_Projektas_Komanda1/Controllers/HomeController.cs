@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PSI_Projektas_Komanda1.Models;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace PSI_Projektas_Komanda1.Controllers
 {
@@ -204,6 +205,32 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
+        //search method
+        /*public IActionResult SearchForm()
+        {
+            return View("SearchForm");
+        }*/
+
+        public IActionResult SearchForName(string searchPhrase)
+        {
+            List<Item> searchedItems= new List<Item>();
+            try
+            {
+                foreach (Item item in items)
+                {
+                    if (Regex.IsMatch(item.Name.ToLower(), searchPhrase.ToLower()))
+                        searchedItems.Add(item);
+
+                }
+                return View(searchedItems);
+            }
+            catch
+            {
+                return View(searchedItems);
+            }
         }
 
         //Web models
