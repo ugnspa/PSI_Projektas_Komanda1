@@ -7,7 +7,7 @@
             var query = $@"SELECT * FROM `washingmachines`";
             var drc = Sql.Query(query);
 
-            var result = Sql.MapAll<WashingMachine>(drc, (dre, t) =>
+            var result = Sql.MapAll<WashingMashine>(drc, (dre, t) =>
             {
                 t.Picture = dre.From<string>("pic");
                 t.Id = dre.From<int>("id_WashingMachine");
