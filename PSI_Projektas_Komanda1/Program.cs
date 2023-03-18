@@ -24,4 +24,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+Config.CreateSingletonInstance(app.Configuration);
+
 app.Run();
