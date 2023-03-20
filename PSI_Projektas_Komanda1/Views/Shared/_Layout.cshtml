@@ -12,19 +12,25 @@
 </head>
 <body>
     <header>
-        <div class="currency-bar">
+          <div class="currency-bar">
                 <div>
-                    <div class="currency-table">  
-                        <select class="form-select">
-                            <option value="usd">USD</option>
+                    <div class="currency-table">
+                        <form method="post">
+                        <select class="form-select" name="currency">
                             <option value="eur">EUR</option>
+                            <option value="usd">USD</option>
                             <option value="gbp">GBP</option>
-                        </select>
-                        <button class="col-auto btn btn-primary">Account</button>
-                        <img src="~/css/pictures/user.png" alt="account" class="logo2">
+                        </select>                    
+                        <button type="submit" class="col-auto btn btn-primary">Change currency</button>
+                    </form>
+                    <div>
+                    <button class="col-auto btn btn-primary">Account</button>
+                    <img src="~/css/pictures/user.png" alt="account" class="logo2">
                     </div>
+                    </div>              
                 </div>
-            </div>
+                
+            </div> 
         <div class="logo-bar">
             <div class="container-fluid">
                 <div class="row align-items-left">
