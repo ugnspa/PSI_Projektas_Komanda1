@@ -1,11 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PSI_Projektas_Komanda1.Models;
 using System.Diagnostics;
+
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
+using PSI_Projektas_Komanda1.Repositories;
 using System.Text.RegularExpressions;
+
 
 namespace PSI_Projektas_Komanda1.Controllers
 {
-    public class HomeController : Controller
+
+    public class HomeController : Controller 
     {
         List<Item> items = new List<Item>();
 
@@ -93,47 +99,63 @@ namespace PSI_Projektas_Komanda1.Controllers
             
             Item smartphone = new Smartphone("/css/pictures/iphone.jpg", 2, "Apple", "iPhone", "Apple iPhone 13", "The iPhone 13 display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle.", 100, 699, "Hexa-core", 4, "A15 Bionic", 128);
 
-            items.Add(computer);
-            items.Add(computer1);
-            items.Add(computer2);
-            items.Add(computer3);
-            items.Add(computer4);
-            items.Add(computer5);
-            items.Add(computer6);
-            items.Add(computer7);
-            items.Add(computer8);
-            items.Add(computer9);
-            items.Add(computer10);
-            items.Add(computer11);
-            items.Add(computer12);
-            items.Add(computer13);
-            items.Add(computer14);
-            items.Add(computer15);
-            items.Add(computer16);
-            items.Add(computer17);
-            items.Add(computer18);
-            items.Add(computer19);
-            items.Add(computer20);
-            items.Add(computer21);
-            items.Add(computer22);
-            items.Add(computer23);
-            items.Add(computer24);
-            items.Add(computer25);
-            items.Add(computer26);
-            items.Add(computer27);
-            items.Add(computer28);
-            items.Add(computer29);
-            items.Add(computer30);
-            items.Add(computer31);
-            items.Add(computer32);
-            items.Add(computer33);
-            items.Add(computer34);
-            items.Add(computer35);
-            items.Add(computer36);
-            items.Add(computer37);
-            items.Add(computer38);
+            //items.Add(computer);
+            //items.Add(computer1);
+            //items.Add(computer2);
+            //items.Add(computer3);
+            //items.Add(computer4);
+            //items.Add(computer5);
+            //items.Add(computer6);
+            //items.Add(computer7);
+            //items.Add(computer8);
+            //items.Add(computer9);
+            //items.Add(computer10);
+            //items.Add(computer11);
+            //items.Add(computer12);
+            //items.Add(computer13);
+            //items.Add(computer14);
+            //items.Add(computer15);
+            //items.Add(computer16);
+            //items.Add(computer17);
+            //items.Add(computer18);
+            //items.Add(computer19);
+            //items.Add(computer20);
+            //items.Add(computer21);
+            //items.Add(computer22);
+            //items.Add(computer23);
+            //items.Add(computer24);
+            //items.Add(computer25);
+            //items.Add(computer26);
+            //items.Add(computer27);
+            //items.Add(computer28);
+            //items.Add(computer29);
+            //items.Add(computer30);
+            //items.Add(computer31);
+            //items.Add(computer32);
+            //items.Add(computer33);
+            //items.Add(computer34);
+            //items.Add(computer35);
+            //items.Add(computer36);
+            //items.Add(computer37);
+            //items.Add(computer38);
+            //items.Add(smartphone);
 
-            items.Add(smartphone);
+
+            items = AirConditionerRepo.ReadAirConditioners();
+            items.AddRange(CameraRepo.ReadCameras());
+            items.AddRange(ComputerRepo.ReadComputers());
+            items.AddRange(DishwasherRepo.ReadDiswashers());
+            items.AddRange(DryerRepo.ReadDryers());
+            items.AddRange(FridgeRepo.ReadFridges());
+            items.AddRange(HeatingSystemRepo.ReadHeatingSystems());
+            items.AddRange(MicrowaveRepo.ReadMicrowaves());
+            items.AddRange(OvenRepo.ReadOvens());
+            items.AddRange(SmartphoneRepo.ReadSmartphones());
+            items.AddRange(StoveRepo.ReadStoves());
+            items.AddRange(TVRepo.ReadTVs());
+            items.AddRange(VacuumRepo.ReadVacuums());
+            items.AddRange(WashingMachineRepo.ReadWashingMachines());
+            items.AddRange(WatchRepo.ReadWatches());
         }
 
         public List<Item> filterByType(Type type)
@@ -172,6 +194,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 
@@ -185,10 +208,34 @@ namespace PSI_Projektas_Komanda1.Controllers
             return View();
         }
 	
-	  public IActionResult Store()
+	public decimal ConvertPrice(decimal price, string currency)
         {
+            decimal baseRate = 1.0m; // Default exchange rate is 1:1
+           
+            if (currency == "usd")
+            {
+                baseRate = 1.07m; // EUR to USD exchange rate
+               
+            }
+            else if (currency == "gbp")
+            {
+                baseRate = 0.88m; // EUR to GBP exchange rate
+                
+            }
+            return Math.Round(price * baseRate, 2);
+        }
+	
+	public IActionResult Store(string currency)
+        {           
+            // Convert all item prices to the new currency
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
+
             return View(items);
         }
+
 
 
         public IActionResult Categories()
@@ -206,7 +253,6 @@ namespace PSI_Projektas_Komanda1.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
 
         //search method
         /*public IActionResult SearchForm()
@@ -242,82 +288,143 @@ namespace PSI_Projektas_Komanda1.Controllers
 		}
 
 		//Web models
-		public IActionResult Smartphones()
+    public IActionResult Smartphones(string currency)
+
         {
             var model = filterByType(typeof(Smartphone));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/Smartphones.cshtml", model);
         }
-        public IActionResult Watches()
+        public IActionResult Watches(string currency)
         {
             var model = filterByType(typeof(Watch));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/Watches.cshtml", model);
         }
-        public IActionResult Computers()
+        public IActionResult Computers(string currency)
         {
             var model = filterByType(typeof(Computer));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/Computers.cshtml", model);
         }
-        public IActionResult Tvs()
+        public IActionResult Tvs(string currency)
         {
             var model = filterByType(typeof(TV));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/Tvs.cshtml", model);
         }
-        public IActionResult Cameras()
+        public IActionResult Cameras(string currency)
         {
             var model = filterByType(typeof(Camera));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/Cameras.cshtml", model);
         }
-        public IActionResult Fridges()
+        public IActionResult Fridges(string currency)
         {
             var model = filterByType(typeof(Fridge));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/Fridges.cshtml", model);
         }
-        public IActionResult Dishwashers()
+        public IActionResult Dishwashers(string currency)
         {
             var model = filterByType(typeof(Dishwasher));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/Dishwashers.cshtml", model);
         }
-        public IActionResult Microwaves()
+        public IActionResult Microwaves(string currency)
         {
             var model = filterByType(typeof(Microwave));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/Microwaves.cshtml", model);
         }
-        public IActionResult Stoves()
+        public IActionResult Stoves(string currency)
         {
             var model = filterByType(typeof(Stove));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/Stoves.cshtml", model);
         }
-        public IActionResult Ovens()
+        public IActionResult Ovens(string currency)
         {
             var model = filterByType(typeof(Oven));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/Ovens.cshtml", model);
         }
-        public IActionResult VacuumCleaners()
+        public IActionResult VacuumCleaners(string currency)
         {
             var model = filterByType(typeof(Vacuum));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/VacuumCleaners.cshtml", model);
         }
-        public IActionResult WashingMachines()
+        public IActionResult WashingMachines(string currency)
         {
             var model = filterByType(typeof(WashingMashine));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/WashingMachines.cshtml", model);
         }
-        public IActionResult Dryers()
+        public IActionResult Dryers(string currency)
         {
             var model = filterByType(typeof(Dryer));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/Dryers.cshtml", model);
         }
-        public IActionResult AirConditioners()
+        public IActionResult AirConditioners(string currency)
         {
             var model = filterByType(typeof(AirConditioner));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/AirConditioners.cshtml", model);
         }
-        public IActionResult HeatingSystems()
+        public IActionResult HeatingSystems(string currency)
         {
             var model = filterByType(typeof(HeatingSystem));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
             return View("~/Views/Home/HeatingSystems.cshtml", model); ;
         }
-        public IActionResult Electronics()
+        public IActionResult Electronics(string currency)
         {
             List<Type> types = new List<Type>();
             types.Add(typeof(Smartphone));
@@ -325,11 +432,15 @@ namespace PSI_Projektas_Komanda1.Controllers
             types.Add(typeof(Computer));
             types.Add(typeof(TV));
             types.Add(typeof(Camera));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
 
             var model = filterByManyTypes(types);
             return View("~/Views/Home/Electronics.cshtml", model);
         }
-        public IActionResult KitchenAppliances()
+        public IActionResult KitchenAppliances(string currency)
         {
             List<Type> types = new List<Type>();
             types.Add(typeof(Fridge));
@@ -337,11 +448,15 @@ namespace PSI_Projektas_Komanda1.Controllers
             types.Add(typeof(Microwave));
             types.Add(typeof(Stove));
             types.Add(typeof(Oven));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
 
             var model = filterByManyTypes(types);
             return View("~/Views/Home/KitchenAppliances.cshtml", model);
         }
-        public IActionResult HouseholdAppliances()
+        public IActionResult HouseholdAppliances(string currency)
         {
             List<Type> types = new List<Type>();
             types.Add(typeof(Vacuum));
@@ -349,9 +464,19 @@ namespace PSI_Projektas_Komanda1.Controllers
             types.Add(typeof(Dryer));
             types.Add(typeof(AirConditioner));
             types.Add(typeof(HeatingSystem));
+            foreach (var item in items)
+            {
+                item.Price = ConvertPrice(item.Price, currency);
+            }
 
             var model = filterByManyTypes(types);
             return View("~/Views/Home/HousholdAppliances.cshtml", model);
+        }
+
+
+        public IActionResult Cart()
+        {
+            return View();
         }
     }
 }
