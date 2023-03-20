@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using PSI_Projektas_Komanda1.Models;
 using System.Diagnostics;
+
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using PSI_Projektas_Komanda1.Repositories;
 using MySqlX.XDevAPI;
 using System;
+using System.Text.RegularExpressions;
+
 
 namespace PSI_Projektas_Komanda1.Controllers
 {
@@ -251,8 +254,42 @@ namespace PSI_Projektas_Komanda1.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        //Web models
-        public IActionResult Smartphones(string currency)
+        //search method
+        /*public IActionResult SearchForm()
+        {
+            return View("SearchForm");
+        }*/
+
+        public IActionResult SearchForName(string query)
+        {
+            List<Item> searchedItems= new List<Item>();
+            try
+            {
+                foreach (Item item in items)
+                {
+                    if (Regex.IsMatch(item.Name.ToLower(), query.ToLower()))
+                        searchedItems.Add(item);
+
+                }
+                return View(searchedItems);
+            }
+            catch
+            {
+                return View(items);
+            }
+        }
+
+		public IActionResult Search(string query)
+		{
+			var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
+								  .Take(10)
+								  .ToList();
+			return PartialView("_SearchResults", results);
+		}
+
+		//Web models
+    public IActionResult Smartphones(string currency)
+
         {
             var model = filterByType(typeof(Smartphone));
             foreach (var item in items)
