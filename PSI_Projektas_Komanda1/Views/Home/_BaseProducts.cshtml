@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using PSI_Projektas_Komanda1.Models
+@using Newtonsoft.Json;
 @{
     int itemsPerPage = Convert.ToInt32(Context.Request.Query["itemsPerPage"].FirstOrDefault() ?? "30");
     int totalPages = (int)Math.Ceiling((double)Model.Count / itemsPerPage);
@@ -19,6 +20,7 @@
 
 <head>
     <link rel="stylesheet" href="~/css/body.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <h1>@ViewData["Title"]</h1>
 <div class="container">
@@ -35,7 +37,9 @@
                             <li>@str</li>
                         </ul>
                     }
-                    <button >Add to Cart</button>
+                    <a class="btn" href="#" id="@Model[i].Id" name="@Model[i].Name">Add to Cart</a>
+
+
                 </div>
             }
         </div>
@@ -58,5 +62,30 @@
         </div>
     </main>
 </div>
+<script>
+    $(document).ready(function () {
+        $('.btn').click(function (event) {
+            event.preventDefault();
+            addToCart(this.id,this.name);
+        });
+    });
+
+    function addToCart(id, name) {
+    $.ajax({
+        type: 'POST',
+        url: '@Url.Action("AddToCart", "Home")',
+        data: { id: id, name: name },
+        success: function () {
+            alert('Item added to cart!');
+        },
+        error: function () {
+            alert('Error adding item to cart.');
+        }
+    });
+}
+</script>
+
+
+
 
 

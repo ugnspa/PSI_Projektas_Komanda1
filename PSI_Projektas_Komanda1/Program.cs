@@ -1,7 +1,11 @@
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
 
+
+builder.Services.AddDistributedMemoryCache();
 // Add session middleware
 builder.Services.AddSession(options =>
 {
@@ -9,13 +13,13 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromSeconds(3600);
 });
 
+
 // Add HttpContextAccessor
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
 // Use session middleware
-app.UseSession();
 
 if (!app.Environment.IsDevelopment())
 {
@@ -25,10 +29,10 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
-app.UseRouting();
-
 app.UseAuthorization();
+app.UseRouting();
+app.UseSession();
+
 
 app.MapControllerRoute(
     name: "default",

@@ -4,7 +4,8 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using PSI_Projektas_Komanda1.Repositories;
-
+using MySqlX.XDevAPI;
+using System;
 
 namespace PSI_Projektas_Komanda1.Controllers
 {
@@ -15,10 +16,8 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public void ReadItems()
         {
-            Item computer = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
-                5, 599,"Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
             Item computer1 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
-               5, 599,"Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
+               5, 599,"Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);           
             Item computer2 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
                5, 599, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
             Item computer3 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
@@ -186,7 +185,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger;
+            _logger = logger;;
             ReadItems();
         }
 
@@ -438,9 +437,57 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
 
 
+
+        // Cart
+        public Item getItem(int id, string name)
+        {
+            if (name == null || id<=0)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].Name.Equals(name) && items[i].Id==id)
+                {
+                    return items[i];
+                }
+            }
+            return null;
+        }
+
+        public IActionResult AddToCart(int id, string name)
+        {
+            var item = getItem(id,name);
+            if (item == null)
+            {
+                return BadRequest("Item not found");
+            }
+
+            var order = HttpContext.Session.Get<Order>("order");
+            if (order == null)
+            {
+                order = new Order();
+            }
+
+            order.Add(item);
+            Console.WriteLine(((Order)order).TotalPrice().ToString());
+            HttpContext.Session.Set("order", order);
+            var order1 = HttpContext.Session.Get<Order>("order");
+            Console.WriteLine(((Order)order1).TotalPrice().ToString());
+
+            return Ok();
+        }
+
         public IActionResult Cart()
         {
-            return View();
+            var order = HttpContext.Session.Get<Order>("order");
+            if (order == null)
+            {
+                return View(new Order());
+            }
+
+            return View(order);
         }
     }
 }
