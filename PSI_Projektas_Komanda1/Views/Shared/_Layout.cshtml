@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -96,17 +97,24 @@
                         </nav>
                     </div>
                     <div class="col-4 d-flex justify-content-end align-items-center" style="padding-right: 100px">
-                        @using (Html.BeginForm("SearchForName", "Home"))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    <form class="search-form me-3">
-                                        <div class="input-group">
-                                    <input type="text" name="searchPhrase" class="form-control" placeholder="Search">
-                                            <button class="btn btn-primary">Search</button>
+                        <form class="search-form me-3" method="get" action="@Url.Action("SearchForName", "Home")">
+                            <div class="input-group">
+                                <input type="text" name="query" id="search-box" class="form-control" placeholder="Search">
+                                
+                                <div id="suggestions"></div>
 
-                                        </div>
-                                    </form>
-                                }
+
+                                
+                                
+
+                                <button class="btn btn-primary">Search</button>
+
+                            </div>
+                            
+                        </form>
+
+                        
+                        
                         <button class="btn btn-primary" style="margin-left: 50px">Cart</button>
                         <img src="~/css/pictures/cart.png" alt="cart" class="logo2">
                     </div>
@@ -175,3 +183,26 @@
         );
     });
 </script>
+
+
+@section Scripts{
+
+    <script>
+        $(function () {
+            var timeout = null;
+            $('#search-box').on('input', function () {
+                var query = $(this).val();
+                if (query.length >= 1) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function () {
+                        $.get('@Url.Action("Search", "Home")', { query: query }, function (data) {
+                            $('#suggestions').load(data);
+                        });
+                    }, 500);
+                } else {
+                    $('#suggestions').html('');
+                }
+            });
+        });
+    </script>
+}

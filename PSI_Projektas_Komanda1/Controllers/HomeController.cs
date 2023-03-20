@@ -214,14 +214,14 @@ namespace PSI_Projektas_Komanda1.Controllers
             return View("SearchForm");
         }*/
 
-        public IActionResult SearchForName(string searchPhrase)
+        public IActionResult SearchForName(string query)
         {
             List<Item> searchedItems= new List<Item>();
             try
             {
                 foreach (Item item in items)
                 {
-                    if (Regex.IsMatch(item.Name.ToLower(), searchPhrase.ToLower()))
+                    if (Regex.IsMatch(item.Name.ToLower(), query.ToLower()))
                         searchedItems.Add(item);
 
                 }
@@ -229,12 +229,20 @@ namespace PSI_Projektas_Komanda1.Controllers
             }
             catch
             {
-                return View(searchedItems);
+                return View(items);
             }
         }
 
-        //Web models
-        public IActionResult Smartphones()
+		public IActionResult Search(string query)
+		{
+			var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
+								  .Take(10)
+								  .ToList();
+			return PartialView("_SearchResults", results);
+		}
+
+		//Web models
+		public IActionResult Smartphones()
         {
             var model = filterByType(typeof(Smartphone));
             return View("~/Views/Home/Smartphones.cshtml", model);
