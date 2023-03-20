@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PSI_Projektas_Komanda1.Models;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
 
 namespace PSI_Projektas_Komanda1.Controllers
 {
-    public class HomeController : Controller
+
+    public class HomeController : Controller 
     {
         List<Item> items = new List<Item>();
 
@@ -171,6 +174,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 
@@ -317,6 +321,12 @@ namespace PSI_Projektas_Komanda1.Controllers
 
             var model = filterByManyTypes(types);
             return View("~/Views/Home/HousholdAppliances.cshtml", model);
+        }
+
+
+        public IActionResult Cart()
+        {
+            return View();
         }
     }
 }
