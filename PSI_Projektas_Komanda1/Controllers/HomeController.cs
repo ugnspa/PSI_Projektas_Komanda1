@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using PSI_Projektas_Komanda1.Models;
 using System.Diagnostics;
+
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using PSI_Projektas_Komanda1.Repositories;
+using MySqlX.XDevAPI;
+using System;
+using System.Text.RegularExpressions;
 
 
 namespace PSI_Projektas_Komanda1.Controllers
@@ -15,10 +19,8 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public void ReadItems()
         {
-            Item computer = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
-                5, 599,"Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
             Item computer1 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
-               5, 599,"Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
+               5, 599,"Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);           
             Item computer2 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
                5, 599, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
             Item computer3 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
@@ -186,7 +188,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger;
+            _logger = logger;;
             ReadItems();
         }
 
@@ -252,8 +254,42 @@ namespace PSI_Projektas_Komanda1.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        //Web models
-        public IActionResult Smartphones(string currency)
+        //search method
+        /*public IActionResult SearchForm()
+        {
+            return View("SearchForm");
+        }*/
+
+        public IActionResult SearchForName(string query)
+        {
+            List<Item> searchedItems= new List<Item>();
+            try
+            {
+                foreach (Item item in items)
+                {
+                    if (Regex.IsMatch(item.Name.ToLower(), query.ToLower()))
+                        searchedItems.Add(item);
+
+                }
+                return View(searchedItems);
+            }
+            catch
+            {
+                return View(items);
+            }
+        }
+
+		public IActionResult Search(string query)
+		{
+			var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
+								  .Take(10)
+								  .ToList();
+			return PartialView("_SearchResults", results);
+		}
+
+		//Web models
+    public IActionResult Smartphones(string currency)
+
         {
             var model = filterByType(typeof(Smartphone));
             foreach (var item in items)
@@ -438,9 +474,57 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
 
 
+
+        // Cart
+        public Item getItem(int id, string name)
+        {
+            if (name == null || id<=0)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].Name.Equals(name) && items[i].Id==id)
+                {
+                    return items[i];
+                }
+            }
+            return null;
+        }
+
+        public IActionResult AddToCart(int id, string name)
+        {
+            var item = getItem(id,name);
+            if (item == null)
+            {
+                return BadRequest("Item not found");
+            }
+
+            var order = HttpContext.Session.Get<Order>("order");
+            if (order == null)
+            {
+                order = new Order();
+            }
+
+            order.Add(item);
+            Console.WriteLine(((Order)order).TotalPrice().ToString());
+            HttpContext.Session.Set("order", order);
+            var order1 = HttpContext.Session.Get<Order>("order");
+            Console.WriteLine(((Order)order1).TotalPrice().ToString());
+
+            return Ok();
+        }
+
         public IActionResult Cart()
         {
-            return View();
+            var order = HttpContext.Session.Get<Order>("order");
+            if (order == null)
+            {
+                return View(new Order());
+            }
+
+            return View(order);
         }
     }
 }

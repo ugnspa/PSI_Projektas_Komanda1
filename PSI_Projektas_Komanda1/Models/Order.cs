@@ -1,5 +1,6 @@
-﻿
-    public class Order
+﻿using System;
+[Serializable]
+public class Order
     {
         Dictionary<Item, int> items;
 
@@ -7,6 +8,9 @@
         {
             this.items = new Dictionary<Item, int>();
         }
+        
+        public Dictionary<Item, int> get() { return this.items; }
+
 
         public void Add(Item item)
         {
@@ -38,7 +42,7 @@
         }
 
         public double TotalPrice()
-    {
+        {
         double price = 0;
         Item[] keys = items.Keys.ToArray();
         for (int i = 0; i < keys.Length; i++)
@@ -47,11 +51,16 @@
             price += (double)item.Price * items[item];
         }
         return price;
-    }
+        }
     public double ItemPrice(Item item)
-    {
+     {
         return (double)item.Price * items[item];
+     }
+    public int count()
+    {
+        return items.Count;
     }
 
     }
+
 
