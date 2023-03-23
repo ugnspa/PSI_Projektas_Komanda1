@@ -3,10 +3,10 @@
 /// </summary>
 public class Config
 {
-	/// <summary>
-	/// Singleton instance lock.
-	/// </summary>
-	private static readonly object mInstanceLock = new Object();
+    /// <summary>
+    /// Singleton instance lock.
+    /// </summary>
+    private static readonly object mInstanceLock = new Object();
 
 	/// <summary>
 	/// Singleton instance.
