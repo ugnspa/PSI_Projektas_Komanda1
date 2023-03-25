@@ -1,0 +1,43 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<h1>Cart</h1>
+
+@if (Model == null || Model.count() == 0)
+{
+    <p>Your cart is empty</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Picture</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (KeyValuePair<Item, int> item in Model.get())
+            {
+                <tr>
+                    <td><img src="@item.Key.Picture" /></td>
+                    <td>@item.Key.Name</td>
+                    <td>@item.Key.Price</td>
+                    <td>@item.Value</td>
+                    <td>@Model.ItemPrice(item.Key)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p>Total: @Model.TotalPrice()</p>
+}
+
+
+
