@@ -1,5 +1,5 @@
 ﻿using System;
-
+[Serializable]
 public abstract class Item
 {
     public string Picture { get; set; }

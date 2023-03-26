@@ -470,7 +470,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             }
 
             var model = filterByManyTypes(types);
-            return View("~/Views/Home/HousholdAppliances.cshtml", model);
+            return View("~/Views/Home/HouseholdAppliances.cshtml", model);
         }
 
 
@@ -495,30 +495,30 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult AddToCart(int id, string name)
         {
-            var item = getItem(id,name);
+            Item item = getItem(id,name);
             if (item == null)
             {
                 return BadRequest("Item not found");
             }
 
-            var order = HttpContext.Session.Get<Order>("order");
+            Order order = HttpContext.Session.Get<Order>("order");
             if (order == null)
             {
                 order = new Order();
             }
 
             order.Add(item);
-            Console.WriteLine(((Order)order).TotalPrice().ToString());
-            HttpContext.Session.Set("order", order);
-            var order1 = HttpContext.Session.Get<Order>("order");
-            Console.WriteLine(((Order)order1).TotalPrice().ToString());
+            Console.WriteLine(((Order)order).count().ToString());
+            HttpContext.Session.Set("order", (Order)order);
+            Order order1 = HttpContext.Session.Get<Order>("order");
+            Console.WriteLine(((Order)order1).count().ToString());
 
             return Ok();
         }
 
         public IActionResult Cart()
         {
-            var order = HttpContext.Session.Get<Order>("order");
+            Order order = HttpContext.Session.Get<Order>("order");
             if (order == null)
             {
                 return View(new Order());

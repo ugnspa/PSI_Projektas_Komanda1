@@ -1,4 +1,352 @@
 ﻿@{
     ViewData["Title"] = "Categories";
 }
+<head>
+    <link rel="stylesheet" href="~/css/Categories.css" asp-append-version="true" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<div class="myDiv3">
+    <p class="h1">Electronics</p>
+<div class="slider-container">
+    <div class="slider">
+        <div class="slider-item">
+            <a class="nav-link" href="/Home/Electronics">
+                <img src="~/css/pictures/electronics.jpg" alt="Electronics">
+                <div class="overlay"></div>
+                <div class="slider-item-title">Electronics</div>
+            </a>
+        </div>
+        <div class="slider-item">
+            <a class="nav-link" href="/Home/Computers">
+                <img src="~/css/pictures/computer.jpg" alt="Computers">
+                <div class="overlay"></div>
+                    <div class="slider-item-title">Computers</div>
+            </a>
+        </div>
+        <div class="slider-item">
+            <a class="nav-link" href="/Home/Smartphones">
+                <img src="~/css/pictures/smartphone.jpg" alt="Smartphones">
+                <div class="overlay"></div>
+                <div class="slider-item-title">Smartphones</div>
+            </a>
+        </div>
+        <div class="slider-item">
+            <a class="nav-link" href="/Home/Watches">
+                <img src="~/css/pictures/watch.png" alt="Watches">
+                <div class="overlay"></div>
+                <div class="slider-item-title">Watches</div>
+            </a>
+        </div>
+        <div class="slider-item">
+            <a class="nav-link" href="/Home/Tvs">
+                <img src="~/css/pictures/tvs.png" alt="Tvs">
+                <div class="overlay"></div>
+                <div class="slider-item-title">Tvs</div>
+            </a>
+        </div>
+        <div class="slider-item">
+            <a class="nav-link" href="/Home/Cameras">
+                <img src="~/css/pictures/camera.jpg" alt="Cameras">
+                <div class="overlay"></div>
+                <div class="slider-item-title">Cameras</div>
+            </a>
+        </div>
+    </div>
+    <div class="slider-controls">
+        <button class="slider-prev">&#8249;</button>
+        <button class="slider-next">&#8250;</button>
+    </div>
+</div>
+</div>
+<div class="myDiv3">
+    <p class="h1">Kitchen Appliances</p>
+    <div class="slider-container">
+        <div class="slider1">
+            <div class="slider-item1">
+                <a class="nav-link" href="/Home/KitchenAppliances">
+                    <img src="~/css/pictures/kitchen.jpg" alt="Kitchen Appliances">
+                    <div class="overlay"></div>
+                    <div class="slider-item-title">Kitchen Appliances</div>
+                </a>
+            </div>
+            <div class="slider-item1">
+                <a class="nav-link" href="/Home/Fridges">
+                    <img src="~/css/pictures/fridge.jpg" alt="Fridges">
+                    <div class="overlay"></div>
+                    <div class="slider-item-title">Fridges</div>
+                </a>
+            </div>
+            <div class="slider-item1">
+                <a class="nav-link" href="/Home/Dishwashers">
+                    <img src="~/css/pictures/dishwasher.jpg" alt="Dishwashers">
+                    <div class="overlay"></div>
+                    <div class="slider-item-title">Dishwashers</div>
+                </a>
+            </div>
+            <div class="slider-item1">
+                <a class="nav-link" href="/Home/Microwaves">
+                    <img src="~/css/pictures/microwave.jpg" alt="Microwaves">
+                    <div class="overlay"></div>
+                    <div class="slider-item-title">Microwaves</div>
+                </a>
+            </div>
+            <div class="slider-item1">
+                <a class="nav-link" href="/Home/Stoves">
+                    <img src="~/css/pictures/stove.jpg" alt="Stoves">
+                    <div class="overlay"></div>
+                    <div class="slider-item-title">Stoves</div>
+                </a>
+            </div>
+            <div class="slider-item1">
+                <a class="nav-link" href="/Home/Ovens">
+                    <img src="~/css/pictures/oven.jpg" alt="Ovens">
+                    <div class="overlay"></div>
+                    <div class="slider-item-title">Ovens</div>
+                </a>
+            </div>
+        </div>
+        <div class="slider-controls1">
+            <button class="slider-prev1">&#8249;</button>
+            <button class="slider-next1">&#8250;</button>
+        </div>
+    </div>
+</div>
+<div class="myDiv3">
+    <p class="h1">Household Appliances</p>
+    <div class="slider-container">
+        <div class="slider2">
+            <div class="slider-item2">
+                <a class="nav-link" href="/Home/HouseholdAppliances">
+                    <img src="~/css/pictures/household.jpg" alt="Household Appliances">
+                    <div class="overlay"></div>
+                    <div class="slider-item-title">Household Appliances</div>
+                </a>
+            </div>
+            <div class="slider-item2">
+                <a class="nav-link" href="/Home/VacuumCleaners">
+                    <img src="~/css/pictures/vacum.jpg" alt="Vacuum Cleaners">
+                    <div class="overlay"></div>
+                    <div class="slider-item-title">Vacuum Cleaners</div>
+                </a>
+            </div>
+            <div class="slider-item2">
+                <a class="nav-link" href="/Home/WashingMachines">
+                    <img src="~/css/pictures/washing.jpg" alt="Washing Machines">
+                    <div class="overlay"></div>
+                    <div class="slider-item-title">Washing Machines</div>
+                </a>
+            </div>
+            <div class="slider-item2">
+                <a class="nav-link" href="/Home/Dryers">
+                    <img src="~/css/pictures/dryer.jpg" alt="Dryers">
+                    <div class="overlay"></div>
+                    <div class="slider-item-title">Dryers</div>
+                </a>
+            </div>
+            <div class="slider-item2">
+                <a class="nav-link" href="/Home/AirConditioners">
+                    <img src="~/css/pictures/air.jpg" alt="Air Conditioners">
+                    <div class="overlay"></div>
+                    <div class="slider-item-title">Air Conditioners</div>
+                </a>
+            </div>
+            <div class="slider-item2">
+                <a class="nav-link" href="/Home/HeatingSystems">
+                    <img src="~/css/pictures/heat.jpg" alt="Heating Systems">
+                    <div class="overlay"></div>
+                    <div class="slider-item-title">Heating Systems</div>
+                </a>
+            </div>
+        </div>
+        <div class="slider-controls2">
+            <button class="slider-prev2">&#8249;</button>
+            <button class="slider-next2">&#8250;</button>
+        </div>
+    </div>
+</div>
+<script>
+    (function () {
+        var slider = document.querySelector('.slider');
+        var sliderItems = document.querySelectorAll('.slider-item');
+        var sliderControls = document.querySelector('.slider-controls');
+        var sliderPrev = document.querySelector('.slider-prev');
+        var sliderNext = document.querySelector('.slider-next');
+        var currentIndex = 0;
+        var interval;
+
+        var slider1 = document.querySelector('.slider1');
+        var sliderItems1 = document.querySelectorAll('.slider-item1');
+        var sliderControls1 = document.querySelector('.slider-controls1');
+        var sliderPrev1 = document.querySelector('.slider-prev1');
+        var sliderNext1 = document.querySelector('.slider-next1');
+        var currentIndex1 = 0;
+        var interval1;
+
+        var slider2 = document.querySelector('.slider2');
+        var sliderItems2 = document.querySelectorAll('.slider-item2');
+        var sliderControls2 = document.querySelector('.slider-controls2');
+        var sliderPrev2 = document.querySelector('.slider-prev2');
+        var sliderNext2 = document.querySelector('.slider-next2');
+        var currentIndex2 = 0;
+        var interval2;
+
+        function initSlider() {
+            for (var i = 0; i < sliderItems.length; i++) {
+                var item = sliderItems[i];
+                var left = i * 300 + 'px'; // adjust left value to match image width
+                item.style.left = left;
+            }
+            startSlider();
+        }
+
+        function startSlider() {
+            interval = setInterval(function () {
+                currentIndex++;
+                if (currentIndex >= sliderItems.length) {
+                    currentIndex = 0;
+                }
+                var left = -(currentIndex * 600) + 'px'; // adjust left value to match image width
+                slider.style.left = left;
+            }, 3000);
+        }
+
+        function stopSlider() {
+            clearInterval(interval);
+        }
+
+        function prevSlide() {
+            currentIndex--;
+            if (currentIndex < 0) {
+                currentIndex = sliderItems.length - 1;
+            }
+            var left = -(currentIndex * 600) + 'px'; // adjust left value to match image width
+            slider.style.left = left;
+            stopSlider();
+            startSlider();
+        }
+
+        function nextSlide() {
+            currentIndex++;
+            if (currentIndex >= sliderItems.length) {
+                currentIndex = 0;
+            }
+            var left = -(currentIndex * 600) + 'px'; // adjust left value to match image width
+            slider.style.left = left;
+            stopSlider();
+            startSlider();
+        }
+
+        sliderControls.addEventListener('mouseover', stopSlider);
+        sliderControls.addEventListener('mouseout', startSlider);
+        sliderPrev.addEventListener('click', prevSlide);
+        sliderNext.addEventListener('click', nextSlide);
+
+        initSlider();
+
+        function initSlider1() {
+            for (var i = 0; i < sliderItems1.length; i++) {
+                var item = sliderItems1[i];
+                var left = i * 300 + 'px'; // adjust left value to match image width
+                item.style.left = left;
+            }
+            startSlider1();
+        }
+
+        function startSlider1() {
+            interval1 = setInterval(function () {
+                currentIndex1++;
+                if (currentIndex1 >= sliderItems1.length) {
+                    currentIndex1 = 0;
+                }
+                var left = -(currentIndex1 * 600) + 'px'; // adjust left value to match image width
+                slider1.style.left = left;
+            }, 3000);
+        }
+
+        function stopSlider1() {
+            clearInterval(interval1);
+        }
+
+        function prevSlide1() {
+            currentIndex1--;
+            if (currentIndex1 < 0) {
+                currentIndex1 = sliderItems1.length - 1;
+            }
+            var left = -(currentIndex1 * 600) + 'px'; // adjust left value to match image width
+            slider1.style.left = left;
+            stopSlider1();
+            startSlider1();
+        }
+
+        function nextSlide1() {
+            currentIndex1++;
+            if (currentIndex1 >= sliderItems1.length) {
+                currentIndex1 = 0;
+            }
+            var left = -(currentIndex1 * 600) + 'px'; // adjust left value to match image width
+            slider1.style.left = left;
+            stopSlider1();
+            startSlider1();
+        }
+
+        sliderControls1.addEventListener('mouseover', stopSlider1);
+        sliderControls1.addEventListener('mouseout', startSlider1);
+        sliderPrev1.addEventListener('click', prevSlide1);
+        sliderNext1.addEventListener('click', nextSlide1);
+
+        initSlider1();
+        function initSlider2() {
+            for (var i = 0; i < sliderItems2.length; i++) {
+                var item = sliderItems2[i];
+                var left = i * 300 + 'px'; // adjust left value to match image width
+                item.style.left = left;
+            }
+            startSlider2();
+        }
+
+        function startSlider2() {
+            interval2 = setInterval(function () {
+                currentIndex2++;
+                if (currentIndex2 >= sliderItems2.length) {
+                    currentIndex2 = 0;
+                }
+                var left = -(currentIndex2 * 600) + 'px'; // adjust left value to match image width
+                slider2.style.left = left;
+            }, 3000);
+        }
+
+        function stopSlider2() {
+            clearInterval(interval2);
+        }
+
+        function prevSlide2() {
+            currentIndex2--;
+            if (currentIndex2 < 0) {
+                currentIndex2 = sliderItems2.length - 1;
+            }
+            var left = -(currentIndex2 * 600) + 'px'; // adjust left value to match image width
+            slider2.style.left = left;
+            stopSlider2();
+            startSlider2();
+        }
+
+        function nextSlide2() {
+            currentIndex2++;
+            if (currentIndex2 >= sliderItems2.length) {
+                currentIndex2 = 0;
+            }
+            var left = -(currentIndex2 * 600) + 'px'; // adjust left value to match image width
+            slider2.style.left = left;
+            stopSlider2();
+            startSlider2();
+        }
+
+        sliderControls2.addEventListener('mouseover', stopSlider2);
+        sliderControls2.addEventListener('mouseout', startSlider2);
+        sliderPrev2.addEventListener('click', prevSlide2);
+        sliderNext2.addEventListener('click', nextSlide2);
+
+        initSlider2();
+    })();
+</script>
 
