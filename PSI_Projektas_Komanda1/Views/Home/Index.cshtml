@@ -1,6 +1,98 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
-<h1>@ViewData["Title"]</h1>
+@model List<Item>
+<head>
+	<title>Electric Avenue - Home</title>
+	<link rel="stylesheet" type="text/css" href="~/css/home.css">
+</head>
+<body>
+	<header class="header">
+		<div class="logo">
+			<h1>Electric Avenue</h1>
+		</div>
+		<nav class="nav">
+			<ul>
+				<li><a href="/Home/Electronics" class="nav-link">Electronics</a></li>
+				<li><a href="/Home/KitchenAppliances" class="nav-link">Kitchen Appliances</a></li>
+				<li><a href="/Home/HouseholdAppliances" class="nav-link">Household Appliances</a></li>
+			</ul>
+		</nav>
+	</header>
+	<main class="main">
+		<section class="category electronics">
+			<h2>Electronics</h2>
+			<ul>
+				<li><a href="/Home/Computers" class="category-link">Computers</a></li>
+				<li><a href="/Home/Smartphones" class="category-link">Smartphones</a></li>
+				<li><a href="/Home/Watches" class="category-link">Watches</a></li>
+				<li><a href="/Home/Watches" class="category-link">Fridges</a></li>
+				<li><a href="/Home/Cameras" class="category-link">Cameras</a></li>
+			</ul>
+		</section>
+		<section class="category kitchen">
+			<h2>Kitchen Appliances</h2>
+			<ul>
+				<li><a href="/Home/Stoves" class="category-link">Stoves</a></li>
+				<li><a href="/Home/Ovens" class="category-link">Ovens</a></li>
+				<li><a href="/Home/Fridges" class="category-link">Fridges</a></li>
+				<li><a href="/Home/Microwaves" class="category-link">Microwaves</a></li>
+				<li><a href="/Home/Dishwashers" class="category-link">Dishwashers</a></li>
+			</ul>
+		</section>
+		<section class="category household">
+			<h2>Household Appliances</h2>
+			<ul>
+				<li><a href="/Home/WashingMachines" class="category-link">Washing Machines</a></li>
+				<li><a href="/Home/VacuumCleaners" class="category-link">Vacuum Cleaners</a></li>
+				<li><a href="/Home/HeatingSystems" class="category-link">Heating Systems</a></li>
+				<li><a href="/Home/Dryers" class="category-link">Dryers</a></li>
+				<li><a href="/Home/AirConditioners" class="category-link">Air Conditioners</a></li>
+			</ul>
+		</section>
+		<p class="popular-title">Check out our most popular items</p>
+		<div class="popular-items-container">
+			<div class="popular-items">
+				@foreach (var item in Model)
+				{
+					<div class="popular-item">
+						<p class="name-centered">@item.Name</p>
+						<a href="@Url.Action("ItemDetails", "Home", new { name = item.Name})"><img src="@item.Picture" alt="@item.Name"></a>
+					</div>
+				}
+			</div>
+			<div class="popular-buttons">
+				<button class="prev-button">&lt;</button>
+				<button class="next-button">&gt;</button>
+			</div>
+		</div>
+	</main>
+</body>
+<script>
+	const container = document.querySelector('.popular-items-container');
+	const items = document.querySelector('.popular-items');
+	const itemWidth = document.querySelector('.popular-item').clientWidth;
+	let currentPosition = 0;
 
-<p>Use this page to detail your site's privacy policy.</p>
+	function moveItems() {
+		currentPosition -= itemWidth;
+		if (currentPosition <= -itemWidth * 5.5) {
+			currentPosition = 0;
+		}
+		items.style.transform = `translateX(${currentPosition}px)`;
+	}
+
+	setInterval(moveItems, 3000);
+
+	document.querySelector('.prev-button').addEventListener('click', () => {
+		currentPosition += itemWidth;
+		if (currentPosition > 0) {
+			currentPosition = -itemWidth * 5.5;
+		}
+		items.style.transform = `translateX(${currentPosition}px)`;
+	});
+
+	document.querySelector('.next-button').addEventListener('click', () => {
+		moveItems();
+	});
+</script>
