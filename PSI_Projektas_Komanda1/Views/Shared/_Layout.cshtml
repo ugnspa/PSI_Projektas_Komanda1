@@ -13,25 +13,26 @@
 </head>
 <body>
     <header>
-          <div class="currency-bar">
-                <div>
-                    <div class="currency-table">
-                        <form method="post">
-                        <select class="form-select" name="currency">
+        <div class="currency-bar">
+            <div>
+                <div class="currency-table">
+                    <form method="post" id="currency-form">
+                        <select class="form-select" name="currency" id="currency-select">
                             <option value="eur">EUR</option>
                             <option value="usd">USD</option>
                             <option value="gbp">GBP</option>
-                        </select>                    
-                        <button type="submit" class="col-auto btn btn-primary">Change currency</button>
+                        </select>
+                        <button type="submit" class="col-auto btn btn-primary" id="change-currency-btn">Change currency</button>
                     </form>
+                    <div id="selected-currency-label"></div>
                     <div>
-                    <button class="col-auto btn btn-primary">Account</button>
-                    <img src="~/css/pictures/user.png" alt="account" class="logo2">
+                        <button class="col-auto btn btn-primary">Account</button>
+                        <img src="~/css/pictures/user.png" alt="account" class="logo2">
                     </div>
-                    </div>              
                 </div>
-                
-            </div> 
+            </div>
+
+        </div>
         <div class="logo-bar">
             <div class="container-fluid">
                 <div class="row align-items-left">
@@ -185,6 +186,24 @@
             }
         );
     });
+</script>
+<script>
+    const currencyForm = document.getElementById('currency-form');
+    const currencySelect = document.getElementById('currency-select');
+    const changeCurrencyBtn = document.getElementById('change-currency-btn');
+    const selectedCurrencyLabel = document.getElementById('selected-currency-label');
+
+    currencyForm.addEventListener('submit', (event) => {
+        event.preventDefault(); // prevent default form submission behavior
+        const selectedCurrency = currencySelect.value;
+        selectedCurrencyLabel.innerText = `Selected currency: ${selectedCurrency.toUpperCase()}`;
+        return false; // prevent form submission from reloading the page
+    });
+
+    changeCurrencyBtn.addEventListener('click', () => {
+        currencyForm.submit(); // directly submit the form
+    });
+
 </script>
 
 
