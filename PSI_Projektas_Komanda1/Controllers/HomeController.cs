@@ -260,7 +260,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             return View("SearchForm");
         }*/
 
-        public IActionResult SearchForName(string query)
+        public IActionResult SearchForName(string query, string currency)
         {
             List<Item> searchedItems= new List<Item>();
             try
@@ -269,6 +269,7 @@ namespace PSI_Projektas_Komanda1.Controllers
                 {
                     if (Regex.IsMatch(item.Name.ToLower(), query.ToLower()))
                         searchedItems.Add(item);
+			item.Price = ConvertPrice(item.Price, currency);
 
                 }
                 return View(searchedItems);
@@ -526,5 +527,17 @@ namespace PSI_Projektas_Komanda1.Controllers
 
             return View(order);
         }
+	
+	 public IActionResult ItemDetails(string name)
+        {
+
+            var item = items.FirstOrDefault(i => i.Name == name);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        } 
     }
 }
