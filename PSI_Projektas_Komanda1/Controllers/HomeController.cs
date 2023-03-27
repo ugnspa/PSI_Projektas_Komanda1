@@ -262,6 +262,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult SearchForName(string query, string currency)
         {
+            ViewBag.SearchName = query;
             List<Item> searchedItems= new List<Item>();
             try
             {
@@ -272,11 +273,15 @@ namespace PSI_Projektas_Komanda1.Controllers
 			item.Price = ConvertPrice(item.Price, currency);
 
                 }
-                return View(searchedItems);
+                if (searchedItems.Count == 0)
+                {
+                    return View("NoResultsFound");
+                }
+                else return View("SearchForName", searchedItems);
             }
             catch
             {
-                return View(items);
+                return View("NoResultsFound");
             }
         }
 
