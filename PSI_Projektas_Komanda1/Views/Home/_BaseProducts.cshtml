@@ -31,16 +31,11 @@
                 <div class="myDiv">
                     <h2 id="myH2">@Model[i].Name</h2>
                     <div><img src=@Model[i].Picture alt=@Model[i].Model></div>
-                    @foreach (string str in @Model[i].Print())
-                    {
-                        <ul class="myList">
-                            <li>@str</li>
-                        </ul>
-                    }
+                    <p>Price: @Model[i].Price</p>
                     <a class="btn-dark" href="#" id="@Model[i].Id" name="@Model[i].Name">Add to Cart</a>
-
-
-                </div>
+                    <p></p>
+                    <a class="btn btn-danger" href="@Url.Action("ItemDetails", "Home", new { name = Model[i].Name})">See details</a>                   
+                </div>              
             }
         </div>
         <div class="pagination">
