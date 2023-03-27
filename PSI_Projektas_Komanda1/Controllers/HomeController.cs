@@ -260,7 +260,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             return View("SearchForm");
         }*/
 
-        public IActionResult SearchForName(string query)
+        public IActionResult SearchForName(string query, string currency)
         {
             List<Item> searchedItems= new List<Item>();
             try
