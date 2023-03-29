@@ -9,7 +9,6 @@ using MySqlX.XDevAPI;
 using System;
 using System.Text.RegularExpressions;
 
-
 namespace PSI_Projektas_Komanda1.Controllers
 {
 
@@ -287,11 +286,12 @@ namespace PSI_Projektas_Komanda1.Controllers
 
 		public IActionResult Search(string query)
 		{
-			var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
-								  .Take(10)
-								  .ToList();
-			return PartialView("_SearchResults", results);
-		}
+            var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
+                   .Select(i => i.Name)
+                   .Take(10)
+                   .ToList();
+            return Json(results);
+        }
 
 		//Web models
     public IActionResult Smartphones(string currency)
