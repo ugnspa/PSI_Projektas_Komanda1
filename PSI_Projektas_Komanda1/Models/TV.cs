@@ -8,10 +8,21 @@ public class TV : Item
 	{
 		this.Diagonal = diagonal;
 	}
-	
-	public TV() { }
 
-  public override List<string> Print()
+    public TV(string[] parts) : base(parts)
+    {
+        try
+        {
+            this.Diagonal = double.Parse(parts[8]);
+        }
+        catch
+        {
+            throw new Exception("TV parsing went wrong");
+        }
+    }
+    public TV() { }
+
+    public override List<string> Print()
     {
         List<string> list = new List<string>();
         list.Add("Gamintojas: " + Brand);
@@ -22,5 +33,10 @@ public class TV : Item
         list.Add("Aprašymas: " + Description);
         list.Add("Kaina: " + Price);
         return list;
+    }
+
+    public override string ToString()
+    {
+        return "TV;" + base.ToString() + string.Format(";{0}", this.Diagonal);
     }
 }

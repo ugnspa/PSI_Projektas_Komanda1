@@ -9,10 +9,22 @@ public class Dishwasher : Item
 	{
 		this.Volume = volume;
 	}
-	
-	public Dishwasher() { }
+
+    public Dishwasher(string[] parts) : base(parts)
+    {
+        try
+        {
+            this.Volume = double.Parse(parts[8]);
+        }
+        catch
+        {
+            throw new Exception("Dishwasher parsing went wrong");
+        }
+    }
+
+    public Dishwasher() { }
   
-  public override List<string> Print()
+	public override List<string> Print()
 	{
 		List<string> list = new List<string>();
 		list.Add("Gamintojas: " + Brand);
@@ -23,5 +35,10 @@ public class Dishwasher : Item
 		list.Add("Aprašymas: " + Description);
         list.Add("Kaina: " + Price);
         return list;
+    }
+
+    public override string ToString()
+    {
+        return "Dishwasher;" + base.ToString() + string.Format(";{0}", this.Volume);
     }
 }

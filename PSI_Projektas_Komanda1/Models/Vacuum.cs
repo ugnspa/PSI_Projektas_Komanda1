@@ -9,10 +9,21 @@ public class Vacuum : Item
 	{
 		this.Volume = volume;
 	}
-	
-	public Vacuum() { }
+
+    public Vacuum(string[] parts) : base(parts)
+    {
+        try
+        {
+            this.Volume = double.Parse(parts[8]);
+        }
+        catch
+        {
+            throw new Exception("Vacuum parsing went wrong");
+        }
+    }
+    public Vacuum() { }
   
-  public override List<string> Print()
+    public override List<string> Print()
     {
         List<string> list = new List<string>();
         list.Add("Gamintojas: " + Brand);
@@ -23,6 +34,11 @@ public class Vacuum : Item
         list.Add("Aprašymas: " + Description);
         list.Add("Kaina: " + Price);
         return list;
+    }
+
+    public override string ToString()
+    {
+        return "Vacuum;" + base.ToString() + string.Format(";{0}", this.Volume);
     }
 
 }
