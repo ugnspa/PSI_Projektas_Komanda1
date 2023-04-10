@@ -7,10 +7,8 @@ using PSI_Projektas_Komanda1.Repositories;
 using MySqlX.XDevAPI;
 using System;
 using System.Text.RegularExpressions;
-<<<<<<< HEAD
 using Newtonsoft.Json;
-=======
->>>>>>> 45dc47b70f8bea6838e20c982d24c3ce6d8406ba
+
 
 namespace PSI_Projektas_Komanda1.Controllers
 {
@@ -27,7 +25,6 @@ namespace PSI_Projektas_Komanda1.Controllers
         Dictionary<Item, int> cartDic = new Dictionary<Item, int>();
         public void ReadItems()
         {
-<<<<<<< HEAD
             Item computer1 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
                5, 599, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
             Item computer2 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
@@ -274,19 +271,14 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult SearchForName(string query, string currency)
         {
-<<<<<<< HEAD
             List<Item> searchedItems = new List<Item>();
-=======
-            ViewBag.SearchName = query;
-            List<Item> searchedItems= new List<Item>();
->>>>>>> 45dc47b70f8bea6838e20c982d24c3ce6d8406ba
             try
             {
                 foreach (Item item in items)
                 {
                     if (Regex.IsMatch(item.Name.ToLower(), query.ToLower()))
                         searchedItems.Add(item);
-			item.Price = ConvertPrice(item.Price, currency);
+			    item.Price = ConvertPrice(item.Price, currency);
 
                 }
                 if (searchedItems.Count == 0)
@@ -300,15 +292,6 @@ namespace PSI_Projektas_Komanda1.Controllers
                 return View("NoResultsFound");
             }
         }
-
-<<<<<<< HEAD
-        public IActionResult Search(string query)
-        {
-            var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
-                                  .Take(10)
-                                  .ToList();
-            return PartialView("_SearchResults", results);
-=======
 		public IActionResult Search(string query)
 		{
             var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
@@ -316,7 +299,7 @@ namespace PSI_Projektas_Komanda1.Controllers
                    .Take(10)
                    .ToList();
             return Json(results);
->>>>>>> 45dc47b70f8bea6838e20c982d24c3ce6d8406ba
+
         }
 
         //Web models
@@ -529,31 +512,15 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult AddToCart(int id, string name)
         {
-<<<<<<< HEAD
-            if (name == null)
-                return Ok();
-            Item item = GetItem(id, name);
-            if (item == null)
-                return Ok();
-=======
-            Item item = getItem(id,name);
+            if(name == null || id < 0)
+            {
+                return BadRequest("Item not found");
+            }
+            Item item = GetItem(id,name);
             if (item == null)
             {
                 return BadRequest("Item not found");
             }
-
-            Order order = HttpContext.Session.Get<Order>("order");
-            if (order == null)
-            {
-                order = new Order();
-            }
-
-            order.Add(item);
-            Console.WriteLine(((Order)order).count().ToString());
-            HttpContext.Session.Set("order", (Order)order);
-            Order order1 = HttpContext.Session.Get<Order>("order");
-            Console.WriteLine(((Order)order1).count().ToString());
->>>>>>> 45dc47b70f8bea6838e20c982d24c3ce6d8406ba
 
             UpdateCart(item);
            
@@ -562,20 +529,12 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public void InitializeSession()
         {
-<<<<<<< HEAD
-
             if (!HttpContext.Session.Keys.Contains("cart"))
-=======
-            Order order = HttpContext.Session.Get<Order>("order");
-            if (order == null)
->>>>>>> 45dc47b70f8bea6838e20c982d24c3ce6d8406ba
             {
                 HttpContext.Session.SetString("cart", cart.SerializeCart());
                 return;
             }
-
             cart.DeserializeCart(HttpContext.Session.GetString("cart"));
-
         }
 
         public void UpdateCart(Item item)
