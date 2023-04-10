@@ -9,8 +9,10 @@ builder.Services.AddDistributedMemoryCache();
 // Add session middleware
 builder.Services.AddSession(options =>
 {
-    // Set a timeout for the session
-    options.IdleTimeout = TimeSpan.FromSeconds(3600);
+	options.Cookie.Name = "Session";
+	// Set a timeout for the session
+	options.IdleTimeout = TimeSpan.FromSeconds(3600);
+	//options.Cookie.IsEssential = true;
 });
 
 
