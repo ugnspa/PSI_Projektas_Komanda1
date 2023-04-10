@@ -1,0 +1,268 @@
+﻿.myDiv3{
+    padding: 100px 20px;
+}
+
+.slider-container {
+    position: relative;
+    width: 300px;
+    height: 350px;
+    overflow: hidden;
+    justify-content: center; /* center items horizontally */
+    align-items: center; /* center items vertically */
+    padding: 100px 0px;
+    margin: 0px 40%;
+}
+
+.slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    transition: left 1s ease-in-out;
+}
+.slider-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+}
+.slider-item {
+    position: relative;
+    flex-shrink: 0;
+    width: 300px;
+    height: 300px;
+}
+
+    .slider-item a {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.7;
+}
+.slider-item-title {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 1.5rem;
+}
+
+.slider-controls {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+    .slider-controls button {
+        width: 50px;
+        height: 50px;
+        border: none;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        font-size: 1.5rem;
+        margin: 0 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        .slider-controls button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+
+
+.slider-item:first-of-type {
+    animation: slide 9s infinite;
+}
+
+
+
+.slider-item-active {
+    animation: none;
+}
+
+.slider-item-prev {
+    animation: slide-prev 1s forwards;
+}
+
+.slider-item-next {
+    animation: slide-next 1s forwards;
+}
+
+
+
+
+.slider1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    transition: left 1s ease-in-out;
+}
+
+.slider-item1 img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+}
+
+.slider-item1 {
+    position: relative;
+    flex-shrink: 0;
+    width: 300px;
+    height: 300px;
+}
+
+    .slider-item1 a {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+.slider-controls1 {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+    .slider-controls1 button {
+        width: 50px;
+        height: 50px;
+        border: none;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        font-size: 1.5rem;
+        margin: 0 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        .slider-controls1 button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+
+
+.slider-item1:first-of-type {
+    animation: slide 9s infinite;
+}
+
+
+
+.slider-item1-active {
+    animation: none;
+}
+
+.slider-item-prev1 {
+    animation: slide-prev 1s forwards;
+}
+
+.slider-item-next1 {
+    animation: slide-next 1s forwards;
+}
+
+.slider2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    transition: left 1s ease-in-out;
+}
+
+.slider-item2 img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+}
+
+.slider-item2 {
+    position: relative;
+    flex-shrink: 0;
+    width: 300px;
+    height: 300px;
+}
+
+    .slider-item2 a {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+.slider-controls2 {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+    .slider-controls2 button {
+        width: 50px;
+        height: 50px;
+        border: none;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        font-size: 1.5rem;
+        margin: 0 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        .slider-controls2 button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+
+
+.slider-item2:first-of-type {
+    animation: slide 9s infinite;
+}
+
+
+
+.slider-item2-active {
+    animation: none;
+}
+
+.slider-item-prev2 {
+    animation: slide-prev 1s forwards;
+}
+
+.slider-item-next2 {
+    animation: slide-next 1s forwards;
+}
+
+
+
+
+
+

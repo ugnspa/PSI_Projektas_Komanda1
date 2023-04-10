@@ -6,7 +6,7 @@
     display: inline-block;
     vertical-align: top;
     text-align: center;
-    height: 1100px;
+    height: 700px;
     background-color: #f8faff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-family: 'Roboto Mono', monospace;
@@ -132,3 +132,4 @@ body .items-per-page {
     text-align: right;
     margin-top: 20px;
 }
+
