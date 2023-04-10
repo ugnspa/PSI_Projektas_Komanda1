@@ -11,10 +11,23 @@ public class Stove : Item
 		this.Count = count;
 		this.Electric = electric;
 	}
-	
-	public Stove() { }
 
-  public override List<string> Print()
+    public Stove(string[] parts) : base(parts)
+    {
+        try
+        {
+            this.Count = int.Parse(parts[8]);
+            this.Electric = bool.Parse(parts[9]);
+        }
+        catch
+        {
+            throw new Exception("Stove parsing went wrong");
+        }
+    }
+
+    public Stove() { }
+
+	public override List<string> Print()
     {
         List<string> list = new List<string>();
         list.Add("Gamintojas: " + Brand);
@@ -28,5 +41,10 @@ public class Stove : Item
         list.Add("Aprašymas: " + Description);
         list.Add("Kaina: " + Price);
         return list;
+    }
+
+    public override string ToString()
+    {
+        return "Stove;" + base.ToString() + string.Format(";{0};{1}", this.Count, this.Electric);
     }
 }

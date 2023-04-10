@@ -11,9 +11,20 @@ public class Camera : Item
 
     }
 	
+    public Camera(string[] parts) : base(parts)
+    {
+        try
+        {
+            this.MegaPixels = int.Parse(parts[8]);
+        }
+        catch
+        {
+            throw new Exception("Camera parsing went wrong");
+        }
+    }
 	public Camera() { }
 
-  public override List<string> Print()
+    public override List<string> Print()
     {
         List<string> list = new List<string>();
         list.Add("Gamintojas: " + Brand);
@@ -24,5 +35,10 @@ public class Camera : Item
         list.Add("Aprašymas: " + Description);
         list.Add("Kaina: " + Price);
         return list;
+    }
+
+    public override string ToString()
+    {
+        return "Camera;" + base.ToString() + string.Format(";{0}", this.MegaPixels);
     }
 }

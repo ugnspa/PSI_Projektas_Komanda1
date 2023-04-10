@@ -21,10 +21,34 @@ public class Computer : Item
 		this.Memory = memory;
 		this.PowerSupplyWattage= powerSupplyWattage;
 	}
-	
-	public Computer() { }
 
-  public override List<string> Print()
+    public Computer(string[] parts) : base(parts)
+    {
+        try
+        {
+            string processor = parts[8];
+            string motherboard = parts[9];
+            string gpu = parts[10];
+            int ram = int.Parse(parts[11]);
+            int memory = int.Parse(parts[12]);
+            int powerSupplyWattage = int.Parse(parts[13]);
+            this.Processor = processor;
+            this.Motherboard = motherboard;
+            this.GPU = gpu;
+            this.Ram = ram;
+            this.Memory = memory;
+            this.PowerSupplyWattage = powerSupplyWattage;
+
+        }
+        catch
+        {
+            throw new Exception("Computer parsing went wrong");
+        }
+    }
+
+    public Computer() { }
+
+	public override List<string> Print()
     {
         List<string> list = new List<string>();
         list.Add("Gamintojas: " + Brand);
@@ -40,5 +64,11 @@ public class Computer : Item
         list.Add("Aprašymas: " + Description);
 		list.Add("Kaina: " + Price);
         return list;
+    }
+
+	public override string ToString()
+	{
+		return "Computer;" + base.ToString() + string.Format(";{0};{1};{2};{3};{4};{5}", this.Processor, 
+            this.Motherboard, this.GPU, this.Ram, this.Memory, this.PowerSupplyWattage);
     }
 }
