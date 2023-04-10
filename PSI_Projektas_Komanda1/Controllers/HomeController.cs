@@ -1,26 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
 using PSI_Projektas_Komanda1.Models;
 using System.Diagnostics;
-
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using PSI_Projektas_Komanda1.Repositories;
 using MySqlX.XDevAPI;
 using System;
 using System.Text.RegularExpressions;
-
+using Newtonsoft.Json;
 
 namespace PSI_Projektas_Komanda1.Controllers
 {
 
-    public class HomeController : Controller 
+    public class HomeController : Controller
     {
         List<Item> items = new List<Item>();
 
+        Cart cart = new Cart();
+
+        List<int> test;
+
+        Dictionary<Item, int> cartDic = new Dictionary<Item, int>();
         public void ReadItems()
         {
             Item computer1 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
-               5, 599,"Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);           
+               5, 599, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
             Item computer2 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
                5, 599, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
             Item computer3 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
@@ -96,7 +100,10 @@ namespace PSI_Projektas_Komanda1.Controllers
             Item computer38 = new Computer("https://www.kilobaitas.lt//ImageHandler.ashx?ImageUrl=ItemImages%2FLocal%2FTdBaltic%2FTdBaltic_5EN50EAUUW_ProductPicture.jpg", 1, "HP", "Envy", "HP Envy 13", "A premium ultrabook with a long battery life",
                             4, 599, "Intel Core i7", "Intel Iris Plus Graphics", "Integrated", 16, 512, 1300);
 
-            
+            //Console.WriteLine(computer38.ToString());
+            //Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(computer38));
+            //Computer computer99 = Newtonsoft.Json.JsonConvert.DeserializeObject<Computer>(Newtonsoft.Json.JsonConvert.SerializeObject(computer38));
+            //Console.WriteLine(computer99.Model);
             Item smartphone = new Smartphone("/css/pictures/iphone.jpg", 2, "Apple", "iPhone", "Apple iPhone 13", "The iPhone 13 display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle.", 100, 699, "Hexa-core", 4, "A15 Bionic", 128);
 
             //items.Add(computer);
@@ -188,7 +195,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger;;
+            _logger = logger; ;
             ReadItems();
         }
 
@@ -202,31 +209,31 @@ namespace PSI_Projektas_Komanda1.Controllers
         {
             return View();
         }
-   
+
         public IActionResult Contact()
         {
             return View();
         }
-	
-	public decimal ConvertPrice(decimal price, string currency)
+
+        public decimal ConvertPrice(decimal price, string currency)
         {
             decimal baseRate = 1.0m; // Default exchange rate is 1:1
-           
+
             if (currency == "usd")
             {
                 baseRate = 1.07m; // EUR to USD exchange rate
-               
+
             }
             else if (currency == "gbp")
             {
                 baseRate = 0.88m; // EUR to GBP exchange rate
-                
+
             }
             return Math.Round(price * baseRate, 2);
         }
-	
-	public IActionResult Store(string currency)
-        {           
+
+        public IActionResult Store(string currency)
+        {
             // Convert all item prices to the new currency
             foreach (var item in items)
             {
@@ -239,15 +246,16 @@ namespace PSI_Projektas_Komanda1.Controllers
 
 
         public IActionResult Categories()
-        {          
+        {
 
             return View();
         }
-	   public IActionResult About()
+
+        public IActionResult About()
         {
             return View();
         }
-   
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -262,7 +270,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult SearchForName(string query)
         {
-            List<Item> searchedItems= new List<Item>();
+            List<Item> searchedItems = new List<Item>();
             try
             {
                 foreach (Item item in items)
@@ -279,16 +287,16 @@ namespace PSI_Projektas_Komanda1.Controllers
             }
         }
 
-		public IActionResult Search(string query)
-		{
-			var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
-								  .Take(10)
-								  .ToList();
-			return PartialView("_SearchResults", results);
-		}
+        public IActionResult Search(string query)
+        {
+            var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
+                                  .Take(10)
+                                  .ToList();
+            return PartialView("_SearchResults", results);
+        }
 
-		//Web models
-    public IActionResult Smartphones(string currency)
+        //Web models
+        public IActionResult Smartphones(string currency)
 
         {
             var model = filterByType(typeof(Smartphone));
@@ -298,6 +306,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             }
             return View("~/Views/Home/Smartphones.cshtml", model);
         }
+
         public IActionResult Watches(string currency)
         {
             var model = filterByType(typeof(Watch));
@@ -307,6 +316,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             }
             return View("~/Views/Home/Watches.cshtml", model);
         }
+
         public IActionResult Computers(string currency)
         {
             var model = filterByType(typeof(Computer));
@@ -476,16 +486,16 @@ namespace PSI_Projektas_Komanda1.Controllers
 
 
         // Cart
-        public Item getItem(int id, string name)
+        public Item GetItem(int id, string name)
         {
-            if (name == null || id<=0)
+            if (name == null || id <= 0)
             {
                 throw new ArgumentNullException(nameof(name));
             }
 
             for (int i = 0; i < items.Count; i++)
             {
-                if (items[i].Name.Equals(name) && items[i].Id==id)
+                if (items[i].Name.Equals(name) && items[i].Id == id)
                 {
                     return items[i];
                 }
@@ -495,36 +505,44 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult AddToCart(int id, string name)
         {
-            var item = getItem(id,name);
+            if (name == null)
+                return Ok();
+            Item item = GetItem(id, name);
             if (item == null)
-            {
-                return BadRequest("Item not found");
-            }
+                return Ok();
 
-            var order = HttpContext.Session.Get<Order>("order");
-            if (order == null)
-            {
-                order = new Order();
-            }
-
-            order.Add(item);
-            Console.WriteLine(((Order)order).TotalPrice().ToString());
-            HttpContext.Session.Set("order", order);
-            var order1 = HttpContext.Session.Get<Order>("order");
-            Console.WriteLine(((Order)order1).TotalPrice().ToString());
-
+            UpdateCart(item);
+           
             return Ok();
         }
 
-        public IActionResult Cart()
+        public void InitializeSession()
         {
-            var order = HttpContext.Session.Get<Order>("order");
-            if (order == null)
+
+            if (!HttpContext.Session.Keys.Contains("cart"))
             {
-                return View(new Order());
+                HttpContext.Session.SetString("cart", cart.SerializeCart());
+                return;
             }
 
-            return View(order);
+            cart.DeserializeCart(HttpContext.Session.GetString("cart"));
+
+        }
+
+        public void UpdateCart(Item item)
+        {
+            InitializeSession();
+
+            cart.DeserializeCart(HttpContext.Session.GetString("cart"));
+            cart.Add(item, 1);
+            HttpContext.Session.SetString("cart", cart.SerializeCart());
+        }
+
+		public IActionResult Cart()
+        {
+            InitializeSession();
+            cart.DeserializeCart(HttpContext.Session.GetString("cart"));
+            return View(cart);
         }
     }
 }
