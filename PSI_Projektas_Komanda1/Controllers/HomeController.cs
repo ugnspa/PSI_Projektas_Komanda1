@@ -15,6 +15,7 @@ namespace PSI_Projektas_Komanda1.Controllers
     public class HomeController : Controller
     {
         List<Item> items = new List<Item>();
+        List<Item> popular =new List<Item>(); // popular items
 
         Cart cart = new Cart();
 
@@ -163,6 +164,9 @@ namespace PSI_Projektas_Komanda1.Controllers
             items.AddRange(VacuumRepo.ReadVacuums());
             items.AddRange(WashingMachineRepo.ReadWashingMachines());
             items.AddRange(WatchRepo.ReadWatches());
+
+            popular.AddRange(ComputerRepo.SelectFirstTen());
+            Console.WriteLine(popular.Count);
         }
 
         public List<Item> filterByType(Type type)
@@ -202,7 +206,7 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult Index()
         {
 
-            return View();
+            return View(popular);
         }
 
         public IActionResult Privacy()
@@ -268,22 +272,29 @@ namespace PSI_Projektas_Komanda1.Controllers
             return View("SearchForm");
         }*/
 
-        public IActionResult SearchForName(string query)
+        public IActionResult SearchForName(string query, string currency)
         {
             List<Item> searchedItems = new List<Item>();
+            ViewBag.SearchName = query;
+            List<Item> searchedItems= new List<Item>();
             try
             {
                 foreach (Item item in items)
                 {
                     if (Regex.IsMatch(item.Name.ToLower(), query.ToLower()))
                         searchedItems.Add(item);
+			item.Price = ConvertPrice(item.Price, currency);
 
                 }
-                return View(searchedItems);
+                if (searchedItems.Count == 0)
+                {
+                    return View("NoResultsFound");
+                }
+                else return View("SearchForName", searchedItems);
             }
             catch
             {
-                return View(items);
+                return View("NoResultsFound");
             }
         }
 
@@ -293,6 +304,14 @@ namespace PSI_Projektas_Komanda1.Controllers
                                   .Take(10)
                                   .ToList();
             return PartialView("_SearchResults", results);
+        }
+		public IActionResult Search(string query)
+		{
+            var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
+                   .Select(i => i.Name)
+                   .Take(10)
+                   .ToList();
+            return Json(results);
         }
 
         //Web models
@@ -480,7 +499,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             }
 
             var model = filterByManyTypes(types);
-            return View("~/Views/Home/HousholdAppliances.cshtml", model);
+            return View("~/Views/Home/HouseholdAppliances.cshtml", model);
         }
 
 
@@ -544,5 +563,17 @@ namespace PSI_Projektas_Komanda1.Controllers
             cart.DeserializeCart(HttpContext.Session.GetString("cart"));
             return View(cart);
         }
+	
+	 public IActionResult ItemDetails(string name)
+        {
+
+            var item = items.FirstOrDefault(i => i.Name == name);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        } 
     }
 }

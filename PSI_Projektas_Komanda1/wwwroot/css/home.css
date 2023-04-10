@@ -1,0 +1,142 @@
+﻿.header {
+    background-color: royalblue;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1em;
+    margin-top: 10px;
+    border-radius: 15px 50px 30px;
+}
+
+.nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+    .nav ul li {
+        margin-right: 1em;
+    }
+
+        .nav ul li a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+            .nav ul li a:hover {
+                text-decoration: underline;
+            }
+
+.main {
+    margin: 2em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.category {
+    flex-basis: 30%;
+    padding: 1em;
+    background-color: #F1F1F1;
+    margin-bottom: 2em;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+    .category:hover {
+        box-shadow: 0 0 10px #3F51B5;
+    }
+
+    .category h2 {
+        margin-top: 0;
+    }
+
+    .category ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        .category ul li {
+            margin-bottom: 0.5em;
+        }
+
+            .category ul li a {
+                color: #3F51B5;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+                .category ul li a:hover {
+                    text-decoration: underline;
+                }
+.popular-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.popular-items-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom:20px;
+}
+
+.popular-items {
+    display: flex;
+    width: fit-content;
+    transform: translateX(0);
+    transition: transform 0.5s ease-in-out;
+}
+
+.popular-item {
+    margin-right: 20px;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+}
+
+    .popular-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+.popular-buttons {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+    .popular-buttons button {
+        padding: 10px;
+        border: none;
+        background-color: rgba(225, 225, 225, 0.6);
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-left: 10px;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        .popular-buttons button:hover {
+            background-color: rgba(225, 225, 225, 0.8);
+        }
+.name-centered {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 2px 2px #fff;
+    margin-bottom:0px;
+}

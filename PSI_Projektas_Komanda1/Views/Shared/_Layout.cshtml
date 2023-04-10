@@ -13,25 +13,26 @@
 </head>
 <body>
     <header>
-          <div class="currency-bar">
-                <div>
-                    <div class="currency-table">
-                        <form method="post">
-                        <select class="form-select" name="currency">
+        <div class="currency-bar">
+            <div>
+                <div class="currency-table">
+                    <form method="post" id="currency-form">
+                        <select class="form-select" name="currency" id="currency-select">
                             <option value="eur">EUR</option>
                             <option value="usd">USD</option>
                             <option value="gbp">GBP</option>
-                        </select>                    
-                        <button type="submit" class="col-auto btn btn-primary">Change currency</button>
+                        </select>
+                        <button type="submit" class="col-auto btn btn-primary" id="change-currency-btn">Change currency</button>
                     </form>
+                    <div id="selected-currency-label"></div>
                     <div>
-                    <button class="col-auto btn btn-primary">Account</button>
-                    <img src="~/css/pictures/user.png" alt="account" class="logo2">
+                        <button class="col-auto btn btn-primary">Account</button>
+                        <img src="~/css/pictures/user.png" alt="account" class="logo2">
                     </div>
-                    </div>              
                 </div>
-                
-            </div> 
+            </div>
+
+        </div>
         <div class="logo-bar">
             <div class="container-fluid">
                 <div class="row align-items-left">
@@ -103,20 +104,32 @@
                         </nav>
                     </div>
                     <div class="col-4 d-flex justify-content-end align-items-center" style="padding-right: 100px">
-                        <form class="search-form me-3" method="get" action="@Url.Action("SearchForName", "Home")">
-                            <div class="input-group">
-                                <input type="text" name="query" id="search-box" class="form-control" placeholder="Search">
-                                
-                                <div id="suggestions"></div>
+                        <form class="search-form me-3" autocomplete="off" method="get" action="@Url.Action("SearchForName", "Home")">
+                            <div class="input-group" id="SearchDiv">
+                                <input type="text" name="query" id="search-box" class="form-control" placeholder="Search" list="search-results">
+                                <datalist id="search-results"></datalist>
+                                <button class="btn btn-primary" id="search-button">Search</button>
+                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                                <script>
+                                    $('#search-box').keyup(function () {
+                                        var query = $('#search-box').val();
 
-
-                                
-                                
-
-                                <button class="btn btn-primary">Search</button>
-
+                                        $.ajax({
+                                            url: '@Url.Action("Search", "Home")',
+                                            data: { query: query },
+                                            success: function (data) {
+                                                const datalist = document.getElementById("search-results");
+                                                datalist.innerHTML = ""; // clear any previous results
+                                                data.forEach((item) => {
+                                                    const option = document.createElement("option");
+                                                    option.value = item;
+                                                    datalist.appendChild(option);
+                                                });
+                                            }
+                                        });
+                                    });
+                                </script>
                             </div>
-                            
                         </form>
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Cart" style="margin-left: 50px">Cart</a>
                         <img src="~/css/pictures/cart.png" alt="cart" class="logo2">
@@ -186,26 +199,22 @@
         );
     });
 </script>
+<script>
+    const currencyForm = document.getElementById('currency-form');
+    const currencySelect = document.getElementById('currency-select');
+    const changeCurrencyBtn = document.getElementById('change-currency-btn');
+    const selectedCurrencyLabel = document.getElementById('selected-currency-label');
 
+    currencyForm.addEventListener('submit', (event) => {
+        event.preventDefault(); // prevent default form submission behavior
+        const selectedCurrency = currencySelect.value;
+        selectedCurrencyLabel.innerText = `Selected currency: ${selectedCurrency.toUpperCase()}`;
+        return false; // prevent form submission from reloading the page
+    });
 
-@section Scripts{
+    changeCurrencyBtn.addEventListener('click', () => {
+        currencyForm.submit(); // directly submit the form
+    });
 
-    <script>
-        $(function () {
-            var timeout = null;
-            $('#search-box').on('input', function () {
-                var query = $(this).val();
-                if (query.length >= 1) {
-                    clearTimeout(timeout);
-                    timeout = setTimeout(function () {
-                        $.get('@Url.Action("Search", "Home")', { query: query }, function (data) {
-                            $('#suggestions').load(data);
-                        });
-                    }, 500);
-                } else {
-                    $('#suggestions').html('');
-                }
-            });
-        });
-    </script>
-}
+</script>
+

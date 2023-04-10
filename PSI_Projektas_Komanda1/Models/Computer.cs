@@ -1,5 +1,5 @@
 ﻿using System;
-
+[Serializable]
 public class Computer : Item
 {
 	public string Processor { get; set; }

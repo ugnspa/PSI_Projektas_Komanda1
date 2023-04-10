@@ -1,0 +1,14 @@
+@model Item
+<link rel="stylesheet" href="~/css/ItemDetails.css" asp-append-version="true" />
+
+<div class="myDiv">
+    <h2 id="myH2">@Model.Name</h2>
+    <div><img src=@Model.Picture alt=@Model.Model></div>
+    @foreach (string str in @Model.Print())
+    {
+            <ul class="myList">
+                <li>@str</li>
+            </ul>
+    }
+    <a class="btn-dark" href="#" id="@Model.Id" name="@Model.Name">Add to Cart</a>
+</div>
