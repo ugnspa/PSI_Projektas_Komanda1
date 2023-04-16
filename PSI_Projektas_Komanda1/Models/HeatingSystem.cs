@@ -9,10 +9,20 @@ public class HeatingSystem : Item
 	{
 		this.MaxArea = maxArea;
 	}
-	
-	public HeatingSystem() { }
+    public HeatingSystem(string[] parts) : base(parts)
+    {
+        try
+        {
+            this.MaxArea = double.Parse(parts[8]);
+        }
+        catch
+        {
+            throw new Exception("HeatingSystem parsing went wrong");
+        }
+    }
+    public HeatingSystem() { }
 
-  public override List<string> Print()
+    public override List<string> Print()
     {
         List<string> list = new List<string>();
         list.Add("Gamintojas: " + Brand);
@@ -23,5 +33,10 @@ public class HeatingSystem : Item
         list.Add("Aprašymas: " + Description);
         list.Add("Kaina: " + Price);
         return list;
+    }
+
+    public override string ToString()
+    {
+        return "HeatingSystem;" + base.ToString() + string.Format(";{0}", this.MaxArea);
     }
 }

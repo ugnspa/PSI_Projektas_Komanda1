@@ -10,10 +10,22 @@ public class Oven : Item
 		this.Volume = volume;
 		this.Type = type;
 	}
-	
-	public Oven() { }
 
-  public override List<string> Print()
+    public Oven(string[] parts) : base(parts)
+    {
+        try
+        {
+            this.Volume = double.Parse(parts[8]);
+            this.Type = parts[9];
+        }
+        catch
+        {
+            throw new Exception("Oven parsing went wrong");
+        }
+    }
+    public Oven() { }
+
+	public override List<string> Print()
     {
         List<string> list = new List<string>();
         list.Add("Gamintojas: " + Brand);
@@ -25,5 +37,10 @@ public class Oven : Item
         list.Add("Aprašymas: " + Description);
         list.Add("Kaina: " + Price);
         return list;
+    }
+
+    public override string ToString()
+    {
+        return "Oven;" + base.ToString() + string.Format(";{0};{1}", this.Volume, this.Type);
     }
 }

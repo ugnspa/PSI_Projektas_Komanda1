@@ -14,10 +14,24 @@ public class AirConditioner : Item
         this.MaxTemp = maxtemp;
         this.MinTemp = minTemp;
 	}
-	
-	public AirConditioner() { }
 
-  public override List<string> Print()
+    public AirConditioner(string[] parts) : base(parts)
+    {
+        try
+        {
+            this.MaxArea = double.Parse(parts[8]);
+            this.MinTemp = int.Parse(parts[8]);
+            this.MaxTemp = int.Parse(parts[8]);
+
+        }
+        catch
+        {
+            throw new Exception("Air Conditioner parsing went wrong");
+        }
+    }
+    public AirConditioner() { }
+
+    public override List<string> Print()
     {
         List<string> list = new List<string>();
         list.Add("Gamintojas: " + Brand);
@@ -30,5 +44,10 @@ public class AirConditioner : Item
         list.Add("Aprašymas: " + Description);
         list.Add("Kaina: " + Price);
         return list;
+    }
+
+    public override string ToString()
+    {
+        return "AirConditioner;" + base.ToString() + string.Format(";{0};{1};{2}", this.MaxArea, this.MinTemp, this.MaxTemp);
     }
 }
