@@ -220,17 +220,22 @@ namespace PSI_Projektas_Komanda1.Controllers
         {
             decimal baseRate = 1.0m; // Default exchange rate is 1:1
 
-            if (currency == "usd")
+            // Get the selected currency from session storage or cookie
+            string selectedCurrency = HttpContext.Session.GetString("SelectedCurrency") ?? Request.Cookies["SelectedCurrency"];
+
+            if (selectedCurrency == "usd")
             {
                 baseRate = 1.07m; // EUR to USD exchange rate
-
             }
-            else if (currency == "gbp")
+            else if (selectedCurrency == "gbp")
             {
                 baseRate = 0.88m; // EUR to GBP exchange rate
-
             }
-            return Math.Round(price * baseRate, 2);
+
+            // Convert the price to the selected currency
+            decimal convertedPrice = Math.Round(price * baseRate, 2);
+
+            return convertedPrice;
         }
 
         public IActionResult Store(string currency)
