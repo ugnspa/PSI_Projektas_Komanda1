@@ -119,3 +119,10 @@
         flex-basis: 100%;
     }
 }
+
+#selected-currency-label {
+    font-weight: bold;
+    color: black;
+    margin-top: 10px;
+}
+
