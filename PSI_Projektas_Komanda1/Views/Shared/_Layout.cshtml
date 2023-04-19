@@ -198,21 +198,36 @@
     });
 </script>
 <script>
-    const currencyForm = document.getElementById('currency-form');
-    const currencySelect = document.getElementById('currency-select');
-    const changeCurrencyBtn = document.getElementById('change-currency-btn');
-    const selectedCurrencyLabel = document.getElementById('selected-currency-label');
+   const currencyForm = document.getElementById('currency-form');
+const currencySelect = document.getElementById('currency-select');
+const changeCurrencyBtn = document.getElementById('change-currency-btn');
+const selectedCurrencyLabel = document.getElementById('selected-currency-label');
 
-    currencyForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // prevent default form submission behavior
-        const selectedCurrency = currencySelect.value;
-        selectedCurrencyLabel.innerText = `Selected currency: ${selectedCurrency.toUpperCase()}`;
-        return false; // prevent form submission from reloading the page
-    });
+// Get the previously selected currency from sessionStorage
+const storedCurrency = sessionStorage.getItem('selectedCurrency');
+if (storedCurrency) {
+  currencySelect.value = storedCurrency;
+  selectedCurrencyLabel.innerText = `Selected currency: ${storedCurrency.toUpperCase()}`;
+}
 
-    changeCurrencyBtn.addEventListener('click', () => {
-        currencyForm.submit(); // directly submit the form
-    });
+currencyForm.addEventListener('submit', (event) => {
+  event.preventDefault(); // prevent default form submission behavior
+  const selectedCurrency = currencySelect.value;
+  selectedCurrencyLabel.innerText = `Selected currency: ${selectedCurrency.toUpperCase()}`;
 
+        // Store the selected currency in a cookie or in session storage
+        document.cookie = `SelectedCurrency=${selectedCurrency};path=/`; // Store in a cookie
+        // Or: HttpContext.Session.SetString("SelectedCurrency", selectedCurrency); // Store in session storage
+
+
+  // Store the selected currency in sessionStorage
+  sessionStorage.setItem('selectedCurrency', selectedCurrency);
+
+  return false; // prevent form submission from reloading the page
+});
+
+changeCurrencyBtn.addEventListener('click', () => {
+  currencyForm.submit(); // directly submit the form
+});
 </script>
 
