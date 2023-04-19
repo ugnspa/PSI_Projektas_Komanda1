@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Intrinsics.Arm;
 
 public class Smartphone : Item
 {
@@ -16,9 +17,25 @@ public class Smartphone : Item
 		this.Memory = memory;
 	}
 
-	public Smartphone() : base () { }
+    public Smartphone(string[] parts) : base(parts)
+    {
+        try
+        {
+            this.Processor = parts[8];
+            this.Ram = int.Parse(parts[9]);
+            this.GPU = parts[10];
+            this.Memory = int.Parse(parts[11]);
 
-  public override List<string> Print()
+        }
+        catch
+        {
+            throw new Exception("Smartphone parsing went wrong");
+        }
+    }
+
+    public Smartphone() { }
+
+	public override List<string> Print()
     {
         List<string> list = new List<string>();
         list.Add("Gamintojas: " + Brand);
@@ -32,5 +49,10 @@ public class Smartphone : Item
         list.Add("Aprašymas: " + Description);
         list.Add("Kaina: " + Price);
         return list;
+    }
+
+    public override string ToString()
+    {
+        return "Smartphone;" + base.ToString() + string.Format(";{0};{1};{2};{3}", this.Processor, this.Ram, this.GPU, this.Memory);
     }
 }
