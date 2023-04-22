@@ -76,18 +76,18 @@
 
 	function moveItems() {
 		currentPosition -= itemWidth;
-		if (currentPosition <= -itemWidth * 5.5) {
+		if (currentPosition <= -itemWidth * 5.1) {
 			currentPosition = 0;
 		}
 		items.style.transform = `translateX(${currentPosition}px)`;
 	}
 
-	setInterval(moveItems, 3000);
+	setInterval(moveItems, 5000);
 
 	document.querySelector('.prev-button').addEventListener('click', () => {
 		currentPosition += itemWidth;
 		if (currentPosition > 0) {
-			currentPosition = -itemWidth * 5.5;
+			currentPosition = -itemWidth * 5.1;
 		}
 		items.style.transform = `translateX(${currentPosition}px)`;
 	});

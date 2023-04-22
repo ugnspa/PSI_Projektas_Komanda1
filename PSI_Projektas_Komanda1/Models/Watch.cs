@@ -11,10 +11,22 @@ public class Watch : Item
 		this.Smart = smart;
 		this.DaysCharged = daysCharged;
 	}
-	
-	public Watch() { }
 
-  public override List<string> Print()
+    public Watch(string[] parts) : base(parts)
+    {
+        try
+        {
+            this.Smart = bool.Parse(parts[8]);
+            this.DaysCharged = int.Parse(parts[9]);
+        }
+        catch
+        {
+            throw new Exception("Watch parsing went wrong");
+        }
+    }
+    public Watch() { }
+
+    public override List<string> Print()
     {
         List<string> list = new List<string>();
         list.Add("Gamintojas: " + Brand);
@@ -27,5 +39,10 @@ public class Watch : Item
         list.Add("Aprašymas: " + Description);
         list.Add("Kaina: " + Price);
         return list;
+    }
+
+    public override string ToString()
+    {
+        return "Watch;" + base.ToString() + string.Format(";{0};{1}", this.Smart, this.DaysCharged);
     }
 }
