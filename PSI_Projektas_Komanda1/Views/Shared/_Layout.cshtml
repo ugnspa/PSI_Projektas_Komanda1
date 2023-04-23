@@ -24,7 +24,6 @@
                         </select>
                         <button type="submit" class="col-auto btn btn-primary" id="change-currency-btn" style="display: inline-block;">Change currency</button>
                     </form>
-                    <div id="selected-currency-label"></div>
                     <div>
                         <button class="col-auto btn btn-primary">Account</button>
                         <img src="~/css/pictures/user.png" alt="account" class="logo2">
@@ -203,19 +202,16 @@
    const currencyForm = document.getElementById('currency-form');
 const currencySelect = document.getElementById('currency-select');
 const changeCurrencyBtn = document.getElementById('change-currency-btn');
-const selectedCurrencyLabel = document.getElementById('selected-currency-label');
 
 // Get the previously selected currency from sessionStorage
 const storedCurrency = sessionStorage.getItem('selectedCurrency');
 if (storedCurrency) {
   currencySelect.value = storedCurrency;
-  selectedCurrencyLabel.innerText = `Selected currency: ${storedCurrency.toUpperCase()}`;
 }
 
 currencyForm.addEventListener('submit', (event) => {
   event.preventDefault(); // prevent default form submission behavior
   const selectedCurrency = currencySelect.value;
-  selectedCurrencyLabel.innerText = `Selected currency: ${selectedCurrency.toUpperCase()}`;
 
         // Store the selected currency in a cookie or in session storage
         document.cookie = `SelectedCurrency=${selectedCurrency};path=/`; // Store in a cookie
