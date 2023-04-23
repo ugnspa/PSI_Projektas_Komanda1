@@ -20,11 +20,11 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         Cart cart = new Cart();
 
-        List<int> test;
 
         Dictionary<Item, int> cartDic = new Dictionary<Item, int>();
         public void ReadItems()
         {
+
             Item computer1 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
                5, 599, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
             Item computer2 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
