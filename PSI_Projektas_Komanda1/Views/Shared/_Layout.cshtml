@@ -36,7 +36,9 @@
             <div class="container-fluid">
                 <div class="row align-items-left">
                     <div class="col-2">
-                        <img src="~/css/pictures/logo.png" alt="Company Logo" style="border-radius: 50px" class="logo">
+                        <a asp-area="" asp-controller="Home" asp-action="Index">
+                            <img src="~/css/pictures/logo.png" alt="Company Logo" style="border-radius: 50px" class="logo">
+                        </a>
                     </div>
                     <div class="col-6 text-center">
                         <nav class="navbar navbar-expand-lg navbar-light">
@@ -54,7 +56,7 @@
                                     <li class="nav-item">
                                         <a id="navbarDropdown" class="nav-link-black" asp-controller="Home" asp-action="Categories">Categories</a>
                                         <div id="categories-dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <table id="table-dropdown" class="table table-hover table-bordered">
+                                            <table id="table-dropdown" class="MyDropTable">
                                                 <thead>
                                                     <tr>
                                                         <th><a class="nav-link" asp-controller="Home" asp-action="Electronics">Electronics</a></th>

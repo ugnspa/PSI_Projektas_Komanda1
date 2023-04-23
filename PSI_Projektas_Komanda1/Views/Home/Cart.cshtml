@@ -1,42 +1,62 @@
 ﻿@model Cart
-
+@using Microsoft.AspNetCore.Mvc
 @{
     ViewData["Title"] = "Cart";
 }
 
-<h1>Cart</h1>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/cart.css" asp-append-version="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <h1>Cart</h1>
 
-@if (Model == null || Model.Size() == 0)
-{
-    <p>Your cart is empty</p>
-}
-else
-{
-    <table>
-        <thead>
-            <tr>
-                <th>Picture</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Amount</th>
-                <th>Total</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @for(int i = 0; i < Model.Size(); i++)
-            {
+    @if (Model == null || Model.Size() == 0)
+    {
+        <p>Your cart is empty</p>
+    }
+    else
+    {
+        <table class="my-table">
+            <thead>
                 <tr>
-                    <td><img src="@Model.Get(i).Picture" /></td>
-                    <td>"@Model.Get(i).Name"</td>
-                    <td>"@Model.Get(i).Price"</td>
-                   <td>"@Model.GetAmount(i)"</td>
+                    <th>Picture</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                    <th>Total</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-    <p>Total: @Model.Price()</p>
-}
-
-
-
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Size(); i++)
+                {
+                    <tr>
+                        <td><img class="product-image" src="@Model.Get(i).Picture"></td>
+                        <td>@Model.Get(i).Name</td>
+                        <td>@Model.Get(i).Price.ToString("0.00")</td>
+                        <td>
+                            <form method="post" asp-controller="Home" asp-action="ChangeCartItemDetails">
+                                <input type="hidden" name="productName" value="@Model.Get(i).Name" />
+                                <input type="number" name="amount" value="@Model.GetAmount(i)" min="1" onchange="this.form.submit()" />
+                            </form>
+                        </td>
+                        <td>@((Model.Get(i).Price * Model.GetAmount(i)).ToString("0.00"))</td>
+                        <td>
+                            <form method="post" asp-controller="Home" asp-action="DeleteFromCart">
+                                <input type="hidden" name="productName" value="@Model.Get(i).Name" />
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-times Delete">X</i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <p class="total">Total: @Model.Price().ToString("0.00")</p>
+    }
+</body>
+</html>

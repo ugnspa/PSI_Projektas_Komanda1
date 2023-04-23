@@ -16,7 +16,7 @@ namespace PSI_Projektas_Komanda1.Controllers
     public class HomeController : Controller
     {
         List<Item> items = new List<Item>();
-        List<Item> popular =new List<Item>(); // popular items
+        List<Item> popular = new List<Item>(); // popular items
 
         Cart cart = new Cart();
 
@@ -163,7 +163,6 @@ namespace PSI_Projektas_Komanda1.Controllers
             items.AddRange(WatchRepo.ReadWatches());
 
             popular.AddRange(ComputerRepo.SelectFirstTen());
-            Console.WriteLine(popular.Count);
         }
 
         public List<Item> filterByType(Type type)
@@ -283,7 +282,7 @@ namespace PSI_Projektas_Komanda1.Controllers
                 {
                     if (Regex.IsMatch(item.Name.ToLower(), query.ToLower()))
                         searchedItems.Add(item);
-			    item.Price = ConvertPrice(item.Price, currency);
+                    item.Price = ConvertPrice(item.Price, currency);
 
                 }
                 if (searchedItems.Count == 0)
@@ -297,8 +296,8 @@ namespace PSI_Projektas_Komanda1.Controllers
                 return View("NoResultsFound");
             }
         }
-		public IActionResult Search(string query)
-		{
+        public IActionResult Search(string query)
+        {
             var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
                    .Select(i => i.Name)
                    .Take(10)
@@ -495,7 +494,22 @@ namespace PSI_Projektas_Komanda1.Controllers
             return View("~/Views/Home/HouseholdAppliances.cshtml", model);
         }
 
-
+        public Item GetItemByName(string name)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].Name.Equals(name))
+                {
+                    return items[i];
+                }
+            
+            }
+            return null;
+        }
 
         // Cart
         public Item GetItem(int id, string name)
@@ -517,18 +531,18 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult AddToCart(int id, string name)
         {
-            if(name == null || id < 0)
+            if (name == null || id < 0)
             {
                 return BadRequest("Item not found");
             }
-            Item item = GetItem(id,name);
+            Item item = GetItem(id, name);
             if (item == null)
             {
                 return BadRequest("Item not found");
             }
 
             UpdateCart(item);
-           
+
             return Ok();
         }
 
@@ -551,14 +565,14 @@ namespace PSI_Projektas_Komanda1.Controllers
             HttpContext.Session.SetString("cart", cart.SerializeCart());
         }
 
-		public IActionResult Cart()
+        public IActionResult Cart()
         {
             InitializeSession();
             cart.DeserializeCart(HttpContext.Session.GetString("cart"));
             return View(cart);
         }
-	
-	 public IActionResult ItemDetails(string name)
+
+        public IActionResult ItemDetails(string name)
         {
 
             var item = items.FirstOrDefault(i => i.Name == name);
@@ -568,6 +582,28 @@ namespace PSI_Projektas_Komanda1.Controllers
             }
 
             return View(item);
-        } 
+        }
+
+        public IActionResult ChangeCartItemDetails(string productName, int amount)
+        {
+            if (amount <= 0) {
+                amount = 1;
+            }
+            cart.DeserializeCart(HttpContext.Session.GetString("cart"));
+            cart.Update(GetItemByName(productName), amount);
+            HttpContext.Session.SetString("cart", cart.SerializeCart());
+            return RedirectToAction("Cart");
+        }
+
+        public IActionResult DeleteFromCart(string productName)
+        {
+            cart.DeserializeCart(HttpContext.Session.GetString("cart"));
+            cart.Remove(GetItemByName(productName));
+            HttpContext.Session.SetString("cart", cart.SerializeCart());
+            return RedirectToAction("Cart");
+        }
+
+
+
     }
 }
