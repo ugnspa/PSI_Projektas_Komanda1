@@ -120,6 +120,7 @@
     }
 }
 
+
 .dropdown-menu{
     border-radius:50px;
 }
@@ -159,3 +160,10 @@
         .MyDropTable th:last-child {
             border-right: 1px solid #ddd;
         }
+
+#selected-currency-label {
+    font-weight: bold;
+    color: black;
+    margin-top: 10px;
+}
+
