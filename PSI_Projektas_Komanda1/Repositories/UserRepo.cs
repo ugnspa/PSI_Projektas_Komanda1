@@ -25,9 +25,11 @@
 		}
 
 		/// <summary>
-		/// Finds if a user using certain username is already registered. TWO USERS CAN NOT HAVE THE SAME USERNAME
+		/// Checks whether username is already in use.
 		/// </summary>
-		public static bool FindUserByUsername(string username)
+		/// <param name="username">Username to check</param>
+		/// <returns>If the user is found - returns true, if the user isn't found - return false</returns>
+		public static bool CheckUserExistanceByUsername(string username)
 		{
 			var query = $@"SELECT * FROM `users` WHERE Username = ?username";
 			var drc = Sql.Query(query, args =>
@@ -56,6 +58,45 @@
 			if (result == null)
 				return false;
 			return true;
+		}
+
+		/// <summary>
+		/// Checks if user exists by username by calling the method CheckUserExistanceByUsername. 
+		/// Returns reverse value of CheckUserAvailability, because the logic is opposite.
+		/// </summary>
+		/// <param name="username">Username to check</param>
+		/// <returns>Returns true if username is available, false if the username isn't available</returns>
+		public static bool CheckUsernameAvailability(string username)
+		{
+			return !CheckUserExistanceByUsername(username);
+		}
+
+		public static User FindUserByUsername(string username)
+		{
+			var query = $@"SELECT * FROM `users` WHERE Username = ?username";
+			var drc = Sql.Query(query, args =>
+			{
+				args.Add("?username", username);
+			});
+
+			try
+			{
+				var result = Sql.MapOne<User>(drc, (dre, t) =>
+				{
+					t.ID = dre.From<int>("id_User");
+					t.Name = dre.From<string>("Name");
+					t.SurName = dre.From<string>("Name");
+					t.Email = dre.From<string>("Name");
+					t.UserName = dre.From<string>("Name");
+					t.Password = dre.From<string>("Password");
+				});
+				return result;
+			}
+			catch
+			{
+				Console.WriteLine("Username '{0}' not found", username);
+				return new User();
+			}
 		}
 	}
 }
