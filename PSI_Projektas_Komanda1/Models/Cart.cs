@@ -24,6 +24,14 @@ namespace PSI_Projektas_Komanda1.Models
 			}
 		}
 
+		public void Update(Item item, int amount)
+		{
+			if(Items.ContainsKey(item))
+			{
+				Items[item] = amount;
+			}			
+		}	
+
 		public void Remove(Item item)
 		{
 			if(!Items.ContainsKey(item)) 
