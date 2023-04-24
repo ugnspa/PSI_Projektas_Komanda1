@@ -3,6 +3,7 @@
 @using (Html.BeginForm("FilterComputer", "Home", FormMethod.Post, new { id = "filterForm" }))
 {
     <div class="container" style="width: 15%; flex: 1; position: absolute; top: 20%; left: 1%; transform: translateY(-50%, -50%) overflow-y: auto;">
+        <div class="main-content">
         @*<button class="btn btn-primary" onclick="location.href='@Url.Action("Computers", "Home")'">Clear Filter</button><br>
 
     <br>*@
@@ -144,7 +145,6 @@
             }
             <br>
         }
-        <br>
 
 
 
@@ -154,6 +154,7 @@
 
         <br />
         <button class="btn btn-primary" type="submit" id="filterButton">Filter</button>
+        </div>
     </div>
 }
 
