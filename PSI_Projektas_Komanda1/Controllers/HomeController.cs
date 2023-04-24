@@ -16,16 +16,16 @@ namespace PSI_Projektas_Komanda1.Controllers
     public class HomeController : Controller
     {
         List<Item> items = new List<Item>();
+
         List<Item> popular =new List<Item>(); // popular items
-        List<Item> filtered = new List<Item>();
+
 
         Cart cart = new Cart();
 
-        List<int> test;
 
-        Dictionary<Item, int> cartDic = new Dictionary<Item, int>();
         public void ReadItems()
         {
+
             Item computer1 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
                5, 599, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
             Item computer2 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
@@ -164,10 +164,9 @@ namespace PSI_Projektas_Komanda1.Controllers
             items.AddRange(WatchRepo.ReadWatches());
 
             popular.AddRange(ComputerRepo.SelectFirstTen());
-            Console.WriteLine(popular.Count);
         }
 
-        public List<Item> filterByType(Type type)
+		public List<Item> filterByType(Type type)
         {
             List<Item> filtered = new List<Item>();
             foreach (Item item in items)
@@ -292,7 +291,7 @@ namespace PSI_Projektas_Komanda1.Controllers
                 {
                     if (Regex.IsMatch(item.Name.ToLower(), HttpContext.Session.GetString("Search").ToLower()))
                         searchedItems.Add(item);
-			    item.Price = ConvertPrice(item.Price, currency);
+                    item.Price = ConvertPrice(item.Price, currency);
 
                 }
                 //if (HttpContext.Session.Keys.Contains("MinValue") && HttpContext.Session.Keys.Contains("MaxValue"))
@@ -313,8 +312,10 @@ namespace PSI_Projektas_Komanda1.Controllers
             }
         }
 
+
 		public IActionResult Search(string query)
 		{
+
             var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
                    .Select(i => i.Name)
                    .Take(10)
@@ -767,7 +768,22 @@ namespace PSI_Projektas_Komanda1.Controllers
             return View("~/Views/Home/HouseholdAppliances.cshtml", model);
         }
 
-
+        public Item GetItemByName(string name)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].Name.Equals(name))
+                {
+                    return items[i];
+                }
+            
+            }
+            return null;
+        }
 
         // Cart
         public Item GetItem(int id, string name)
@@ -789,18 +805,18 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult AddToCart(int id, string name)
         {
-            if(name == null || id < 0)
+            if (name == null || id < 0)
             {
                 return BadRequest("Item not found");
             }
-            Item item = GetItem(id,name);
+            Item item = GetItem(id, name);
             if (item == null)
             {
                 return BadRequest("Item not found");
             }
 
             UpdateCart(item);
-           
+
             return Ok();
         }
 
@@ -823,14 +839,14 @@ namespace PSI_Projektas_Komanda1.Controllers
             HttpContext.Session.SetString("cart", cart.SerializeCart());
         }
 
-		public IActionResult Cart()
+        public IActionResult Cart()
         {
             InitializeSession();
             cart.DeserializeCart(HttpContext.Session.GetString("cart"));
             return View(cart);
         }
-	
-	 public IActionResult ItemDetails(string name)
+
+        public IActionResult ItemDetails(string name)
         {
 
             var item = items.FirstOrDefault(i => i.Name == name);
@@ -840,6 +856,93 @@ namespace PSI_Projektas_Komanda1.Controllers
             }
 
             return View(item);
-        } 
-    }
+        }
+
+        public IActionResult ChangeCartItemDetails(string productName, int amount)
+        {
+            if (amount <= 0) {
+                amount = 1;
+            }
+            cart.DeserializeCart(HttpContext.Session.GetString("cart"));
+            cart.Update(GetItemByName(productName), amount);
+            HttpContext.Session.SetString("cart", cart.SerializeCart());
+            return RedirectToAction("Cart");
+        }
+
+        public IActionResult DeleteFromCart(string productName)
+        {
+            cart.DeserializeCart(HttpContext.Session.GetString("cart"));
+            cart.Remove(GetItemByName(productName));
+            HttpContext.Session.SetString("cart", cart.SerializeCart());
+            return RedirectToAction("Cart");
+        }
+
+        // Before calling this method it is advised to check user existance by using CheckUserExistanceByUsername
+        public static bool CheckUserPassword(string username, string password)
+        {
+            User user = UserRepo.FindUserByUsername(username);
+            // Presumably the passwords should be hashed for security in the future
+            return user.Password.Equals(password);
+        }
+
+		public static void TestUserAdd()
+		{
+			Console.WriteLine("Testing InsertUser() method");
+			Console.WriteLine("----------------------------");
+			for (int i = 0; i < 10; i++)
+			{
+				User user = new User();
+				user.ID = i;
+				user.Name = "test" + i;
+				user.SurName = "test" + i;
+				user.Email = "test" + i;
+				user.UserName = "test" + i;
+				user.Password = "test" + i;
+
+				// Checking if username is available and can be used
+				if (UserRepo.CheckUsernameAvailability(user.UserName))
+				{
+					Console.WriteLine("User '{0}' added into dabase", user.UserName);
+					UserRepo.InsertUser(user);
+				}
+				else
+				{
+					Console.WriteLine("Username '{0}' is already in use", user.UserName);
+				}
+			}
+			Console.WriteLine("----------------------------");
+		}
+
+		public static void TestUserPasswordCheck()
+		{
+			Console.WriteLine("Testing CheckUserPassword() method");
+			Console.WriteLine("----------------------------");
+			for (int i = 0; i < 10; i++)
+			{
+				User user = new User();
+				user.ID = i;
+				user.Name = "test" + i;
+				user.SurName = "test" + i;
+				user.Email = "test" + i;
+				user.UserName = "test" + i;
+				user.Password = "test" + i;
+
+				// Checking if username is available and can be used
+				if (UserRepo.CheckUserExistanceByUsername(user.UserName))
+				{
+					bool passwordCorrect = CheckUserPassword(user.UserName, user.Password);
+					if (passwordCorrect)
+						Console.WriteLine("User '{0}' password is correct ({1})", user.UserName, user.Password);
+					else
+						Console.WriteLine("User '{0}' password is incorrect ({1})", user.UserName, user.Password);
+				}
+				else
+				{
+					Console.WriteLine("User '{0}' doesn't exist", user.UserName);
+				}
+			}
+			Console.WriteLine("----------------------------");
+		}
+
+	}
 }
