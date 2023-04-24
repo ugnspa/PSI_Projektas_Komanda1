@@ -1,0 +1,90 @@
+﻿@*@using Microsoft.AspNetCore.Http
+@using PSI_Projektas_Komanda1.Models
+@{
+    decimal minprice = 0;
+    decimal maxprice = 0;
+    if (Model.Count > 0)
+    {
+        minprice = decimal.MaxValue;
+        maxprice = 0;
+        foreach (Item item in Model)
+        {
+            if (item.Price > maxprice)
+                maxprice = item.Price;
+            if (item.Price < minprice)
+            {
+                minprice = item.Price;
+            }
+        }
+    }
+}
+
+<div style="flex: 1; position: fixed; top: 50%; left: 1%; transform: translateY(-50%);">
+        <form id="price-filter-form" action="@Url.Action("FilterStore", "Home")" method="post">
+            <label for="min-price-input">Minimum price:</label><br>
+        <input class="form-control" type="number" id="min-price-input" name="minvalue" value=@Html.Raw(maxprice)><br><br>
+
+            <label for="max-price-input">Maximum price:</label><br>
+        <input class="form-control" type="number" id="max-price-input" name="maxvalue" value="@Html.Raw(maxprice)"><br><br>
+
+            <input class="btn btn-primary" type="submit" value="Filter" />
+        </form>
+</div>*@
+@model List<Item>
+
+@using (Html.BeginForm("FilterStore", "Home", FormMethod.Post, new { id = "filterForm" }))
+{
+    <div class="container" style="width: 15%; flex: 1; position: absolute; top: 20%; left: 1%; transform: translateY(-50%, -50%) overflow-y: auto;">
+        <div class="main-content">
+        @*<button class="btn btn-primary" onclick="location.href='@Url.Action("Computers", "Home")'">Clear Filter</button><br>
+
+    <br>*@
+
+
+        <label style="font-size: 18px; font-weight: bold;">Filter by Price</label><br>
+        @foreach (var mod in ViewBag.Prices)
+        {
+            <input type="checkbox" name="selectedPrices" value="@mod" id="@mod" class="brand-checkbox" ) />
+            <label for="@mod">@mod</label>
+            <br />
+        }
+        <br>
+
+        <label style="font-size: 18px; font-weight: bold;">Filter by brand:</label><br>
+
+        
+            @foreach (var brand in Model.Select(c => c.Brand).Distinct())
+            {
+                <input type="checkbox" name="selectedBrands" value="@brand" id="@brand" class="brand-checkbox" />
+                <label for="@brand">@brand</label>
+                <br />
+            }
+            <br>
+            <label style="font-size: 18px; font-weight: bold;">Filter by Model</label>
+
+            <br>
+            @foreach (var mod in Model.Select(c => c.Model).Distinct())
+            {
+                <input type="checkbox" name="selectedModels" value="@mod" id="@mod" class="brand-checkbox" ) />
+                <label for="@mod">@mod</label>
+                <br />
+            }
+            <br>
+        @*<input type="checkbox" name="selectedBrands" value="@brand" id="@brand" class="brand-checkbox" ) />
+    <label for="@brand">@brand</label>
+    <br />*@
+
+        <br />
+        <button class="btn btn-primary" type="submit" id="filterButton">Filter</button>
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        // Submit form when filter button is clicked
+        $("#filterButton").on("click", function () {
+            $("#filterForm").submit();
+        });
+    });
+</script>

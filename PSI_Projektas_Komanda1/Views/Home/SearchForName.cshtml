@@ -2,3 +2,4 @@
     ViewData["Title"] = "Search result";
 }
 @await Html.PartialAsync("~/Views/Home/_BaseProducts.cshtml", (List<Item>)Model)
+@await Html.PartialAsync("~/Views/Home/_FilterSearch.cshtml", (List<Item>)Model)
