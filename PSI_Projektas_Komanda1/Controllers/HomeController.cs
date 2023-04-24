@@ -8,7 +8,7 @@ using MySqlX.XDevAPI;
 using System;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-
+using Org.BouncyCastle.Bcpg;
 
 namespace PSI_Projektas_Komanda1.Controllers
 {
@@ -17,6 +17,7 @@ namespace PSI_Projektas_Komanda1.Controllers
     {
         List<Item> items = new List<Item>();
         List<Item> popular =new List<Item>(); // popular items
+        List<Item> filtered = new List<Item>();
 
         Cart cart = new Cart();
 
@@ -245,6 +246,12 @@ namespace PSI_Projektas_Komanda1.Controllers
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
+            ViewBag.prices = GetPrices(items);
+            //if (HttpContext.Session.Keys.Contains("MinValue") && !HttpContext.Session.Keys.Contains("MaxValue"))
+            //{
+            //    List<Item> newlist = FilterByPrice(Decimal.Parse(HttpContext.Session.GetString("MinValue")), Decimal.Parse(HttpContext.Session.GetString("MaxValue")), items);
+            //    return View(newlist);
+            //}
 
             return View(items);
         }
@@ -276,16 +283,24 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult SearchForName(string query, string currency)
         {
+            if (query != null)
+                HttpContext.Session.SetString("Search", query);
             List<Item> searchedItems = new List<Item>();
             try
             {
                 foreach (Item item in items)
                 {
-                    if (Regex.IsMatch(item.Name.ToLower(), query.ToLower()))
+                    if (Regex.IsMatch(item.Name.ToLower(), HttpContext.Session.GetString("Search").ToLower()))
                         searchedItems.Add(item);
 			    item.Price = ConvertPrice(item.Price, currency);
 
                 }
+                //if (HttpContext.Session.Keys.Contains("MinValue") && HttpContext.Session.Keys.Contains("MaxValue"))
+                //{
+                //    searchedItems = FilterByPrice(Decimal.Parse(HttpContext.Session.GetString("MinValue")), Decimal.Parse(HttpContext.Session.GetString("MaxValue")), searchedItems);
+
+                //}
+                ViewBag.Prices = GetPrices(searchedItems);
                 if (searchedItems.Count == 0)
                 {
                     return View("NoResultsFound");
@@ -297,6 +312,7 @@ namespace PSI_Projektas_Komanda1.Controllers
                 return View("NoResultsFound");
             }
         }
+
 		public IActionResult Search(string query)
 		{
             var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
@@ -305,6 +321,259 @@ namespace PSI_Projektas_Komanda1.Controllers
                    .ToList();
             return Json(results);
 
+        }
+
+        //public IActionResult FilterStore(decimal minvalue, decimal maxvalue, string currency)
+        //{
+        //    if (minvalue != 0 && maxvalue != 0)
+        //    {
+        //        HttpContext.Session.SetString("MinValue", minvalue.ToString());
+        //        HttpContext.Session.SetString("MaxValue", maxvalue.ToString());
+        //    }
+        //    foreach (var item in items)
+        //    {
+        //        item.Price = ConvertPrice(item.Price, currency);
+        //    }
+        //    if (HttpContext.Session.Keys.Contains("MinValue") && HttpContext.Session.Keys.Contains("MaxValue"))
+        //    {
+        //        List<Item> newlist = FilterByPrice(Decimal.Parse(HttpContext.Session.GetString("MinValue")), Decimal.Parse(HttpContext.Session.GetString("MaxValue")), items);
+        //        if (newlist.Count == 0)
+        //        {
+        //            return View("NoResultsFound");
+        //        }
+        //        return View("Store", newlist);
+        //    }
+
+        //    return View("Store", items);
+        //}
+
+
+        public IActionResult FilterSmartPhones(string[] selectedPrices, string[] selectedBrands, string[] selectedModels, string[] selectedProcessors, string[] selectedGpu
+            , int[] selectedRam, int[] selectedMemory)
+        {
+            List<Item> filtereditems = filterByType(typeof(Smartphone));
+            //if (HttpContext.Session.Keys.Contains("filtered"))
+            //    filtereditems = new List<Item>(HttpContext.Session.Get<List<Item>>("filtered"));
+            //else filtereditems = new List<Item>(items);
+            filtereditems = BaseFilter(filtereditems, selectedPrices, selectedBrands, selectedModels);
+            if (selectedProcessors != null && selectedProcessors.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Smartphone && selectedProcessors.Contains(((Smartphone)item).Processor))
+                    .ToList();
+            }
+            if (selectedGpu != null && selectedGpu.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Smartphone && selectedGpu.Contains(((Smartphone)item).GPU))
+                    .ToList();
+            }
+            if (selectedRam != null && selectedRam.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Smartphone && selectedRam.Contains(((Smartphone)item).Ram))
+                    .ToList();
+            }
+            if (selectedMemory != null && selectedMemory.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Smartphone && selectedMemory.Contains(((Smartphone)item).Memory))
+                    .ToList();
+            }
+            if (filtereditems.Count == 0)
+            {
+                return View("NoResultsFound");
+            }
+            ViewBag.Prices = GetPrices(filtereditems);
+            //filtered = filtereditems;
+            //HttpContext.Session.Set<List<Item>>("filtered", filtereditems);
+            return View("~/Views/Home/Smartphones.cshtml", filtereditems);
+        }
+
+        public IActionResult FilterSearch(string[] selectedPrices, string[] selectedBrands, string[] selectedModels)
+        {
+            
+            List<Item> filtereditems = new List<Item>();
+            //if (HttpContext.Session.Keys.Contains("filtered"))
+            //    filtereditems = new List<Item>(HttpContext.Session.Get<List<Item>>("filtered"));
+            //else filtereditems = new List<Item>(items);
+            foreach (var item in items)
+            {
+                if (Regex.IsMatch(item.Name.ToLower(), HttpContext.Session.GetString("Search").ToLower()))
+                    filtereditems.Add(item);
+            }
+            filtereditems = BaseFilter(filtereditems, selectedPrices, selectedBrands, selectedModels);
+            if (filtereditems.Count == 0)
+            {
+                return View("NoResultsFound");
+            }
+            ViewBag.Prices = GetPrices(filtereditems);
+            //filtered = filtereditems;
+            //HttpContext.Session.Set<List<Item>>("filtered", filtereditems);
+            return View("~/Views/Home/SearchForName.cshtml", filtereditems);
+        }
+
+        public List<Item> FilterByPrice(decimal minvalue, decimal maxvalue, List<Item> ItemsToFilter)
+        {
+            List<Item> filteredItems = new List<Item>();
+            foreach (Item item in ItemsToFilter)
+            {
+                if (item.Price >= minvalue && item.Price <= maxvalue)
+                    filteredItems.Add(item);
+                //item.Price = ConvertPrice(item.Price, currency);
+
+            }
+            return filteredItems;
+        }
+
+        public List<string> GetPrices(List<Item> list)
+        {
+            List<string> prices = new List<string>();
+            foreach (Item item in list)
+            {
+                if (item.Price <= 600 && !prices.Contains("Up to 600"))
+                    prices.Add("Up to 600");
+                else if (item.Price >= 600 && item.Price <= 1200 && !prices.Contains("From 600 to 1200"))
+                    prices.Add("From 600 to 1200");
+                else if (item.Price >= 1200 && item.Price <= 1800 && !prices.Contains("From 1200 to 1800"))
+                    prices.Add("From 1200 to 1800");
+                else if (item.Price >= 1800 && item.Price <= 2400 && !prices.Contains("From 1800 to 2400"))
+                    prices.Add("From 1800 to 2400");
+                else if (item.Price >= 2400 && item.Price <= 3000 && !prices.Contains("From 2400 to 3000"))
+                    prices.Add("From 2400 to 3000");
+                else if (item.Price >= 3000 && !prices.Contains("3000+"))
+                    prices.Add("3000+");
+
+            }
+            return prices;
+        }
+
+        public List<Item> FilterPrices(List<Item> list, string[] prices)
+        {
+            List<Item> NewList = new List<Item>();
+            foreach (Item item in list)
+            {
+                if (prices.Contains("Up to 600"))
+                {
+                    if (item.Price <= 600)
+                        NewList.Add(item);
+                }
+                else if (prices.Contains("From 600 to 1200"))
+                {
+                    if (item.Price >= 600 && item.Price <= 1200)
+                        NewList.Add(item);
+                }
+                else if (prices.Contains("From 1200 to 1800"))
+                {
+                    if (item.Price >= 1200 && item.Price <= 1800)
+                        NewList.Add(item);
+                }
+                else if (prices.Contains("From 1800 to 2400"))
+                {
+                    if (item.Price >= 1800 && item.Price <= 2400)
+                        NewList.Add(item);
+                }
+                else if (prices.Contains("From 2400 to 3000"))
+                {
+                    if (item.Price >= 2400 && item.Price <= 3000)
+                        NewList.Add(item);
+                }
+                else if (prices.Contains("3000+"))
+                {
+                    if (item.Price >= 3000)
+                        NewList.Add(item);
+                }
+            }
+            return NewList;
+        }
+
+        public IActionResult FilterStore(string[] selectedPrices, string[] selectedBrands, string[] selectedModels)
+        {
+            List<Item> filtereditems = new List<Item>(items);
+            //if (HttpContext.Session.Keys.Contains("filtered"))
+            //    filtereditems = new List<Item>(HttpContext.Session.Get<List<Item>>("filtered"));
+            //else filtereditems = new List<Item>(items);
+            filtereditems = BaseFilter(filtereditems, selectedPrices, selectedBrands, selectedModels);
+            if (filtereditems.Count == 0)
+            {
+                return View("NoResultsFound");
+            }
+            ViewBag.Prices = GetPrices(filtereditems);
+            //filtered = filtereditems;
+            //HttpContext.Session.Set<List<Item>>("filtered", filtereditems);
+            return View("~/Views/Home/Store.cshtml", filtereditems);
+        }
+
+        public List<Item> BaseFilter(List<Item> list, string[] selectedPrices, string[] selectedBrands, string[] selectedModels)
+        {
+            if (selectedPrices != null && selectedPrices.Any())
+            {
+                list = FilterPrices(list, selectedPrices);
+            }
+            if (selectedBrands != null && selectedBrands.Any())
+            {
+                list = list.Where(item => selectedBrands.Contains(item.Brand)).ToList();
+            }
+            if (selectedModels != null && selectedModels.Any())
+            {
+                list = list.Where(item => selectedModels.Contains(item.Model)).ToList();
+            }
+            return list;
+        } 
+
+        [HttpPost]
+        public IActionResult FilterComputer(string[] selectedPrices, string[] selectedBrands, string[] selectedModels, string[] selectedProcessors, string[] selectedGpu,
+            string[] selectedMotherBoard, int[] selectedRam, int[] selectedMemory, int[] selectedWattage)
+        {
+            List<Item> filtereditems = filterByType(typeof(Computer));
+            //if (HttpContext.Session.Keys.Contains("filtered"))
+            //    filtereditems = new List<Item>(HttpContext.Session.Get<List<Item>>("filtered"));
+            //else filtereditems = new List<Item>(items);
+            filtereditems = BaseFilter(filtereditems, selectedPrices, selectedBrands, selectedModels);
+            if (selectedProcessors != null && selectedProcessors.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Computer && selectedProcessors.Contains(((Computer)item).Processor))
+                    .ToList();
+            }
+            if (selectedGpu != null && selectedGpu.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Computer && selectedGpu.Contains(((Computer)item).GPU))
+                    .ToList();
+            }
+            if (selectedMotherBoard != null && selectedMotherBoard.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Computer && selectedMotherBoard.Contains(((Computer)item).Motherboard))
+                    .ToList();
+            }
+            if (selectedRam != null && selectedRam.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Computer && selectedRam.Contains(((Computer)item).Ram))
+                    .ToList();
+            }
+            if (selectedMemory != null && selectedMemory.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Computer && selectedMemory.Contains(((Computer)item).Memory))
+                    .ToList();
+            }
+            if (selectedWattage != null && selectedWattage.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Computer && selectedWattage.Contains(((Computer)item).PowerSupplyWattage))
+                    .ToList();
+            }
+            if (filtereditems.Count == 0)
+            {
+                return View("NoResultsFound");
+            }
+            ViewBag.Prices = GetPrices(filtereditems);
+            //filtered = filtereditems;
+            //HttpContext.Session.Set<List<Item>>("filtered", filtereditems);
+            return View("~/Views/Home/Computers.cshtml", filtereditems);
         }
 
         //Web models
@@ -316,6 +585,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
+            ViewBag.prices = GetPrices(model);
             return View("~/Views/Home/Smartphones.cshtml", model);
         }
 
@@ -334,8 +604,10 @@ namespace PSI_Projektas_Komanda1.Controllers
             var model = filterByType(typeof(Computer));
             foreach (var item in items)
             {
+                
                 item.Price = ConvertPrice(item.Price, currency);
             }
+            ViewBag.prices = GetPrices(model);
             return View("~/Views/Home/Computers.cshtml", model);
         }
         public IActionResult Tvs(string currency)
