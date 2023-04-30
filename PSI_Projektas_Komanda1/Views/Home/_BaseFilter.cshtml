@@ -1,0 +1,167 @@
+﻿@model List<Item>
+
+@using (Html.BeginForm("Filter", "Home", FormMethod.Post, new { id = "filterForm" }))
+{
+    <div class="container" style="flex: 1; position: absolute; top: 20%; left: 1%; transform: translateY(-50%, -50%) overflow-y: auto;">
+        @*<button class="btn btn-primary" onclick="location.href='@Url.Action("Computers", "Home")'">Clear Filter</button><br>
+
+        <br>*@
+        
+
+        <label style="font-size: 18px; font-weight: bold;">Filter by Price</label><br>
+            @foreach (var mod in ViewBag.Prices)
+            {
+                <input type="checkbox" name="selectedPrices" value="@mod" id="@mod" class="brand-checkbox" ) />
+                <label for="@mod">@mod</label>
+                <br />
+            }
+            <br>
+
+        <label style="font-size: 18px; font-weight: bold;">Filter by brand:</label><br>
+        @{
+            //ViewBag.Computers = Model.ToList();
+        }
+        @if (Model is List<Item> computers)
+        {
+            @*@foreach (var item in computers)
+            {
+                if (item is Computer comp)
+                {
+                    <input type="hidden" name="items[@comp.Id].Name" value="@comp.Name" />
+                    <input type="hidden" name="items[@comp.Id].Price" value="@comp.Price" />
+                    <input type="hidden" name="items[@comp.Id].Brand" value="@comp.Brand" />
+                    <input type="hidden" name="items[@comp.Id].Model" value="@comp.Model" />
+                    <input type="hidden" name="items[@comp.Id].Amount" value="@comp.Amount" />
+                    <input type="hidden" name="items[@comp.Id].Picture" value="@comp.Picture" />
+                    <input type="hidden" name="items[@comp.Id].Description" value="@comp.Description" />
+                    <input type="hidden" name="items[@comp.Id].Id" value="@comp.Id" />
+                    <input type="hidden" name="items[@comp.Id].Processor" value="@comp.Processor" />
+                    <input type="hidden" name="items[@comp.Id].GPU" value="@comp.GPU" />
+                    <input type="hidden" name="items[@comp.Id].Motherboard" value="@comp.Motherboard" />
+                    <input type="hidden" name="items[@comp.Id].Ram" value="@comp.Ram" />
+                    <input type="hidden" name="items[@comp.Id].Memory" value="@comp.Memory" />
+                    <input type="hidden" name="items[@comp.Id].PowerSupplyWattage" value="@comp.PowerSupplyWattage" />
+                }
+
+            }*@
+            List<string> processors = new List<string>();
+            List<string> gpu = new List<string>();
+            List<string> motherboard = new List<string>();
+            List<int> Ram = new List<int>();
+            List<int> memory = new List<int>();
+            List<int> PowerSupply = new List<int>();
+            @foreach (var computer in computers)
+            {
+                if (computer is Computer comp)
+                {
+                    if (!processors.Contains(comp.Processor))
+                        processors.Add(comp.Processor);
+                    if (!gpu.Contains(comp.GPU))
+                        gpu.Add(comp.GPU);
+                    if (!Ram.Contains(comp.Ram))
+                        Ram.Add(comp.Ram);
+                    if (!memory.Contains(comp.Memory))
+                        memory.Add(comp.Memory);
+                    if (!PowerSupply.Contains(comp.PowerSupplyWattage))
+                        PowerSupply.Add(comp.PowerSupplyWattage);
+                    if (!motherboard.Contains(comp.Motherboard))
+                        motherboard.Add(comp.Motherboard);
+                }
+            }
+            @foreach (var brand in computers.Select(c => c.Brand).Distinct())
+            {
+                <input type="checkbox" name="selectedBrands" value="@brand" id="@brand" class="brand-checkbox" />
+                <label for="@brand">@brand</label>
+                <br />
+            }
+            <br>
+            <label style="font-size: 18px; font-weight: bold;">Filter by Model</label>
+
+            <br>
+            @foreach (var mod in computers.Select(c => c.Model).Distinct())
+            {
+                <input type="checkbox" name="selectedModels" value="@mod" id="@mod" class="brand-checkbox" ) />
+                <label for="@mod">@mod</label>
+                <br />
+            }
+            <br>
+            <label style="font-size: 18px; font-weight: bold;">Filter by Processor</label>
+
+            <br>
+            @foreach (var proc in processors)
+            {
+                <input type="checkbox" name="selectedProcessors" value="@proc" id="@proc" class="brand-checkbox" ) />
+                <label for="@proc">@proc</label>
+                <br />
+            }
+            <br>
+            <label style="font-size: 18px; font-weight: bold;">Filter by GPU</label>
+
+            <br>
+            @foreach (var proc in gpu)
+            {
+                <input type="checkbox" name="selectedGpu" value="@proc" id="@proc" class="brand-checkbox" ) />
+                <label for="@proc">@proc</label>
+                <br />
+            }
+            <br>
+            <label style="font-size: 18px; font-weight: bold;">Filter by MotherBoard</label>
+
+            <br>
+            @foreach (var proc in motherboard)
+            {
+                <input type="checkbox" name="selectedMotherBoard" value="@proc" id="@proc" class="brand-checkbox" ) />
+                <label for="@proc">@proc</label>
+                <br />
+            }
+            <br>
+            <label style="font-size: 18px; font-weight: bold;">Filter by Ram</label>
+
+            <br>
+            @foreach (var proc in Ram)
+            {
+                <input type="checkbox" name="selectedRam" value="@proc" id="@proc" class="brand-checkbox" ) />
+                <label for="@proc">@proc GB</label>
+                <br />
+            }
+            <br>
+            <label style="font-size: 18px; font-weight: bold;">Filter by Memory</label>
+            <br>
+            @foreach (var proc in memory)
+            {
+                <input type="checkbox" name="selectedMemory" value="@proc" id="@proc" class="brand-checkbox" ) />
+                <label for="@proc">@proc GB</label>
+                <br />
+            }
+            <br>
+            <label style="font-size: 18px; font-weight: bold;">Filter by Power Supply Wattage</label>
+            <br>
+            @foreach (var proc in PowerSupply)
+            {
+                <input type="checkbox" name="selectedWattage" value="@proc" id="@proc" class="brand-checkbox" ) />
+                <label for="@proc">@proc W</label>
+                <br />
+            }
+            <br>
+        }
+        <br>
+
+        
+
+        @*<input type="checkbox" name="selectedBrands" value="@brand" id="@brand" class="brand-checkbox" ) />
+        <label for="@brand">@brand</label>
+        <br />*@
+
+        <br />
+        <button class="btn btn-primary" type="submit" id="filterButton">Filter</button>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        // Submit form when filter button is clicked
+        $("#filterButton").on("click", function () {
+            $("#filterForm").submit();
+        });
+    });
+</script>

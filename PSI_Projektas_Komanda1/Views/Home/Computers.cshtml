@@ -2,6 +2,7 @@
     ViewData["Title"] = "Computers";
 }
 @await Html.PartialAsync("~/Views/Home/_BaseProducts.cshtml", (List<Item>)Model)
+@await Html.PartialAsync("~/Views/Home/_FilterComputers.cshtml", (List<Item>)Model)
 @*@using Microsoft.AspNetCore.Http
 @{
     int itemsPerPage = 30;
