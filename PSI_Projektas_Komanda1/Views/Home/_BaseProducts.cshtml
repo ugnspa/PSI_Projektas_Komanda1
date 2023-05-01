@@ -25,6 +25,7 @@
 <h1>@ViewData["Title"]</h1>
 <div class="container" style="display: flex;">
     
+    @await Html.PartialAsync("~/Views/Home/_BaseFilter.cshtml", (List<Item>)Model)
     <main role="main" style="height: @bodyHeight px; flex: 2;">
         <div class="div2" style="height=@bodyHeight;">
             @for (int i = (currentPage - 1) * itemsPerPage; i < currentPage * itemsPerPage && i < Model.Count; i++)
