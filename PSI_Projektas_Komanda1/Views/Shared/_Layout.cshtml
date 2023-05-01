@@ -141,9 +141,13 @@
     <div class="container">
         <main role="main">
             @RenderBody()
+
+            @if (ViewBag.ShowRecentItems == true)
+            {
+                @Html.Partial("_Recently", ViewBag.RecentItems as Recent)
+            }
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
         <div>
             <div class="info-bar">
