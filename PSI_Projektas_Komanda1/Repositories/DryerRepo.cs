@@ -10,7 +10,7 @@
             var result = Sql.MapAll<Dryer>(drc, (dre, t) =>
             {
                 t.Picture = dre.From<string>("pic");
-                t.Id = dre.From<int>("id_Dryer");
+                t.Id = dre.From<int>("id");
                 t.Brand = dre.From<string>("brand");
                 t.Model = dre.From<string>("model");
                 t.Name = dre.From<string>("name");
