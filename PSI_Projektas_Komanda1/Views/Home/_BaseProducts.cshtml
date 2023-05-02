@@ -23,8 +23,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <h1>@ViewData["Title"]</h1>
-<div class="container">
-    <main role="main" style="height: @bodyHeight px;">
+<div class="container" style="display: flex;">
+    
+    <main role="main" style="height: @bodyHeight px; flex: 2;">
         <div class="div2" style="height=@bodyHeight;">
             @for (int i = (currentPage - 1) * itemsPerPage; i < currentPage * itemsPerPage && i < Model.Count; i++)
             {
@@ -32,7 +33,7 @@
                     <h2 id="myH2">@Model[i].Name</h2>
                     <div><img src=@Model[i].Picture alt=@Model[i].Model></div>
                     <p>Price: @Model[i].Price</p>
-                    <a class="btn-dark" href="#" id="@Model[i].Id" name="@Model[i].Name">Add to Cart</a>
+                    <a class="btn btn-dark" href="#" id="@Model[i].Id" name="@Model[i].Name">Add to Cart</a>
                     <p></p>
                     <a class="btn btn-danger" href="@Url.Action("ItemDetails", "Home", new { name = Model[i].Name})">See details</a>                   
                 </div>              
@@ -44,16 +45,16 @@
             {
                 for (int i = 1; i <= totalPages; i++)
                 {
-                    <a href="?query=@ViewBag.SearchName&page=@i&itemsPerPage=@itemsPerPage" class="@((i == currentPage) ? "active" : "")">@i</a>
+                    <a href="?page=@i&itemsPerPage=@itemsPerPage" class="@((i == currentPage) ? "active" : "")">@i</a>
                 }
             }
         </div>
         <div class="items-per-page">
                 <span>Items per page:</span>
-                <button type="button" class="btn @((itemsPerPage == 15) ? "active" : "")" onclick="location.href='?query=@ViewBag.SearchName&page=@currentPage&itemsPerPage=15'">15</button>
-                <button type="button" class="btn @((itemsPerPage == 30) ? "active" : "")" onclick="location.href='?query=@ViewBag.SearchName&page=@currentPage&itemsPerPage=30'">30</button>
-                <button type="button" class="btn @((itemsPerPage == 45) ? "active" : "")" onclick="location.href='?query=@ViewBag.SearchName&page=@currentPage&itemsPerPage=45'">45</button>
-                <button type="button" class="btn @((itemsPerPage == 60) ? "active" : "")" onclick="location.href='?query=@ViewBag.SearchName&page=@currentPage&itemsPerPage=60'">60</button>
+                    <button type="button" class="btn @((itemsPerPage == 15) ? "active" : "")" onclick="location.href='?page=@currentPage&itemsPerPage=15'">15</button>
+                    <button type="button" class="btn @((itemsPerPage == 30) ? "active" : "")" onclick="location.href='?&page=@currentPage&itemsPerPage=30'">30</button>
+                    <button type="button" class="btn @((itemsPerPage == 45) ? "active" : "")" onclick="location.href='?&page=@currentPage&itemsPerPage=45'">45</button>
+                    <button type="button" class="btn @((itemsPerPage == 60) ? "active" : "")" onclick="location.href='?&page=@currentPage&itemsPerPage=60'">60</button>
         </div>
     </main>
 </div>
@@ -61,23 +62,34 @@
     $(document).ready(function () {
         $('.btn-dark').click(function (event) {
             event.preventDefault();
-            addToCart(this.id,this.name);
+            addToCart(this.id, this.name);
         });
     });
 
-    function addToCart(id, name) {
-    $.ajax({
+        function addToCart(id, name) {
+      $.ajax({
         type: 'POST',
         url: '@Url.Action("AddToCart", "Home")',
         data: { id: id, name: name },
         success: function () {
-            alert('Item added to cart!');
+          var message = $('<div>').addClass('popup-message').text('Item added to cart!');
+          $('body').append(message);
+
+          setTimeout(function () {
+            message.fadeOut('fast');
+          }, 2000);
         },
         error: function () {
-            alert('Error adding item to cart.');
+          var message = $('<div>').addClass('popup-message').text('Error adding item to cart!');
+          $('body').append(message);
+
+          setTimeout(function () {
+            message.fadeOut('fast');
+          }, 2000);
         }
-    });
-}
+      });
+    }
+
 </script>
 
 

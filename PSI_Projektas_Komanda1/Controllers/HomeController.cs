@@ -8,7 +8,7 @@ using MySqlX.XDevAPI;
 using System;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-
+using Org.BouncyCastle.Bcpg;
 
 namespace PSI_Projektas_Komanda1.Controllers
 {
@@ -16,15 +16,17 @@ namespace PSI_Projektas_Komanda1.Controllers
     public class HomeController : Controller
     {
         List<Item> items = new List<Item>();
+
         List<Item> popular =new List<Item>(); // popular items
+
+        Recent recent = new Recent(); // recently viewed items
 
         Cart cart = new Cart();
 
-        List<int> test;
 
-        Dictionary<Item, int> cartDic = new Dictionary<Item, int>();
         public void ReadItems()
         {
+
             Item computer1 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
                5, 599, "Intel Core i7", "Intel H370", "NVIDIA GeForce GTX 1650", 16, 512, 600);
             Item computer2 = new Computer("/css/pictures/dell.jpg", 1, "Dell", "Inspiron", "Dell Inspiron 15", "A powerful laptop for gaming and productivity",
@@ -163,10 +165,9 @@ namespace PSI_Projektas_Komanda1.Controllers
             items.AddRange(WatchRepo.ReadWatches());
 
             popular.AddRange(ComputerRepo.SelectFirstTen());
-            Console.WriteLine(popular.Count);
         }
 
-        public List<Item> filterByType(Type type)
+		public List<Item> filterByType(Type type)
         {
             List<Item> filtered = new List<Item>();
             foreach (Item item in items)
@@ -245,6 +246,14 @@ namespace PSI_Projektas_Komanda1.Controllers
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
+            ViewBag.prices = GetPrices(items);
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
+            //if (HttpContext.Session.Keys.Contains("MinValue") && !HttpContext.Session.Keys.Contains("MaxValue"))
+            //{
+            //    List<Item> newlist = FilterByPrice(Decimal.Parse(HttpContext.Session.GetString("MinValue")), Decimal.Parse(HttpContext.Session.GetString("MaxValue")), items);
+            //    return View(newlist);
+            //}
 
             return View(items);
         }
@@ -253,7 +262,8 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult Categories()
         {
-
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             return View();
         }
 
@@ -276,16 +286,26 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult SearchForName(string query, string currency)
         {
+            if (query != null)
+                HttpContext.Session.SetString("Search", query);
             List<Item> searchedItems = new List<Item>();
             try
             {
                 foreach (Item item in items)
                 {
-                    if (Regex.IsMatch(item.Name.ToLower(), query.ToLower()))
+                    if (Regex.IsMatch(item.Name.ToLower(), HttpContext.Session.GetString("Search").ToLower()))
                         searchedItems.Add(item);
-			    item.Price = ConvertPrice(item.Price, currency);
+                    item.Price = ConvertPrice(item.Price, currency);
 
                 }
+                //if (HttpContext.Session.Keys.Contains("MinValue") && HttpContext.Session.Keys.Contains("MaxValue"))
+                //{
+                //    searchedItems = FilterByPrice(Decimal.Parse(HttpContext.Session.GetString("MinValue")), Decimal.Parse(HttpContext.Session.GetString("MaxValue")), searchedItems);
+
+                //}
+                ViewBag.Prices = GetPrices(searchedItems);
+                ViewBag.RecentItems = GetRecent();
+                ViewBag.ShowRecentItems = true;
                 if (searchedItems.Count == 0)
                 {
                     return View("NoResultsFound");
@@ -297,14 +317,278 @@ namespace PSI_Projektas_Komanda1.Controllers
                 return View("NoResultsFound");
             }
         }
+
+
 		public IActionResult Search(string query)
 		{
+
             var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
                    .Select(i => i.Name)
                    .Take(10)
                    .ToList();
             return Json(results);
 
+        }
+
+        //public IActionResult FilterStore(decimal minvalue, decimal maxvalue, string currency)
+        //{
+        //    if (minvalue != 0 && maxvalue != 0)
+        //    {
+        //        HttpContext.Session.SetString("MinValue", minvalue.ToString());
+        //        HttpContext.Session.SetString("MaxValue", maxvalue.ToString());
+        //    }
+        //    foreach (var item in items)
+        //    {
+        //        item.Price = ConvertPrice(item.Price, currency);
+        //    }
+        //    if (HttpContext.Session.Keys.Contains("MinValue") && HttpContext.Session.Keys.Contains("MaxValue"))
+        //    {
+        //        List<Item> newlist = FilterByPrice(Decimal.Parse(HttpContext.Session.GetString("MinValue")), Decimal.Parse(HttpContext.Session.GetString("MaxValue")), items);
+        //        if (newlist.Count == 0)
+        //        {
+        //            return View("NoResultsFound");
+        //        }
+        //        return View("Store", newlist);
+        //    }
+
+        //    return View("Store", items);
+        //}
+
+
+        public IActionResult FilterSmartPhones(string[] selectedPrices, string[] selectedBrands, string[] selectedModels, string[] selectedProcessors, string[] selectedGpu
+            , int[] selectedRam, int[] selectedMemory)
+        {
+            List<Item> filtereditems = filterByType(typeof(Smartphone));
+            //if (HttpContext.Session.Keys.Contains("filtered"))
+            //    filtereditems = new List<Item>(HttpContext.Session.Get<List<Item>>("filtered"));
+            //else filtereditems = new List<Item>(items);
+            filtereditems = BaseFilter(filtereditems, selectedPrices, selectedBrands, selectedModels);
+            if (selectedProcessors != null && selectedProcessors.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Smartphone && selectedProcessors.Contains(((Smartphone)item).Processor))
+                    .ToList();
+            }
+            if (selectedGpu != null && selectedGpu.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Smartphone && selectedGpu.Contains(((Smartphone)item).GPU))
+                    .ToList();
+            }
+            if (selectedRam != null && selectedRam.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Smartphone && selectedRam.Contains(((Smartphone)item).Ram))
+                    .ToList();
+            }
+            if (selectedMemory != null && selectedMemory.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Smartphone && selectedMemory.Contains(((Smartphone)item).Memory))
+                    .ToList();
+            }
+            if (filtereditems.Count == 0)
+            {
+                return View("NoResultsFound");
+            }
+            ViewBag.Prices = GetPrices(filtereditems);
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
+            //filtered = filtereditems;
+            //HttpContext.Session.Set<List<Item>>("filtered", filtereditems);
+            return View("~/Views/Home/Smartphones.cshtml", filtereditems);
+        }
+
+        public IActionResult FilterSearch(string[] selectedPrices, string[] selectedBrands, string[] selectedModels)
+        {
+            
+            List<Item> filtereditems = new List<Item>();
+            //if (HttpContext.Session.Keys.Contains("filtered"))
+            //    filtereditems = new List<Item>(HttpContext.Session.Get<List<Item>>("filtered"));
+            //else filtereditems = new List<Item>(items);
+            foreach (var item in items)
+            {
+                if (Regex.IsMatch(item.Name.ToLower(), HttpContext.Session.GetString("Search").ToLower()))
+                    filtereditems.Add(item);
+            }
+            filtereditems = BaseFilter(filtereditems, selectedPrices, selectedBrands, selectedModels);
+            if (filtereditems.Count == 0)
+            {
+                return View("NoResultsFound");
+            }
+            ViewBag.Prices = GetPrices(filtereditems);
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
+            //filtered = filtereditems;
+            //HttpContext.Session.Set<List<Item>>("filtered", filtereditems);
+            return View("~/Views/Home/SearchForName.cshtml", filtereditems);
+        }
+
+        public List<Item> FilterByPrice(decimal minvalue, decimal maxvalue, List<Item> ItemsToFilter)
+        {
+            List<Item> filteredItems = new List<Item>();
+            foreach (Item item in ItemsToFilter)
+            {
+                if (item.Price >= minvalue && item.Price <= maxvalue)
+                    filteredItems.Add(item);
+                //item.Price = ConvertPrice(item.Price, currency);
+
+            }
+            return filteredItems;
+        }
+
+        public List<string> GetPrices(List<Item> list)
+        {
+            List<string> prices = new List<string>();
+            foreach (Item item in list)
+            {
+                if (item.Price <= 600 && !prices.Contains("Up to 600"))
+                    prices.Add("Up to 600");
+                else if (item.Price >= 600 && item.Price <= 1200 && !prices.Contains("From 600 to 1200"))
+                    prices.Add("From 600 to 1200");
+                else if (item.Price >= 1200 && item.Price <= 1800 && !prices.Contains("From 1200 to 1800"))
+                    prices.Add("From 1200 to 1800");
+                else if (item.Price >= 1800 && item.Price <= 2400 && !prices.Contains("From 1800 to 2400"))
+                    prices.Add("From 1800 to 2400");
+                else if (item.Price >= 2400 && item.Price <= 3000 && !prices.Contains("From 2400 to 3000"))
+                    prices.Add("From 2400 to 3000");
+                else if (item.Price >= 3000 && !prices.Contains("3000+"))
+                    prices.Add("3000+");
+
+            }
+            return prices;
+        }
+
+        public List<Item> FilterPrices(List<Item> list, string[] prices)
+        {
+            List<Item> NewList = new List<Item>();
+            foreach (Item item in list)
+            {
+                if (prices.Contains("Up to 600"))
+                {
+                    if (item.Price <= 600)
+                        NewList.Add(item);
+                }
+                else if (prices.Contains("From 600 to 1200"))
+                {
+                    if (item.Price >= 600 && item.Price <= 1200)
+                        NewList.Add(item);
+                }
+                else if (prices.Contains("From 1200 to 1800"))
+                {
+                    if (item.Price >= 1200 && item.Price <= 1800)
+                        NewList.Add(item);
+                }
+                else if (prices.Contains("From 1800 to 2400"))
+                {
+                    if (item.Price >= 1800 && item.Price <= 2400)
+                        NewList.Add(item);
+                }
+                else if (prices.Contains("From 2400 to 3000"))
+                {
+                    if (item.Price >= 2400 && item.Price <= 3000)
+                        NewList.Add(item);
+                }
+                else if (prices.Contains("3000+"))
+                {
+                    if (item.Price >= 3000)
+                        NewList.Add(item);
+                }
+            }
+            return NewList;
+        }
+
+        public IActionResult FilterStore(string[] selectedPrices, string[] selectedBrands, string[] selectedModels)
+        {
+            List<Item> filtereditems = new List<Item>(items);
+            //if (HttpContext.Session.Keys.Contains("filtered"))
+            //    filtereditems = new List<Item>(HttpContext.Session.Get<List<Item>>("filtered"));
+            //else filtereditems = new List<Item>(items);
+            filtereditems = BaseFilter(filtereditems, selectedPrices, selectedBrands, selectedModels);
+            if (filtereditems.Count == 0)
+            {
+                return View("NoResultsFound");
+            }
+            ViewBag.Prices = GetPrices(filtereditems);
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
+            //filtered = filtereditems;
+            //HttpContext.Session.Set<List<Item>>("filtered", filtereditems);
+            return View("~/Views/Home/Store.cshtml", filtereditems);
+        }
+
+        public List<Item> BaseFilter(List<Item> list, string[] selectedPrices, string[] selectedBrands, string[] selectedModels)
+        {
+            if (selectedPrices != null && selectedPrices.Any())
+            {
+                list = FilterPrices(list, selectedPrices);
+            }
+            if (selectedBrands != null && selectedBrands.Any())
+            {
+                list = list.Where(item => selectedBrands.Contains(item.Brand)).ToList();
+            }
+            if (selectedModels != null && selectedModels.Any())
+            {
+                list = list.Where(item => selectedModels.Contains(item.Model)).ToList();
+            }
+            return list;
+        } 
+
+        [HttpPost]
+        public IActionResult FilterComputer(string[] selectedPrices, string[] selectedBrands, string[] selectedModels, string[] selectedProcessors, string[] selectedGpu,
+            string[] selectedMotherBoard, int[] selectedRam, int[] selectedMemory, int[] selectedWattage)
+        {
+            List<Item> filtereditems = filterByType(typeof(Computer));
+            //if (HttpContext.Session.Keys.Contains("filtered"))
+            //    filtereditems = new List<Item>(HttpContext.Session.Get<List<Item>>("filtered"));
+            //else filtereditems = new List<Item>(items);
+            filtereditems = BaseFilter(filtereditems, selectedPrices, selectedBrands, selectedModels);
+            if (selectedProcessors != null && selectedProcessors.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Computer && selectedProcessors.Contains(((Computer)item).Processor))
+                    .ToList();
+            }
+            if (selectedGpu != null && selectedGpu.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Computer && selectedGpu.Contains(((Computer)item).GPU))
+                    .ToList();
+            }
+            if (selectedMotherBoard != null && selectedMotherBoard.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Computer && selectedMotherBoard.Contains(((Computer)item).Motherboard))
+                    .ToList();
+            }
+            if (selectedRam != null && selectedRam.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Computer && selectedRam.Contains(((Computer)item).Ram))
+                    .ToList();
+            }
+            if (selectedMemory != null && selectedMemory.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Computer && selectedMemory.Contains(((Computer)item).Memory))
+                    .ToList();
+            }
+            if (selectedWattage != null && selectedWattage.Any())
+            {
+                filtereditems = filtereditems
+                    .Where(item => item is Computer && selectedWattage.Contains(((Computer)item).PowerSupplyWattage))
+                    .ToList();
+            }
+            if (filtereditems.Count == 0)
+            {
+                return View("NoResultsFound");
+            }
+            ViewBag.Prices = GetPrices(filtereditems);
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
+            //filtered = filtereditems;
+            //HttpContext.Session.Set<List<Item>>("filtered", filtereditems);
+            return View("~/Views/Home/Computers.cshtml", filtereditems);
         }
 
         //Web models
@@ -316,12 +600,17 @@ namespace PSI_Projektas_Komanda1.Controllers
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
+            ViewBag.prices = GetPrices(model);
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             return View("~/Views/Home/Smartphones.cshtml", model);
         }
 
         public IActionResult Watches(string currency)
         {
             var model = filterByType(typeof(Watch));
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -332,15 +621,21 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult Computers(string currency)
         {
             var model = filterByType(typeof(Computer));
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
+                
                 item.Price = ConvertPrice(item.Price, currency);
             }
+            ViewBag.prices = GetPrices(model);
             return View("~/Views/Home/Computers.cshtml", model);
         }
         public IActionResult Tvs(string currency)
         {
             var model = filterByType(typeof(TV));
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -350,6 +645,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult Cameras(string currency)
         {
             var model = filterByType(typeof(Camera));
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -359,6 +656,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult Fridges(string currency)
         {
             var model = filterByType(typeof(Fridge));
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -368,6 +667,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult Dishwashers(string currency)
         {
             var model = filterByType(typeof(Dishwasher));
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -377,6 +678,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult Microwaves(string currency)
         {
             var model = filterByType(typeof(Microwave));
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -386,6 +689,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult Stoves(string currency)
         {
             var model = filterByType(typeof(Stove));
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -395,6 +700,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult Ovens(string currency)
         {
             var model = filterByType(typeof(Oven));
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -404,6 +711,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult VacuumCleaners(string currency)
         {
             var model = filterByType(typeof(Vacuum));
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -413,6 +722,9 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult WashingMachines(string currency)
         {
             var model = filterByType(typeof(WashingMashine));
+
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -422,6 +734,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult Dryers(string currency)
         {
             var model = filterByType(typeof(Dryer));
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -431,6 +745,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult AirConditioners(string currency)
         {
             var model = filterByType(typeof(AirConditioner));
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -440,6 +756,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult HeatingSystems(string currency)
         {
             var model = filterByType(typeof(HeatingSystem));
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -448,6 +766,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult Electronics(string currency)
         {
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             List<Type> types = new List<Type>();
             types.Add(typeof(Smartphone));
             types.Add(typeof(Watch));
@@ -464,6 +784,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult KitchenAppliances(string currency)
         {
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             List<Type> types = new List<Type>();
             types.Add(typeof(Fridge));
             types.Add(typeof(Dishwasher));
@@ -480,6 +802,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult HouseholdAppliances(string currency)
         {
+            ViewBag.RecentItems = GetRecent();
+            ViewBag.ShowRecentItems = true;
             List<Type> types = new List<Type>();
             types.Add(typeof(Vacuum));
             types.Add(typeof(WashingMashine));
@@ -495,7 +819,22 @@ namespace PSI_Projektas_Komanda1.Controllers
             return View("~/Views/Home/HouseholdAppliances.cshtml", model);
         }
 
-
+        public Item GetItemByName(string name)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].Name.Equals(name))
+                {
+                    return items[i];
+                }
+            
+            }
+            return null;
+        }
 
         // Cart
         public Item GetItem(int id, string name)
@@ -517,18 +856,18 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult AddToCart(int id, string name)
         {
-            if(name == null || id < 0)
+            if (name == null || id < 0)
             {
                 return BadRequest("Item not found");
             }
-            Item item = GetItem(id,name);
+            Item item = GetItem(id, name);
             if (item == null)
             {
                 return BadRequest("Item not found");
             }
 
             UpdateCart(item);
-           
+
             return Ok();
         }
 
@@ -551,23 +890,133 @@ namespace PSI_Projektas_Komanda1.Controllers
             HttpContext.Session.SetString("cart", cart.SerializeCart());
         }
 
-		public IActionResult Cart()
+        public IActionResult Cart()
         {
             InitializeSession();
             cart.DeserializeCart(HttpContext.Session.GetString("cart"));
             return View(cart);
         }
-	
-	 public IActionResult ItemDetails(string name)
-        {
 
+
+        public IActionResult ChangeCartItemDetails(string productName, int amount)
+        {
+            if (amount <= 0) {
+                amount = 1;
+            }
+            cart.DeserializeCart(HttpContext.Session.GetString("cart"));
+            cart.Update(GetItemByName(productName), amount);
+            HttpContext.Session.SetString("cart", cart.SerializeCart());
+            return RedirectToAction("Cart");
+        }
+
+        public IActionResult DeleteFromCart(string productName)
+        {
+            cart.DeserializeCart(HttpContext.Session.GetString("cart"));
+            cart.Remove(GetItemByName(productName));
+            HttpContext.Session.SetString("cart", cart.SerializeCart());
+            return RedirectToAction("Cart");
+        }
+
+        // Before calling this method it is advised to check user existance by using CheckUserExistanceByUsername
+        public static bool CheckUserPassword(string username, string password)
+        {
+            User user = UserRepo.FindUserByUsername(username);
+            // Presumably the passwords should be hashed for security in the future
+            return user.Password.Equals(password);
+        }
+
+		public static void TestUserAdd()
+		{
+			Console.WriteLine("Testing InsertUser() method");
+			Console.WriteLine("----------------------------");
+			for (int i = 0; i < 10; i++)
+			{
+				User user = new User();
+				user.ID = i;
+				user.Name = "test" + i;
+				user.SurName = "test" + i;
+				user.Email = "test" + i;
+				user.UserName = "test" + i;
+				user.Password = "test" + i;
+
+				// Checking if username is available and can be used
+				if (UserRepo.CheckUsernameAvailability(user.UserName))
+				{
+					Console.WriteLine("User '{0}' added into dabase", user.UserName);
+					UserRepo.InsertUser(user);
+				}
+				else
+				{
+					Console.WriteLine("Username '{0}' is already in use", user.UserName);
+				}
+			}
+			Console.WriteLine("----------------------------");
+		}
+
+		public static void TestUserPasswordCheck()
+		{
+			Console.WriteLine("Testing CheckUserPassword() method");
+			Console.WriteLine("----------------------------");
+			for (int i = 0; i < 10; i++)
+			{
+				User user = new User();
+				user.ID = i;
+				user.Name = "test" + i;
+				user.SurName = "test" + i;
+				user.Email = "test" + i;
+				user.UserName = "test" + i;
+				user.Password = "test" + i;
+
+				// Checking if username is available and can be used
+				if (UserRepo.CheckUserExistanceByUsername(user.UserName))
+				{
+					bool passwordCorrect = CheckUserPassword(user.UserName, user.Password);
+					if (passwordCorrect)
+						Console.WriteLine("User '{0}' password is correct ({1})", user.UserName, user.Password);
+					else
+						Console.WriteLine("User '{0}' password is incorrect ({1})", user.UserName, user.Password);
+				}
+				else
+				{
+					Console.WriteLine("User '{0}' doesn't exist", user.UserName);
+				}
+			}
+			Console.WriteLine("----------------------------");
+		}
+
+        public void InitializeSessionRecent()
+        {
+            if (!HttpContext.Session.Keys.Contains("recent"))
+            {
+                HttpContext.Session.SetString("recent", recent.SerializeRecent());
+                return;
+            }
+            recent.DeserializeRecent(HttpContext.Session.GetString("recent"));
+        }
+
+
+        public IActionResult ItemDetails(string name)
+        {
+            InitializeSessionRecent();
             var item = items.FirstOrDefault(i => i.Name == name);
             if (item == null)
             {
                 return NotFound();
             }
-
+            recent.DeserializeRecent(HttpContext.Session.GetString("recent"));
+            recent.Add(item);
+            HttpContext.Session.SetString("recent", recent.SerializeRecent());
             return View(item);
-        } 
+        }
+
+        public Recent GetRecent()
+        {
+            InitializeSessionRecent();
+			recent.DeserializeRecent(HttpContext.Session.GetString("recent"));
+			return recent;
+		}
+
+
+
     }
 }

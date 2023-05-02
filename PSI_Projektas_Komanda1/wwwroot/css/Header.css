@@ -120,6 +120,42 @@
     }
 }
 
+
+.MyDropTable {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin: -10px 0px;
+}
+
+
+    .MyDropTable th {
+        text-align: center;
+        padding: 8px;
+        background-color: #f2f2f2;
+        border-bottom: 1px solid #ddd;
+        border-right: none;
+        border-right: 1px solid #ddd;
+    }
+
+
+    .MyDropTable td {
+        text-align: center;
+        padding: 8px;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+    }
+
+
+        .MyDropTable td:last-child,
+        .MyDropTable th:last-child {
+            border-right: 1px solid #ddd;
+        }
+
 #selected-currency-label {
     font-weight: bold;
     color: black;
