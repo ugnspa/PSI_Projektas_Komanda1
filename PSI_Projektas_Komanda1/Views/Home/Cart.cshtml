@@ -46,7 +46,7 @@
                         <td>@((Model.Get(i).Price * Model.GetAmount(i)).ToString("0.00"))</td>
                         <td>
                             <form method="post" asp-controller="Home" asp-action="DeleteFromCart">
-                                <input type="hidden" name="productName" value="@Model.Get(i).Name" />
+                                <input type="hidden" name="id" value="@Model.Get(i).Id" />
                                 <button type="submit" class="btn btn-danger">
                                     <i class="fas fa-times Delete">X</i>
                                 </button>
