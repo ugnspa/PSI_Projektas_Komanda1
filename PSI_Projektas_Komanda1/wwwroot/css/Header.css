@@ -1,7 +1,7 @@
 ﻿header {
     background-color: #f2f2f2;
     border-bottom: 1px solid #ddd;
-    padding: 10px 0 0 0;
+    padding: 5px 0 0 0;
 }
 
 .currency-bar {
@@ -15,10 +15,7 @@
 .logo-bar {
     padding: 20px 0;
     background-color: royalblue;
-    border-bottom-style: solid;
-    border-bottom-color: #d3d3d3;
-    border-bottom-width: 4px;
-    padding: 15px 50px
+
 }
 .nav-item {
     font-size: 26px;
@@ -28,6 +25,10 @@
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
 
+}
+.container-new {
+    max-width: 100%; 
+    margin: 0 auto; 
 }
 .nav-link-black-small {
     color: rgba(0, 0, 0, 0.8);
@@ -49,7 +50,7 @@
     padding-left: 0.5rem;
     font-weight: bold;
     text-decoration: none;
-    font-size: 26px;
+    font-size: 28px;
     transition: color 0.15s ease-in-out;
 }
 
@@ -76,14 +77,18 @@
 }
 
 .logo {
-    max-width: 250px;
+    max-width: 400px;
     height: auto;
+    margin-top:auto;
+    border-radius:15px;
+    margin-left:40px;
 }
 .logo2 {
-    max-width: 40px;
-    height: 40px; 
-    margin-left: 15px;
+    width: 50px;
+    height: 50px; 
+    margin-left: 20px;
 }
+
 
 .currency-table {
     text-align: right;
@@ -160,5 +165,83 @@
     font-weight: bold;
     color: black;
     margin-top: 10px;
+}
+
+.firstLine {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 140px;
+    background-color: royalblue;
+    position: relative; /* Add position:relative */
+}
+
+    .firstLine::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 3px;
+        background-image: linear-gradient(to right, royalblue, white); 
+    }
+
+.box1 {
+    order: 1;
+}
+.box2{
+    order:2;
+}
+.box3 {
+    order: 3;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.accAndCart {
+    display: flex;
+    margin-top: 10px;
+    justify-content: center;
+    position:relative;
+}
+
+    .accAndCart > div:not(:last-child) {
+        margin-right: 15px;
+    }
+
+    .accAndCart > div:last-child {
+        margin-right: 50px;
+    }
+.Search {
+    margin-left: 50px;
+    margin-top: 10px;
+}
+#search-box.form-control{
+    border-radius:5px;
+}
+
+#currency-form,
+#search-form {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background-color: #f2f2f2;
+    padding: 10px;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+
+}
+
+    #currency-form:hover,
+    #search-form:hover {
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+#currency-form{
+    margin-top:10px;
 }
 
