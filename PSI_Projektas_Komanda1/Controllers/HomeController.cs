@@ -1029,6 +1029,11 @@ namespace PSI_Projektas_Komanda1.Controllers
 			return recent;
 		}
 
+        public IActionResult Account()
+        {
+            return View();
+        }
+
 
 
     }
