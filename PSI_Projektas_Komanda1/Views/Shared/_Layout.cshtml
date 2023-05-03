@@ -232,4 +232,38 @@ changeCurrencyBtn.addEventListener('click', () => {
   currencyForm.submit(); // directly submit the form
 });
 </script>
+<script>
+  function updatePrices() {
+    // get the selected currency code
+    var currencyCode = document.getElementById("currency-select").value;
+    // update all price elements with the currency symbol
+    var priceElements = document.querySelectorAll(".price");
+    priceElements.forEach(function(element) {
+      var price = parseFloat(element.innerText);
+      var symbol = getCurrencySymbol(currencyCode);
+      element.innerText = price.toFixed(2) + symbol
+    });
+  }
+
+    function getCurrencySymbol(currencyCode) {
+        switch (currencyCode) {
+            case "usd":
+                return "$";
+            case "eur":
+                return "€";
+            case "gbp":
+                return "£";
+            // add more currencies as needed
+            default:
+                return currencyCode;
+        }
+    }
+
+
+  // attach the function to the dropdown list
+  //document.getElementById("currency-select").onchange = updatePrices;
+
+  // update prices on page load
+  updatePrices();
+</script>
 

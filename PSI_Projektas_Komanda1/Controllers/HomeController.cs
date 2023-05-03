@@ -464,6 +464,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             List<Item> NewList = new List<Item>();
             foreach (Item item in list)
             {
+	        item.Price = ConvertPrice(item.Price, "eur");
                 if (prices.Contains("Up to 600"))
                 {
                     if (item.Price <= 600)
@@ -886,6 +887,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             InitializeSession();
 
             cart.DeserializeCart(HttpContext.Session.GetString("cart"));
+	    item.Price = ConvertPrice(item.Price, "eur");
             cart.Add(item, 1);
             HttpContext.Session.SetString("cart", cart.SerializeCart());
         }
@@ -904,16 +906,27 @@ namespace PSI_Projektas_Komanda1.Controllers
                 amount = 1;
             }
             cart.DeserializeCart(HttpContext.Session.GetString("cart"));
-            cart.Update(GetItemByName(productName), amount);
+            Item item = GetItemByName(productName);
+            item.Price = ConvertPrice(item.Price, "eur");
+            cart.Update(GetItemByName(productName), amount);         
             HttpContext.Session.SetString("cart", cart.SerializeCart());
             return RedirectToAction("Cart");
         }
 
-        public IActionResult DeleteFromCart(string productName)
+          public IActionResult DeleteFromCart(int id)
         {
             cart.DeserializeCart(HttpContext.Session.GetString("cart"));
-            cart.Remove(GetItemByName(productName));
-            HttpContext.Session.SetString("cart", cart.SerializeCart());
+            Item item = cart.Items.Keys.FirstOrDefault(x => x.Id == id);
+            if (item != null)
+            {
+                cart.Remove(item);
+                HttpContext.Session.SetString("cart", cart.SerializeCart());
+            }
+            else
+            {
+                // Log an error message to help diagnose the issue
+                Console.Error.WriteLine("Failed to remove item from cart: " + id);
+            }
             return RedirectToAction("Cart");
         }
 
