@@ -174,7 +174,7 @@
     flex-wrap: wrap;
     height: 140px;
     background-color: royalblue;
-    position: relative; /* Add position:relative */
+    position: relative; 
 }
 
     .firstLine::after {
@@ -243,5 +243,16 @@
     }
 #currency-form{
     margin-top:10px;
+}
+
+@media (max-width: 1600px) {
+     .box3 {
+        display: none;
+    }
+}
+@media (max-width: 1250px) {
+    .box2 {
+        display: none;
+    }
 }
 
