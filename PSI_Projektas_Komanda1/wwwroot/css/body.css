@@ -19,8 +19,7 @@
 }
 
     .myDiv:hover {
-        transform: translateY(-5px) rotateY(10deg);
-        box-shadow: 0 5px 10px rgba(0, 0, 255, 0.3);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     }
 
     .myDiv img {
@@ -30,7 +29,8 @@
         display: block;
         margin: 0 auto;
         transition: transform 0.5s ease;
-        border: 5px solid #d4e7f4;
+        border: 2px solid #d4e7f4;
+        border-radius:20px;
     }
 
         .myDiv img:hover {

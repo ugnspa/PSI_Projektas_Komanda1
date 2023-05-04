@@ -6,7 +6,7 @@
     left: 1%;
     padding: 20px;
     border-radius: 20px;
-    background-image: radial-gradient(circle, royalblue, #f9f9f9);
+    background-image: radial-gradient(circle, white, rgba(0, 0, 0, 0.05));
 }
 
 @media (max-width: 1500px) {
