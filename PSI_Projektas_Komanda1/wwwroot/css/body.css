@@ -114,7 +114,7 @@ body {
     margin-right: 10px;
     font-size: 16px;
     color: black;
-    background-color: #ddd;
+    background-color: #ddd; 
     border-radius: 5px;
     padding: 10px 15px;
     transition: all 0.3s ease;
@@ -146,6 +146,24 @@ body .items-per-page {
     font-size: 1.5em;
     text-align: center;
 }
+
+@media (max-width: 1000px) {
+    .div2 {
+        flex-direction: column;
+    }
+
+    .myDiv {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media (min-width: 1001px) and (max-width: 1700px) {
+    .myDiv {
+        width: calc(50% - 10px);
+    }
+}
+
 
 
 
