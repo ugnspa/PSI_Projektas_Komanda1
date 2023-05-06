@@ -164,8 +164,6 @@ namespace PSI_Projektas_Komanda1.Controllers
             //items.AddRange(WashingMachineRepo.ReadWashingMachines());
             //items.AddRange(WatchRepo.ReadWatches());
             items = ItemRepo.ReadItems();
-
-            popular.AddRange(ComputerRepo.SelectFirstTen());
         }
 
 		public List<Item> filterByType(Type type)
@@ -199,11 +197,12 @@ namespace PSI_Projektas_Komanda1.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger; ;
-            ReadItems();
+            //ReadItems();
         }
 
         public IActionResult Index()
         {
+            popular.AddRange(ComputerRepo.SelectFirstTen());
 
             return View(popular);
         }
@@ -242,6 +241,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult Store(string currency)
         {
+            ReadItems();
             // Convert all item prices to the new currency
             foreach (var item in items)
             {
@@ -287,6 +287,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult SearchForName(string query, string currency)
         {
+            ReadItems();
             if (query != null)
                 HttpContext.Session.SetString("Search", query);
             List<Item> searchedItems = new List<Item>();
@@ -322,7 +323,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
 		public IActionResult Search(string query)
 		{
-
+            popular.AddRange(ComputerRepo.SelectFirstTen());
             var results = items.Where(i => i.Name.ToLower().Contains(query.ToLower()))
                    .Select(i => i.Name)
                    .Take(10)
@@ -359,6 +360,7 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult FilterSmartPhones(string[] selectedPrices, string[] selectedBrands, string[] selectedModels, string[] selectedProcessors, string[] selectedGpu
             , int[] selectedRam, int[] selectedMemory)
         {
+            items = SmartphoneRepo.ReadSmartphones();
             List<Item> filtereditems = filterByType(typeof(Smartphone));
             //if (HttpContext.Session.Keys.Contains("filtered"))
             //    filtereditems = new List<Item>(HttpContext.Session.Get<List<Item>>("filtered"));
@@ -402,7 +404,8 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult FilterSearch(string[] selectedPrices, string[] selectedBrands, string[] selectedModels)
         {
-            
+
+            ReadItems();
             List<Item> filtereditems = new List<Item>();
             //if (HttpContext.Session.Keys.Contains("filtered"))
             //    filtereditems = new List<Item>(HttpContext.Session.Get<List<Item>>("filtered"));
@@ -502,6 +505,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult FilterStore(string[] selectedPrices, string[] selectedBrands, string[] selectedModels)
         {
+            ReadItems();
             List<Item> filtereditems = new List<Item>(items);
             //if (HttpContext.Session.Keys.Contains("filtered"))
             //    filtereditems = new List<Item>(HttpContext.Session.Get<List<Item>>("filtered"));
@@ -540,6 +544,7 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult FilterComputer(string[] selectedPrices, string[] selectedBrands, string[] selectedModels, string[] selectedProcessors, string[] selectedGpu,
             string[] selectedMotherBoard, int[] selectedRam, int[] selectedMemory, int[] selectedWattage)
         {
+            items = ComputerRepo.ReadComputers();
             List<Item> filtereditems = filterByType(typeof(Computer));
             //if (HttpContext.Session.Keys.Contains("filtered"))
             //    filtereditems = new List<Item>(HttpContext.Session.Get<List<Item>>("filtered"));
@@ -597,7 +602,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         public IActionResult Smartphones(string currency)
 
         {
-            var model = filterByType(typeof(Smartphone));
+            var model = SmartphoneRepo.ReadSmartphones();
+            //var model = filterByType(typeof(Smartphone));
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -610,7 +616,8 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult Watches(string currency)
         {
-            var model = filterByType(typeof(Watch));
+            var model = WatchRepo.ReadWatches();
+            //var model = filterByType(typeof(Watch));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             foreach (var item in items)
@@ -622,7 +629,8 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult Computers(string currency)
         {
-            var model = filterByType(typeof(Computer));
+            var model = ComputerRepo.ReadComputers();
+            //var model = filterByType(typeof(Computer));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             foreach (var item in items)
@@ -635,7 +643,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult Tvs(string currency)
         {
-            var model = filterByType(typeof(TV));
+            var model = TVRepo.ReadTVs();
+            //var model = filterByType(typeof(TV));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             foreach (var item in items)
@@ -646,7 +655,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult Cameras(string currency)
         {
-            var model = filterByType(typeof(Camera));
+            var model = CameraRepo.ReadCameras();
+            //var model = filterByType(typeof(Camera));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             foreach (var item in items)
@@ -657,7 +667,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult Fridges(string currency)
         {
-            var model = filterByType(typeof(Fridge));
+            var model = FridgeRepo.ReadFridges();
+            //var model = filterByType(typeof(Fridge));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             foreach (var item in items)
@@ -668,7 +679,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult Dishwashers(string currency)
         {
-            var model = filterByType(typeof(Dishwasher));
+            var model = DishwasherRepo.ReadDiswashers();
+            //var model = filterByType(typeof(Dishwasher));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             foreach (var item in items)
@@ -679,7 +691,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult Microwaves(string currency)
         {
-            var model = filterByType(typeof(Microwave));
+            var model = MicrowaveRepo.ReadMicrowaves();
+            //var model = filterByType(typeof(Microwave));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             foreach (var item in items)
@@ -690,7 +703,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult Stoves(string currency)
         {
-            var model = filterByType(typeof(Stove));
+            var model = StoveRepo.ReadStoves();
+            //var model = filterByType(typeof(Stove));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             foreach (var item in items)
@@ -701,7 +715,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult Ovens(string currency)
         {
-            var model = filterByType(typeof(Oven));
+            var model = OvenRepo.ReadOvens();
+            //var model = filterByType(typeof(Oven));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             foreach (var item in items)
@@ -712,7 +727,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult VacuumCleaners(string currency)
         {
-            var model = filterByType(typeof(Vacuum));
+            var model = VacuumRepo.ReadVacuums();
+            //var model = filterByType(typeof(Vacuum));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             foreach (var item in items)
@@ -723,7 +739,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult WashingMachines(string currency)
         {
-            var model = filterByType(typeof(WashingMashine));
+            var model = WashingMachineRepo.ReadWashingMachines();
+            //var model = filterByType(typeof(WashingMashine));
 
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
@@ -735,7 +752,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult Dryers(string currency)
         {
-            var model = filterByType(typeof(Dryer));
+            var model = DryerRepo.ReadDryers();
+            //var model = filterByType(typeof(Dryer));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             foreach (var item in items)
@@ -746,7 +764,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult AirConditioners(string currency)
         {
-            var model = filterByType(typeof(AirConditioner));
+            var model = AirConditionerRepo.ReadAirConditioners();
+            //var model = filterByType(typeof(AirConditioner));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             foreach (var item in items)
@@ -757,7 +776,8 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult HeatingSystems(string currency)
         {
-            var model = filterByType(typeof(HeatingSystem));
+            var model = HeatingSystemRepo.ReadHeatingSystems();
+            //var model = filterByType(typeof(HeatingSystem));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             foreach (var item in items)
