@@ -28,5 +28,30 @@
             }
             return items;
         }
-    }
+
+		public static Item FindOven(int id)
+		{
+			var query = $@"SELECT * FROM `ovens` WHERE id = ?id";
+			var drc =
+				Sql.Query(query, args => {
+					args.Add("?id", id);
+				});
+
+			var result = Sql.MapOne<Oven>(drc, (dre, t) =>
+			{
+				t.Picture = dre.From<string>("pic");
+				t.Id = dre.From<int>("id");
+				t.Brand = dre.From<string>("brand");
+				t.Model = dre.From<string>("model");
+				t.Name = dre.From<string>("name");
+				t.Description = dre.From<string>("description");
+				t.Amount = dre.From<int>("amount");
+				t.Price = dre.From<decimal>("price");
+				t.Volume = dre.From<double>("volume");
+				t.Type = dre.From<string>("type");
+			});
+
+			return result;
+		}
+	}
 }
