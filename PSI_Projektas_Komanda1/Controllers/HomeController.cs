@@ -148,21 +148,22 @@ namespace PSI_Projektas_Komanda1.Controllers
             //items.Add(smartphone);
 
 
-            items = AirConditionerRepo.ReadAirConditioners();
-            items.AddRange(CameraRepo.ReadCameras());
-            items.AddRange(ComputerRepo.ReadComputers());
-            items.AddRange(DishwasherRepo.ReadDiswashers());
-            items.AddRange(DryerRepo.ReadDryers());
-            items.AddRange(FridgeRepo.ReadFridges());
-            items.AddRange(HeatingSystemRepo.ReadHeatingSystems());
-            items.AddRange(MicrowaveRepo.ReadMicrowaves());
-            items.AddRange(OvenRepo.ReadOvens());
-            items.AddRange(SmartphoneRepo.ReadSmartphones());
-            items.AddRange(StoveRepo.ReadStoves());
-            items.AddRange(TVRepo.ReadTVs());
-            items.AddRange(VacuumRepo.ReadVacuums());
-            items.AddRange(WashingMachineRepo.ReadWashingMachines());
-            items.AddRange(WatchRepo.ReadWatches());
+            //items = AirConditionerRepo.ReadAirConditioners();
+            //items.AddRange(CameraRepo.ReadCameras());
+            //items.AddRange(ComputerRepo.ReadComputers());
+            //items.AddRange(DishwasherRepo.ReadDiswashers());
+            //items.AddRange(DryerRepo.ReadDryers());
+            //items.AddRange(FridgeRepo.ReadFridges());
+            //items.AddRange(HeatingSystemRepo.ReadHeatingSystems());
+            //items.AddRange(MicrowaveRepo.ReadMicrowaves());
+            //items.AddRange(OvenRepo.ReadOvens());
+            //items.AddRange(SmartphoneRepo.ReadSmartphones());
+            //items.AddRange(StoveRepo.ReadStoves());
+            //items.AddRange(TVRepo.ReadTVs());
+            //items.AddRange(VacuumRepo.ReadVacuums());
+            //items.AddRange(WashingMachineRepo.ReadWashingMachines());
+            //items.AddRange(WatchRepo.ReadWatches());
+            items = ItemRepo.ReadItems();
 
             popular.AddRange(ComputerRepo.SelectFirstTen());
         }
@@ -931,71 +932,7 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
 
         // Before calling this method it is advised to check user existance by using CheckUserExistanceByUsername
-        public static bool CheckUserPassword(string username, string password)
-        {
-            User user = UserRepo.FindUserByUsername(username);
-            // Presumably the passwords should be hashed for security in the future
-            return user.Password.Equals(password);
-        }
-
-		public static void TestUserAdd()
-		{
-			Console.WriteLine("Testing InsertUser() method");
-			Console.WriteLine("----------------------------");
-			for (int i = 0; i < 10; i++)
-			{
-				User user = new User();
-				user.ID = i;
-				user.Name = "test" + i;
-				user.SurName = "test" + i;
-				user.Email = "test" + i;
-				user.UserName = "test" + i;
-				user.Password = "test" + i;
-
-				// Checking if username is available and can be used
-				if (UserRepo.CheckUsernameAvailability(user.UserName))
-				{
-					Console.WriteLine("User '{0}' added into dabase", user.UserName);
-					UserRepo.InsertUser(user);
-				}
-				else
-				{
-					Console.WriteLine("Username '{0}' is already in use", user.UserName);
-				}
-			}
-			Console.WriteLine("----------------------------");
-		}
-
-		public static void TestUserPasswordCheck()
-		{
-			Console.WriteLine("Testing CheckUserPassword() method");
-			Console.WriteLine("----------------------------");
-			for (int i = 0; i < 10; i++)
-			{
-				User user = new User();
-				user.ID = i;
-				user.Name = "test" + i;
-				user.SurName = "test" + i;
-				user.Email = "test" + i;
-				user.UserName = "test" + i;
-				user.Password = "test" + i;
-
-				// Checking if username is available and can be used
-				if (UserRepo.CheckUserExistanceByUsername(user.UserName))
-				{
-					bool passwordCorrect = CheckUserPassword(user.UserName, user.Password);
-					if (passwordCorrect)
-						Console.WriteLine("User '{0}' password is correct ({1})", user.UserName, user.Password);
-					else
-						Console.WriteLine("User '{0}' password is incorrect ({1})", user.UserName, user.Password);
-				}
-				else
-				{
-					Console.WriteLine("User '{0}' doesn't exist", user.UserName);
-				}
-			}
-			Console.WriteLine("----------------------------");
-		}
+       
 
         public void InitializeSessionRecent()
         {
@@ -1031,10 +968,15 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult Account()
         {
-            return View();
+            string username = HttpContext.Session.GetString("username");
+            if(string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            else
+            {
+                return View(UserRepo.FindUserByUsername(username));
+            }
         }
-
-
-
     }
 }
