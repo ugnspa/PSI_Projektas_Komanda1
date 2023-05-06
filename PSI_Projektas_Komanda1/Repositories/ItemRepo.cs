@@ -15,7 +15,7 @@ namespace PSI_Projektas_Komanda1.Repositories
 				t.fkID = dre.From<int>("fk_id");
 
 			});
-			GenerateItemList(result);
+			return GenerateItemList(result);
 		}
 
 		public static List<Item> GenerateItemList(List<ItemID> items)

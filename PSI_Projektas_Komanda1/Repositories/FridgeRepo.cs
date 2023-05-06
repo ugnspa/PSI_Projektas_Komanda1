@@ -71,7 +71,7 @@
 				args.Add("?description", fridge.Description);
 				args.Add("?amount", fridge.Amount);
 				args.Add("?price", fridge.Price);
-				args.Add("?freezer", fridge.);
+				args.Add("?freezer", fridge.Freezer);
 				args.Add("?volume", fridge.Volume);
 				args.Add("?volume", fridge.Volume);
 			});
