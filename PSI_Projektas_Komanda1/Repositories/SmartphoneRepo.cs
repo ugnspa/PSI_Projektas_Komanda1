@@ -31,7 +31,7 @@
             return items;
         }
 
-		public static Item FindOven(int id)
+		public static Item FindSmartphone(int id)
 		{
 			var query = $@"SELECT * FROM `smartphones` WHERE id = ?id";
 			var drc =
@@ -56,6 +56,31 @@
 			});
 
 			return result;
+		}
+
+		public static void InsertSmartphone(Smartphone smartphone)
+		{
+			var query = $@"INSERT INTO `smartphones` 
+            (pic, brand, model, name, description, amount, price, processor, ram, gpu, memory) VALUES 
+            (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?processor, ?ram, ?gpu, ?memory)";
+
+			int id = (int)Sql.Insert(query, args =>
+			{
+				args.Add("?pic", smartphone.Picture);
+				args.Add("?brand", smartphone.Brand);
+				args.Add("?model", smartphone.Model);
+				args.Add("?name", smartphone.Name);
+				args.Add("?description", smartphone.Description);
+				args.Add("?amount", smartphone.Amount);
+				args.Add("?price", smartphone.Price);
+				args.Add("?processor", smartphone.Processor);
+				args.Add("?ram", smartphone.Ram);
+				args.Add("?gpu", smartphone.GPU);
+				args.Add("?memory", smartphone.Memory);
+			});
+
+			smartphone.Id = id;
+			ItemRepo.InsertItem(smartphone);
 		}
 	}
 }

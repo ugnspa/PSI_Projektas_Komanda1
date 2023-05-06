@@ -51,5 +51,26 @@
 
 			return result;
 		}
-	}
+		public static void InsertTV(TV tv)
+		{
+			var query = $@"INSERT INTO `tvs` 
+            (pic, brand, model, name, description, amount, price, diagonal ) VALUES 
+            (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?diagonal)";
+
+			int id = (int)Sql.Insert(query, args =>
+			{
+				args.Add("?pic", tv.Picture);
+				args.Add("?brand", tv.Brand);
+				args.Add("?model", tv.Model);
+				args.Add("?name", tv.Name);
+				args.Add("?description", tv.Description);
+				args.Add("?amount", tv.Amount);
+				args.Add("?price", tv.Price);
+				args.Add("?diagonal", tv.Diagonal);
+			});
+
+			tv.Id = id;
+			ItemRepo.InsertItem(tv);
+		}
+	}	
 }

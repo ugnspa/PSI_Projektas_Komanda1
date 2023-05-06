@@ -51,5 +51,27 @@
 
 			return result;
 		}
+
+		public static void InsertDryer(Dryer dryer)
+		{
+			var query = $@"INSERT INTO `dryers` 
+            (pic, brand, model, name, description, amount, price, volume ) VALUES 
+            (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?volume)";
+
+			int id = (int)Sql.Insert(query, args =>
+			{
+				args.Add("?pic", dryer.Picture);
+				args.Add("?brand", dryer.Brand);
+				args.Add("?model", dryer.Model);
+				args.Add("?name", dryer.Name);
+				args.Add("?description", dryer.Description);
+				args.Add("?amount", dryer.Amount);
+				args.Add("?price", dryer.Price);
+				args.Add("?volume", dryer.Volume);
+			});
+
+			dryer.Id = id;
+			ItemRepo.InsertItem(dryer);
+		}
 	}
 }

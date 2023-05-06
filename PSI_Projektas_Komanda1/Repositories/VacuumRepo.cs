@@ -51,5 +51,27 @@
 
 			return result;
 		}
+
+		public static void InsertVacuum(Vacuum vacuum)
+		{
+			var query = $@"INSERT INTO `vacuums` 
+            (pic, brand, model, name, description, amount, price, volume ) VALUES 
+            (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?volume)";
+
+			int id = (int)Sql.Insert(query, args =>
+			{
+				args.Add("?pic", vacuum.Picture);
+				args.Add("?brand", vacuum.Brand);
+				args.Add("?model", vacuum.Model);
+				args.Add("?name", vacuum.Name);
+				args.Add("?description", vacuum.Description);
+				args.Add("?amount", vacuum.Amount);
+				args.Add("?price", vacuum.Price);
+				args.Add("?volume", vacuum.Volume);
+			});
+
+			vacuum.Id = id;
+			ItemRepo.InsertItem(vacuum);
+		}
 	}
 }

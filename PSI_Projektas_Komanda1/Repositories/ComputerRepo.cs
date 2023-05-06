@@ -91,6 +91,31 @@
 			return result;
 		}
 
+		public static void InsertComputer(Computer computer)
+		{
+			var query = $@"INSERT INTO `computers` 
+            (pic, brand, model, name, description, amount, price, processor, motherboard, gpu, ram, memory) VALUES 
+            (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?processor, ?motherboard, ?gpu, ?ram, ?memory)";
+
+			int id = (int)Sql.Insert(query, args =>
+			{
+				args.Add("?pic", computer.Picture);
+				args.Add("?brand", computer.Brand);
+				args.Add("?model", computer.Model);
+				args.Add("?name", computer.Name);
+				args.Add("?description", computer.Description);
+				args.Add("?amount", computer.Amount);
+				args.Add("?price", computer.Price);
+				args.Add("?processor", computer.Processor);
+				args.Add("?motherboard", computer.Motherboard);
+				args.Add("?gpu", computer.GPU);
+				args.Add("?ram", computer.Ram);
+				args.Add("?memory", computer.Memory);
+			});
+
+			computer.Id = id;
+			ItemRepo.InsertItem(computer);
+		}
 
 	}
 }

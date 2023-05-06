@@ -28,7 +28,7 @@
             return items;
         }
 
-		public static Item FindDiswashers(int id)
+		public static Item FindDiswasher(int id)
 		{
 			var query = $@"SELECT * FROM `dishwashers` WHERE id = ?id";
 			var drc =
@@ -50,6 +50,28 @@
 			});
 
 			return result;
+		}
+
+		public static void InsertDishwasher(Dishwasher dishwasher)
+		{
+			var query = $@"INSERT INTO `dishwashers` 
+            (pic, brand, model, name, description, amount, price, volume ) VALUES 
+            (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?volume)";
+
+			int id = (int)Sql.Insert(query, args =>
+			{
+				args.Add("?pic", dishwasher.Picture);
+				args.Add("?brand", dishwasher.Brand);
+				args.Add("?model", dishwasher.Model);
+				args.Add("?name", dishwasher.Name);
+				args.Add("?description", dishwasher.Description);
+				args.Add("?amount", dishwasher.Amount);
+				args.Add("?price", dishwasher.Price);
+				args.Add("?volume", dishwasher.Volume);
+			});
+
+			dishwasher.Id = id;
+			ItemRepo.InsertItem(dishwasher);
 		}
 	}
 }

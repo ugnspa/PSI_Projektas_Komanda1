@@ -55,5 +55,29 @@
 
 			return result;
 		}
+
+		public static void InsertFridge(Fridge fridge)
+		{
+			var query = $@"INSERT INTO `fridges` 
+            (pic, brand, model, name, description, amount, price, freezer, volume, freezer_volume ) VALUES 
+            (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?freezer, ?volume, ?freezer_volume)";
+
+			int id = (int)Sql.Insert(query, args =>
+			{
+				args.Add("?pic", fridge.Picture);
+				args.Add("?brand", fridge.Brand);
+				args.Add("?model", fridge.Model);
+				args.Add("?name", fridge.Name);
+				args.Add("?description", fridge.Description);
+				args.Add("?amount", fridge.Amount);
+				args.Add("?price", fridge.Price);
+				args.Add("?freezer", fridge.);
+				args.Add("?volume", fridge.Volume);
+				args.Add("?volume", fridge.Volume);
+			});
+
+			fridge.Id = id;
+			ItemRepo.InsertItem(fridge);
+		}
 	}
 }

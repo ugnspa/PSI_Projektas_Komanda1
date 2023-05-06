@@ -51,5 +51,27 @@
 
 			return result;
 		}
+
+		public static void InsertWashingMashine(WashingMashine washingMashine)
+		{
+			var query = $@"INSERT INTO `washingmachines` 
+            (pic, brand, model, name, description, amount, price, volume ) VALUES 
+            (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?volume)";
+
+			int id = (int)Sql.Insert(query, args =>
+			{
+				args.Add("?pic", washingMashine.Picture);
+				args.Add("?brand", washingMashine.Brand);
+				args.Add("?model", washingMashine.Model);
+				args.Add("?name", washingMashine.Name);
+				args.Add("?description", washingMashine.Description);
+				args.Add("?amount", washingMashine.Amount);
+				args.Add("?price", washingMashine.Price);
+				args.Add("?volume", washingMashine.Volume);
+			});
+
+			washingMashine.Id = id;
+			ItemRepo.InsertItem(washingMashine);
+		}
 	}
 }

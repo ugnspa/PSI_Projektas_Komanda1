@@ -148,21 +148,22 @@ namespace PSI_Projektas_Komanda1.Controllers
             //items.Add(smartphone);
 
 
-            items = AirConditionerRepo.ReadAirConditioners();
-            items.AddRange(CameraRepo.ReadCameras());
-            items.AddRange(ComputerRepo.ReadComputers());
-            items.AddRange(DishwasherRepo.ReadDiswashers());
-            items.AddRange(DryerRepo.ReadDryers());
-            items.AddRange(FridgeRepo.ReadFridges());
-            items.AddRange(HeatingSystemRepo.ReadHeatingSystems());
-            items.AddRange(MicrowaveRepo.ReadMicrowaves());
-            items.AddRange(OvenRepo.ReadOvens());
-            items.AddRange(SmartphoneRepo.ReadSmartphones());
-            items.AddRange(StoveRepo.ReadStoves());
-            items.AddRange(TVRepo.ReadTVs());
-            items.AddRange(VacuumRepo.ReadVacuums());
-            items.AddRange(WashingMachineRepo.ReadWashingMachines());
-            items.AddRange(WatchRepo.ReadWatches());
+            //items = AirConditionerRepo.ReadAirConditioners();
+            //items.AddRange(CameraRepo.ReadCameras());
+            //items.AddRange(ComputerRepo.ReadComputers());
+            //items.AddRange(DishwasherRepo.ReadDiswashers());
+            //items.AddRange(DryerRepo.ReadDryers());
+            //items.AddRange(FridgeRepo.ReadFridges());
+            //items.AddRange(HeatingSystemRepo.ReadHeatingSystems());
+            //items.AddRange(MicrowaveRepo.ReadMicrowaves());
+            //items.AddRange(OvenRepo.ReadOvens());
+            //items.AddRange(SmartphoneRepo.ReadSmartphones());
+            //items.AddRange(StoveRepo.ReadStoves());
+            //items.AddRange(TVRepo.ReadTVs());
+            //items.AddRange(VacuumRepo.ReadVacuums());
+            //items.AddRange(WashingMachineRepo.ReadWashingMachines());
+            //items.AddRange(WatchRepo.ReadWatches());
+            items = ItemRepo.ReadItems();
 
             popular.AddRange(ComputerRepo.SelectFirstTen());
         }

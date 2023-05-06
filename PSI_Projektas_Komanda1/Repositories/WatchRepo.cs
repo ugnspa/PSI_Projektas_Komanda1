@@ -53,5 +53,28 @@
 
 			return result;
 		}
+
+		public static void InsertWatch(Watch watch)
+		{
+			var query = $@"INSERT INTO `watches` 
+            (pic, brand, model, name, description, amount, price, smart, ?days_charged ) VALUES 
+            (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?smart, ?days_charged)";
+
+			int id = (int)Sql.Insert(query, args =>
+			{
+				args.Add("?pic", watch.Picture);
+				args.Add("?brand", watch.Brand);
+				args.Add("?model", watch.Model);
+				args.Add("?name", watch.Name);
+				args.Add("?description", watch.Description);
+				args.Add("?amount", watch.Amount);
+				args.Add("?price", watch.Price);
+				args.Add("?smart", watch.Smart);
+				args.Add("?days_charged", watch.DaysCharged);
+			});
+
+			watch.Id = id;
+			ItemRepo.InsertItem(watch);
+		}
 	}
 }

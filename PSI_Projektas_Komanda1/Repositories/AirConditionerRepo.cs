@@ -50,15 +50,34 @@
 				t.Price = dre.From<decimal>("price");
 				t.MaxArea = dre.From<double>("max_area");
 				t.MinTemp = dre.From<int>("min_temp");
-				t.MaxTemp = dre.From<int>("min_temp");
+				t.MaxTemp = dre.From<int>("max_temp");
 			});
 
 			return result;
 		}
 
-		public static void InsertAirConditioner()
+		public static void InsertAirConditioner(AirConditioner airConditioner)
         {
-            var query = $@"INSERT INTO `airconditioners` VALUES ()";
+            var query = $@"INSERT INTO `airconditioners` 
+            (pic, brand, model, name, description, amount, price, max_area, min_temp, max_temp ) VALUES 
+            (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?max_area, ?min_temp, ?max_temp)";
+
+            int id = (int)Sql.Insert(query, args =>
+            {
+                args.Add("?pic", airConditioner.Picture);
+				args.Add("?brand", airConditioner.Brand);
+				args.Add("?model", airConditioner.Model);
+				args.Add("?name", airConditioner.Name);
+				args.Add("?description", airConditioner.Description);
+				args.Add("?amount", airConditioner.Amount);
+				args.Add("?price", airConditioner.Price);
+				args.Add("?max_area", airConditioner.MaxArea);
+				args.Add("?min_temp", airConditioner.MinTemp);
+				args.Add("?max_temp", airConditioner.MaxTemp);
+			});
+
+            airConditioner.Id = id;
+            ItemRepo.InsertItem(airConditioner);
         }
     }
 }

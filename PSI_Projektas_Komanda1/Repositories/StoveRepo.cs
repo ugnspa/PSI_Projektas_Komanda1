@@ -53,5 +53,28 @@
 
 			return result;
 		}
+
+		public static void InsertStove(Stove stove)
+		{
+			var query = $@"INSERT INTO `stoves` 
+            (pic, brand, model, name, description, amount, price, count, electric ) VALUES 
+            (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?count, ?electric)";
+
+			int id = (int)Sql.Insert(query, args =>
+			{
+				args.Add("?pic", stove.Picture);
+				args.Add("?brand", stove.Brand);
+				args.Add("?model", stove.Model);
+				args.Add("?name", stove.Name);
+				args.Add("?description", stove.Description);
+				args.Add("?amount", stove.Amount);
+				args.Add("?price", stove.Price);
+				args.Add("?count", stove.Count);
+				args.Add("?electric", stove.Electric);
+			});
+
+			stove.Id = id;
+			ItemRepo.InsertItem(stove);
+		}
 	}
 }

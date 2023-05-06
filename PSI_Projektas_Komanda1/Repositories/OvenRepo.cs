@@ -53,5 +53,28 @@
 
 			return result;
 		}
+
+		public static void InsertOven(Oven oven)
+		{
+			var query = $@"INSERT INTO `ovens` 
+            (pic, brand, model, name, description, amount, price, volume, type ) VALUES 
+            (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?volume, ?type)";
+
+			int id = (int)Sql.Insert(query, args =>
+			{
+				args.Add("?pic", oven.Picture);
+				args.Add("?brand", oven.Brand);
+				args.Add("?model", oven.Model);
+				args.Add("?name", oven.Name);
+				args.Add("?description", oven.Description);
+				args.Add("?amount", oven.Amount);
+				args.Add("?price", oven.Price);
+				args.Add("?volume", oven.Volume);
+				args.Add("?type", oven.Type);
+			});
+
+			oven.Id = id;
+			ItemRepo.InsertItem(oven);
+		}
 	}
 }
