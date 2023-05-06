@@ -11,17 +11,23 @@
 		/// <returns></returns>
 		public static int InsertUser(User user)
 		{
-			var query = $@"INSERT INTO `users` (Name, Surname, Email, Username, Password ) 
-						VALUES ( ?name, ?surname, ?email, ?username, ?password)";
+			var query = $@"INSERT INTO `users` (Name, Surname, Email, Username, Password, Admin ) 
+						VALUES ( ?name, ?surname, ?email, ?username, ?password, ?admin)";
 
-			Sql.Insert(query, args => {
-				args.Add("?name", user.Name);
-				args.Add("?surname", user.SurName);
-				args.Add("?email", user.Email);
-				args.Add("?username", user.UserName);
-				args.Add("?password", user.Password);
-			});
-			return 0;
+			try
+			{
+                return (int) Sql.Insert(query, args => {
+                    args.Add("?name", user.Name);
+                    args.Add("?surname", user.SurName);
+                    args.Add("?email", user.Email);
+                    args.Add("?username", user.UserName);
+                    args.Add("?password", user.Password);
+					args.Add("?admin", false);
+                });
+            }catch(Exception ex)
+			{
+				return -1;
+			}			
 		}
 
 		/// <summary>
@@ -40,23 +46,22 @@
 			var result = new User();
 			try
 			{
-				result = Sql.MapOne<User>(drc, (dre, t) =>
-				{
-					t.ID = dre.From<int>("id_User");
-					t.Name = dre.From<string>("Name");
-					t.SurName = dre.From<string>("Name");
-					t.Email = dre.From<string>("Name");
-					t.UserName = dre.From<string>("Name");
-					t.Password = dre.From<string>("Password");
-				});
+                result = Sql.MapOne<User>(drc, (dre, t) =>
+                {
+                    t.ID = dre.From<int>("id");
+                    t.Name = dre.From<string>("Name");
+                    t.SurName = dre.From<string>("Name");
+                    t.Email = dre.From<string>("Name");
+                    t.UserName = dre.From<string>("Name");
+                    t.Password = dre.From<string>("Password");
+                });
+				Console.WriteLine(result.Password);
 			}
 			catch
 			{
 				return false;
 			}
 
-			if (result == null)
-				return false;
 			return true;
 		}
 
@@ -85,9 +90,9 @@
 				{
 					t.ID = dre.From<int>("id");
 					t.Name = dre.From<string>("Name");
-					t.SurName = dre.From<string>("Name");
-					t.Email = dre.From<string>("Name");
-					t.UserName = dre.From<string>("Name");
+					t.SurName = dre.From<string>("Surname");
+					t.Email = dre.From<string>("Email");
+					t.UserName = dre.From<string>("Username");
 					t.Password = dre.From<string>("Password");
 				});
 				return result;
