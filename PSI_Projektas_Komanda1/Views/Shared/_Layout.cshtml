@@ -9,141 +9,164 @@
     <link rel="stylesheet" href="~/css/Header.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Footer.css" asp-append-version="true" />
     <link rel="shortcut icon" type="image/jpg" href="~/css/pictures/icon2.png" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="~/PSI_Projektas_Komanda1.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <div class="currency-bar">
-            <div>
-                <div class="currency-table">
-                    <form method="post" id="currency-form">
-                        <select name="currency" id="currency-select" style="display: inline-block; width: 140px;">
-                            <option value="eur">EUR</option>
-                            <option value="usd">USD</option>
-                            <option value="gbp">GBP</option>
-                        </select>
-                        <button type="submit" class="col-auto btn btn-primary" id="change-currency-btn" style="display: inline-block;">Change currency</button>
-                    </form>
-                    <div>
-                        <button class="col-auto btn btn-primary">Account</button>
-                        <img src="~/css/pictures/user.png" alt="account" class="logo2">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="logo-bar">
-            <div class="container-fluid">
-                <div class="row align-items-left">
-                    <div class="col-2">
-                        <a asp-area="" asp-controller="Home" asp-action="Index">
-                            <img src="~/css/pictures/logo.png" alt="Company Logo" style="border-radius: 50px" class="logo">
-                        </a>
-                    </div>
-                    <div class="col-6 text-center">
-                        <nav class="navbar navbar-expand-lg navbar-light">
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                                <ul class="navbar-nav">
-                                    <li class="nav-item">
-                                        <a class="nav-link-black" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                                    </li>
-                                     <li class="nav-item">
-                                        <a class="nav-link-black" asp-area="" asp-controller="Home" asp-action="Store">Store</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a id="navbarDropdown" class="nav-link-black" asp-controller="Home" asp-action="Categories">Categories</a>
-                                        <div id="categories-dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <table id="table-dropdown" class="MyDropTable">
-                                                <thead>
-                                                    <tr>
-                                                        <th><a class="nav-link" asp-controller="Home" asp-action="Electronics">Electronics</a></th>
-                                                        <th><a class="nav-link" asp-controller="Home" asp-action="KitchenAppliances">Kitchen Appliances</a></th>
-                                                        <th><a class="nav-link" asp-controller="Home" asp-action="HouseholdAppliances">Household Appliances</a></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Smartphones">Smartphones</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Fridges">Fridges</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="VacuumCleaners">Vacuum Cleaners</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Watches">Watches</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Dishwashers">Dishwashers</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="WashingMachines">Washing Machines</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Computers">Computers</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Microwaves">Microwaves</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Dryers">Dryers</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Tvs">Tvs</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Stoves">Stoves</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="AirConditioners">Air Conditioner</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Cameras">Cameras</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="Ovens">Ovens</a></td>
-                                                        <td><a class="nav-link" asp-controller="Home" asp-action="HeatingSystems">Heating Systems</a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link-black" asp-area="" asp-controller="Home" asp-action="Contact">Contacts</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link-black" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                    <div class="col-4 d-flex justify-content-end align-items-center" style="padding-right: 100px">
-                        <form class="search-form me-3" autocomplete="off" method="get" action="@Url.Action("SearchForName", "Home")">
-                            <div class="input-group" id="SearchDiv">
-                                <input type="text" name="query" id="search-box" class="form-control" placeholder="Search" list="search-results">
-                                <datalist id="search-results"></datalist>
-                                <button class="btn btn-primary" id="search-button">Search</button>
-                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-                                <script>
-                                    $('#search-box').keyup(function () {
-                                        var query = $('#search-box').val();
 
-                                        $.ajax({
-                                            url: '@Url.Action("Search", "Home")',
-                                            data: { query: query },
-                                            success: function (data) {
-                                                const datalist = document.getElementById("search-results");
-                                                datalist.innerHTML = ""; // clear any previous results
-                                                data.forEach((item) => {
-                                                    const option = document.createElement("option");
-                                                    option.value = item;
-                                                    datalist.appendChild(option);
-                                                });
-                                            }
-                                        });
-                                    });
-                                </script>
-                            </div>
-                        </form>
-                        <a class="nav-link-black" asp-area="" asp-controller="Home" asp-action="Cart" style="margin-left: 50px">Cart</a>
-                        <img src="~/css/pictures/cart.png" alt="cart" class="logo2">
+        <div class="firstLine">
+
+            <div class="myLogo box1">
+                <a asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/css/pictures/logo.png" alt="Company Logo" class="logo">
+                </a>
+            </div>
+            <div class="logo-bar box2">
+                <div class="container-new">
+                    <div class="row ">
+                        <div class="col-12">
+                            <nav class="navbar navbar-expand-lg navbar-light">
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-item">
+                                            <a class="nav-link-black" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link-black" asp-area="" asp-controller="Home" asp-action="Store">Store</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a id="navbarDropdown" class="nav-link-black" asp-controller="Home" asp-action="Categories">Categories</a>
+                                            <div id="categories-dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <table id="table-dropdown" class="MyDropTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><a class="nav-link" asp-controller="Home" asp-action="Electronics">Electronics</a></th>
+                                                            <th><a class="nav-link" asp-controller="Home" asp-action="KitchenAppliances">Kitchen Appliances</a></th>
+                                                            <th><a class="nav-link" asp-controller="Home" asp-action="HouseholdAppliances">Household Appliances</a></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="Smartphones">Smartphones</a></td>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="Fridges">Fridges</a></td>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="VacuumCleaners">Vacuum Cleaners</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="Watches">Watches</a></td>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="Dishwashers">Dishwashers</a></td>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="WashingMachines">Washing Machines</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="Computers">Computers</a></td>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="Microwaves">Microwaves</a></td>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="Dryers">Dryers</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="Tvs">Tvs</a></td>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="Stoves">Stoves</a></td>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="AirConditioners">Air Conditioner</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="Cameras">Cameras</a></td>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="Ovens">Ovens</a></td>
+                                                            <td><a class="nav-link" asp-controller="Home" asp-action="HeatingSystems">Heating Systems</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link-black" asp-area="" asp-controller="Home" asp-action="Contact">Contacts</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link-black" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="accAndCart box3">
+                <div>
+                    <a id="currency-toggle">
+                        <img class="logo2" src="~/css/pictures/currency.jpg" alt="Toggle Currency">
+                    </a>
+                    <div class="currency-table">
+                        <form method="post" id="currency-form">
+                            <select name="currency" id="currency-select" style="display: inline-block; width: 140px;">
+                                <option value="eur">EUR</option>
+                                <option value="usd">USD</option>
+                                <option value="gbp">GBP</option>
+                            </select>
+                            <button type="submit" class="col-auto btn btn-primary" id="change-currency-btn" style="display: inline-block;">Change currency</button>
+                        </form>
+                    </div>
+                </div>
+                <div>
+                    <a id="search-toggle">
+                        <img class="logo2" src="~/css/pictures/search.png" alt="Toggle Search">
+                    </a>
+                </div>
+                <div class="Search" id="search-form">
+                    <form class="search-form me-3" autocomplete="off" method="get" action="@Url.Action("SearchForName", "Home")">
+                        <div class="input-group" id="SearchDiv">
+                            <input type="text" name="query" id="search-box" class="form-control" placeholder="Search" list="search-results">
+                            <datalist id="search-results"></datalist>
+                            <button class="btn btn-primary" id="search-button">Search</button>
+                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                            <script>
+                                $('#search-box').keyup(function () {
+                                    var query = $('#search-box').val();
+
+                                    $.ajax({
+                                        url: '@Url.Action("Search", "Home")',
+                                        data: { query: query },
+                                        success: function (data) {
+                                            const datalist = document.getElementById("search-results");
+                                            datalist.innerHTML = ""; // clear any previous results
+                                            data.forEach((item) => {
+                                                const option = document.createElement("option");
+                                                option.value = item;
+                                                datalist.appendChild(option);
+                                            });
+                                        }
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <a  asp-area="" asp-controller="Home" asp-action="Account">
+                        <img src="~/css/pictures/user.png" alt="account" class="logo2">
+                    </a>
+                </div>
+                <div>
+                    <a  asp-area="" asp-controller="Home" asp-action="Cart" >
+                        <img src="~/css/pictures/cart.png" alt="cart" class="logo2">
+                    </a>
+                </div>              
+            </div>
         </div>
+      
+        
     </header>
     <div class="container">
         <main role="main">
             @RenderBody()
+
+            @if (ViewBag.ShowRecentItems == true)
+            {
+                @Html.Partial("_Recently", ViewBag.RecentItems as Recent)
+            }
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
         <div>
             <div class="info-bar">
@@ -227,5 +250,60 @@ currencyForm.addEventListener('submit', (event) => {
 changeCurrencyBtn.addEventListener('click', () => {
   currencyForm.submit(); // directly submit the form
 });
+</script>
+<script>
+  function updatePrices() {
+    // get the selected currency code
+    var currencyCode = document.getElementById("currency-select").value;
+    // update all price elements with the currency symbol
+    var priceElements = document.querySelectorAll(".price");
+    priceElements.forEach(function(element) {
+      var price = parseFloat(element.innerText);
+      var symbol = getCurrencySymbol(currencyCode);
+      element.innerText = price.toFixed(2) + symbol
+    });
+  }
+
+    function getCurrencySymbol(currencyCode) {
+        switch (currencyCode) {
+            case "usd":
+                return "$";
+            case "eur":
+                return "€";
+            case "gbp":
+                return "£";
+            // add more currencies as needed
+            default:
+                return currencyCode;
+        }
+    }
+
+
+  // attach the function to the dropdown list
+  //document.getElementById("currency-select").onchange = updatePrices;
+
+  // update prices on page load
+  updatePrices();
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#currency-toggle").click(function () {
+        $("#currency-form").toggle();
+        $("#search-form").hide();
+    });
+
+    $("#search-toggle").click(function () {
+        $("#search-form").toggle();
+        $("#currency-form").hide();
+    });
+    $(document).on("click", function (event) {
+        if (!$(event.target).closest("#currency-toggle, #currency-form").length) {
+            $("#currency-form").hide();
+        }
+        if (!$(event.target).closest("#search-toggle, #search-form").length) {
+            $("#search-form").hide();
+        }
+    });
+
 </script>
 
