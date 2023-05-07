@@ -1016,6 +1016,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public Item GetItemByName(string name)
         {
+            ReadItems();
             if (name == null)
             {
                 throw new ArgumentNullException(nameof(name));
@@ -1034,6 +1035,7 @@ namespace PSI_Projektas_Komanda1.Controllers
         // Cart
         public Item GetItem(int id, string name)
         {
+            ReadItems();
             if (name == null || id <= 0)
             {
                 throw new ArgumentNullException(nameof(name));
@@ -1078,8 +1080,8 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public void UpdateCart(Item item)
         {
+            ReadItems();
             InitializeSession();
-
             cart.DeserializeCart(HttpContext.Session.GetString("cart"));
 	    item.Price = ConvertPrice(item.Price, "eur");
             cart.Add(item, 1);
@@ -1140,6 +1142,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult ItemDetails(string name)
         {
+            ReadItems();
             InitializeSessionRecent();
             var item = items.FirstOrDefault(i => i.Name == name);
             if (item == null)
