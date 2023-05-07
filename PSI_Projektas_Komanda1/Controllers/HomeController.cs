@@ -1091,58 +1091,50 @@ namespace PSI_Projektas_Komanda1.Controllers
         {
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            List<Type> types = new List<Type>();
-            types.Add(typeof(Smartphone));
-            types.Add(typeof(Watch));
-            types.Add(typeof(Computer));
-            types.Add(typeof(TV));
-            types.Add(typeof(Camera));
+            var model = ComputerRepo.ReadComputers();
+            model.AddRange(SmartphoneRepo.ReadSmartphones());
+            model.AddRange(WatchRepo.ReadWatches());
+            model.AddRange(TVRepo.ReadTVs());
+            model.AddRange(CameraRepo.ReadCameras());
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
 
-            var model = filterByManyTypes(types);
             ViewBag.Prices = GetPrices(model);
             HttpContext.Session.SetString("filter", SerializeValue(model));
             return View("~/Views/Home/Electronics.cshtml", model);
         }
         public IActionResult KitchenAppliances(string currency)
         {
+            var model = FridgeRepo.ReadFridges();
+            model.AddRange(DishwasherRepo.ReadDiswashers());
+            model.AddRange(MicrowaveRepo.ReadMicrowaves());
+            model.AddRange(StoveRepo.ReadStoves());
+            model.AddRange(OvenRepo.ReadOvens());
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            List<Type> types = new List<Type>();
-            types.Add(typeof(Fridge));
-            types.Add(typeof(Dishwasher));
-            types.Add(typeof(Microwave));
-            types.Add(typeof(Stove));
-            types.Add(typeof(Oven));
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
-
-            var model = filterByManyTypes(types);
             ViewBag.Prices = GetPrices(model);
             HttpContext.Session.SetString("filter", SerializeValue(model));
             return View("~/Views/Home/KitchenAppliances.cshtml", model);
         }
         public IActionResult HouseholdAppliances(string currency)
         {
+            var model = VacuumRepo.ReadVacuums();
+            model.AddRange(WashingMachineRepo.ReadWashingMachines());
+            model.AddRange(DryerRepo.ReadDryers());
+            model.AddRange(AirConditionerRepo.ReadAirConditioners());
+            model.AddRange(HeatingSystemRepo.ReadHeatingSystems());
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            List<Type> types = new List<Type>();
-            types.Add(typeof(Vacuum));
-            types.Add(typeof(WashingMashine));
-            types.Add(typeof(Dryer));
-            types.Add(typeof(AirConditioner));
-            types.Add(typeof(HeatingSystem));
             foreach (var item in items)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
-
-            var model = filterByManyTypes(types);
             ViewBag.Prices = GetPrices(model);
             HttpContext.Session.SetString("filter", SerializeValue(model));
             return View("~/Views/Home/HouseholdAppliances.cshtml", model);
