@@ -4,8 +4,10 @@
 </head>
 @using (Html.BeginForm("FilterComputer", "Home", FormMethod.Post, new { id = "filterForm" }))
 {
+
     <div class="filter-container" >
         <div class="main-content">
+
         @*<button class="btn btn-primary" onclick="location.href='@Url.Action("Computers", "Home")'">Clear Filter</button><br>
 
     <br>*@
@@ -157,7 +159,6 @@
         <br />
         <button class="btn btn-primary" type="submit" id="filterButton">Filter</button>
         </div>
-    </div>
 }
 
 <script>
