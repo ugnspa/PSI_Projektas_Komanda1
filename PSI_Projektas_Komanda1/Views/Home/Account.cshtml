@@ -6,24 +6,33 @@
 
 <html>
 <head>
-    <link rel="stylesheet" href="~/css/cart.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body style="min-height:1000px">
+<body >
     <h1>Account</h1>
-
-    @if (Model == null)
+    <main>
+        @if (Model == null)
     {
         <p>Your haven't logged in</p>
     }
     else
     {
         <p>Logged in as: @Model.UserName</p>
-        <form method="post" action="/Login/Logout">
-            <button type="submit" class="btn btn-primary">Logout</button>
-        </form>
+        <div >
+            <form method="post" action="/Login/Logout">
+                <button type="submit" class="btn btn-primary">Logout</button>
+            </form>
+        </div>
+        if (Model.UserName.Equals("admin"))
+        {   
+            <div class="ButtonDiv">
+                <a asp-area="" asp-controller="Home" asp-action="Manage" class="btn btn-primary">Manage Items</a>
+            </div>
+        }
 
     }
+    </main>
 </body>
 </html>
