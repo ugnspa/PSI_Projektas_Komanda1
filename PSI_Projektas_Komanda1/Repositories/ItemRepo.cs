@@ -81,9 +81,25 @@ namespace PSI_Projektas_Komanda1.Repositories
 
 			Sql.Insert(query, args =>
 			{
-				args.Add("?type", item.GetType());
+				args.Add("?type", item.GetType().ToString());
 				args.Add("?fk_id", item.Id);
 			});
 		}
-	}
+
+        public static void DeleteItem(int itemId)
+        {
+            var query = $@"DELETE FROM items WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+
+		//public static int GetItemId(int fk_id, string type)
+		//{
+  //          var query = $@"SELECT id FROM `items` WHERE type=?type AND fk_id=?fk_id";
+
+  //      }
+    }
 }

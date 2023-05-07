@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+
+<divclass="container">
+    @if (Model is Item item)
+    {
+        <form method="post" action="@Url.Action("AddItem")">
+            @foreach (string prop in item.GetProperties())
+            {
+
+                @if (prop == "Šaldiklis" || prop == "Elektrinė" || prop == "Smart")
+                {
+                    <label>@prop</label>
+                    <br />
+                    <select name="itemInputs">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                }
+                else if (prop == "Tūris" || prop == "Didžiausias plotas" || prop == "Kaina" || prop == "Šaldiklio tūris" ||
+                prop == "Plotas" || prop == "Įstrižainė")
+                {
+                    //double
+                    <label>@prop</label>
+                    <br />
+                    <input type="text" name="itemInputs" pattern="\d+(\.\d+)?" title="Please enter a valid number" required />
+                }
+                else if (prop == "Mažiausia temperatūra" || prop == "Didžiausia temperatūra"|| prop == "Megapixeliai" ||
+                prop == "Kiekis" || prop == "Ram" || prop == "Atmintis" || prop == "Power supply" || prop == "Kaitviečių skaičius" || prop == "DaysCharged")
+                {
+                    //int
+                    <label>@prop</label>
+                    <br />
+                    <input type="text" name="itemInputs" pattern="\d+" title="Please enter a valid number" required />
+                }
+                else if (prop != "Id")
+                {
+                    //string
+                    <label>@prop</label>
+                    <br />
+                    <input type="text" name="itemInputs" value="@prop" />
+                }
+                else
+                {
+                    <input type="hidden" name="itemInputs" value="0" />
+                }
+                <br />
+            }
+            <input type="hidden" name="itemType" value="@item.GetType()" />
+            <!-- Add more hidden input fields for other properties if necessary -->
+            <button type="submit">Submit</button>
+        </form>
+    }
+</div>

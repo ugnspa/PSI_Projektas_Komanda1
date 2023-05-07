@@ -51,6 +51,24 @@ public class Smartphone : Item
         return list;
     }
 
+    public override List<string> GetProperties()
+    {
+        List<string> list = new List<string>();
+        list.Add("Nuotrauka");
+        list.Add("Id");
+        list.Add("Gamintojas");
+        list.Add("Modelis");
+        list.Add("Pavadinimas");
+        list.Add("Aprašymas");
+        list.Add("Kiekis");
+        list.Add("Kaina");
+        list.Add("Procesorius");
+        list.Add("Ram");
+        list.Add("GPU");
+        list.Add("Atmintis");
+        return list;
+    }
+
     public override string ToString()
     {
         return "Smartphone;" + base.ToString() + string.Format(";{0};{1};{2};{3}", this.Processor, this.Ram, this.GPU, this.Memory);

@@ -79,5 +79,15 @@
             airConditioner.Id = id;
             ItemRepo.InsertItem(airConditioner);
         }
+
+        public static void DeleteAirConditioner(int itemId)
+        {
+            var query = $@"DELETE FROM airconditioners WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
     }
 }
