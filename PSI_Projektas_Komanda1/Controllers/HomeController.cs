@@ -1312,8 +1312,17 @@ namespace PSI_Projektas_Komanda1.Controllers
         //Admin management
         public IActionResult Manage()
         {
-            ReadItems();
-            return View(items);
+            string username = HttpContext.Session.GetString("username");
+            if (username == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (username.Equals("admin"))
+            {
+                ReadItems();
+                return View(items);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Delete()

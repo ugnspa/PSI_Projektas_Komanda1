@@ -1,12 +1,15 @@
 ﻿@model List<Item>
-
+@{
+    var displayClass = !Model.Any() ? "d-none" : "";
+}
 <head>
     <link rel="stylesheet" href="~/css/filter.css" asp-append-version="true" />
 </head>
 @*@using (Html.BeginForm("FilterStore", "Home", FormMethod.Post, new { id = "filterForm" }))
 {*@
-    <div class="filter-container" >
-        <div class="main-content">
+
+    <div class="filter-container @displayClass" >
+        <div class="main-content @displayClass">
         <button class="btn btn-primary" onclick="location.href='@Url.Action("ClearFilter", "Home")'">Clear Filter</button><br>
 
 
