@@ -1,4 +1,4 @@
-﻿@model List<Item>
+﻿@*@model List<Item>
 <head>
     <link rel="stylesheet" href="~/css/filter.css" asp-append-version="true" />
 </head>
@@ -6,14 +6,14 @@
 {
 
     <div class="filter-container" >
-        <div class="main-content">
+        <div class="main-content">*@
 
         @*<button class="btn btn-primary" onclick="location.href='@Url.Action("Computers", "Home")'">Clear Filter</button><br>
 
     <br>*@
 
 
-        <label style="font-size: 18px; font-weight: bold;">Filter by Price</label><br>
+        @*<label style="font-size: 18px; font-weight: bold;">Filter by Price</label><br>
         @foreach (var mod in ViewBag.Prices)
         {
             <input type="checkbox" name="selectedPrices" value="@mod" id="@mod" class="brand-checkbox" ) />
@@ -22,12 +22,8 @@
         }
         <br>
 
-        <label style="font-size: 18px; font-weight: bold;">Filter by brand:</label><br>
-        @{
-            //ViewBag.Computers = Model.ToList();
-        }
-        @if (Model is List<Item> computers)
-        {
+        <label style="font-size: 18px; font-weight: bold;">Filter by brand:</label><br>*@
+        
             @*@foreach (var item in computers)
     {
     if (item is Computer comp)
@@ -49,7 +45,7 @@
     }
 
     }*@
-            List<string> processors = new List<string>();
+            @*List<string> processors = new List<string>();
             List<string> gpu = new List<string>();
             List<string> motherboard = new List<string>();
             List<int> Ram = new List<int>();
@@ -149,14 +145,14 @@
             }
             <br>
         }
-
+*@
 
 
         @*<input type="checkbox" name="selectedBrands" value="@brand" id="@brand" class="brand-checkbox" ) />
     <label for="@brand">@brand</label>
     <br />*@
 
-        <br />
+@*        <br />
         <button class="btn btn-primary" type="submit" id="filterButton">Filter</button>
         </div>
 }
@@ -169,3 +165,4 @@
         });
     });
 </script>
+*@
