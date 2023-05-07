@@ -81,7 +81,7 @@ namespace PSI_Projektas_Komanda1.Repositories
 
 			Sql.Insert(query, args =>
 			{
-				args.Add("?type", item.GetType());
+				args.Add("?type", item.GetType().ToString());
 				args.Add("?fk_id", item.Id);
 			});
 		}
