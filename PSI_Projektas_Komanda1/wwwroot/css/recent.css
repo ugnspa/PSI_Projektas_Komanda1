@@ -1,0 +1,36 @@
+﻿.recent-items {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    padding: 10px;
+    margin-left: 10px;
+}
+
+.popular-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.recent-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px 25px;
+}
+
+    .recent-item img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .recent-item p {
+        margin-top: 10px;
+        font-size: 14px;
+        text-align: center;
+    }

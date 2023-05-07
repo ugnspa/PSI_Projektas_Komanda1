@@ -1,0 +1,22 @@
+﻿@using PSI_Projektas_Komanda1.Models
+@model Recent
+<head>
+    <link rel="stylesheet" href="~/css/recent.css">
+</head>
+@if (Model.Count() != 0)
+{
+<p class="popular-title">Recently Viewed Products</p>
+<div class="recent-items">
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        <div class="recent-item">
+            <a href="@Url.Action("ItemDetails", "Home", new { name =Model.GetItem(i).Name})">
+                <img src="@Model.GetItem(i).Picture" alt="@Model.GetItem(i).Name">
+                </a>
+            <p>@Model.GetItem(i).Name</p>
+            </div>
+    }
+</div>
+}
+
+

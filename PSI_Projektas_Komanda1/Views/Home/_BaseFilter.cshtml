@@ -1,5 +1,13 @@
 ﻿@model List<Item>
 
+<head>
+    <link rel="stylesheet" href="~/css/filter.css" asp-append-version="true" />
+</head>
+@using (Html.BeginForm("Filter", "Home", FormMethod.Post, new { id = "filterForm" }))
+{
+    <div class="filter-container" >
+        @*<button class="btn btn-primary" onclick="location.href='@Url.Action("Computers", "Home")'">Clear Filter</button><br>
+
 
 <div class="container" style="flex: 1; position: absolute; top: 20%; left: 1%; transform: translateY(-50%, -50%) overflow-y: auto;">
     <button class="btn btn-primary" onclick="location.href='@Url.Action("ClearFilter", "Home")'">Clear Filter</button><br>
