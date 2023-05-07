@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Manage";
+}
+<h1>@ViewData["Title"]</h1>
+
+@* content header *@
+<div class="main-content-header">
+	<span class="title">@ViewData["title"]</span>
+	<span class="actions">
+		<a href="@Url.Action("Create")" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create</a>
+	</span>
+</div>
+
+@* content itself *@
+<div class="container">
+	<table class="entity-list">
+        <table class="entity-list">
+            <thead>
+                <tr>
+                    <th>
+                        <label>Id</label>
+                    </th>
+                    <th>
+                        <label>Name</label>
+                    </th>
+                    <th>
+                        <label>Brand</label>
+                    </th>
+                    <th>
+                        <label>Model</label>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Item item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(m => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.Brand)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.Model)
+                        </td>
+                        <td>
+                            @*<a href="@Url.Action("Edit", new { id = item.Id })"
+                           class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> Edit</a>*@
+
+                            <a href="@Url.Action("Delete", new { id = item.Id })"
+                           class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+	</table>
+</div>

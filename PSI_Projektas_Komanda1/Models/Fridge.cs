@@ -48,6 +48,23 @@ public class Fridge : Item
         return list;
     }
 
+    public override List<string> GetProperties()
+    {
+        List<string> list = new List<string>();
+        list.Add("Nuotrauka");
+        list.Add("Id");
+        list.Add("Gamintojas");
+        list.Add("Modelis");
+        list.Add("Pavadinimas");
+        list.Add("Aprašymas");
+        list.Add("Kiekis");
+        list.Add("Kaina");
+        list.Add("Šaldiklis");
+        list.Add("Tūris");
+        list.Add("Šaldiklio tūris");
+        return list;
+    }
+
     public override string ToString()
     {
         return "Fridge;" + base.ToString() + string.Format(";{0};{1};{2}",this.Freezer, this.Volume, this.FreezerVolume);

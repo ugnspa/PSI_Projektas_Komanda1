@@ -6,6 +6,7 @@
 @*@using (Html.BeginForm("FilterStore", "Home", FormMethod.Post, new { id = "filterForm" }))
 {*@
     <div class="filter-container" >
+        <div class="main-content">
         <button class="btn btn-primary" onclick="location.href='@Url.Action("ClearFilter", "Home")'">Clear Filter</button><br>
 
 
@@ -270,6 +271,7 @@
             else if (items.OfType<Microwave>().Count() == items.Count)
             {
                 <label style="font-size: 18px; font-weight: bold;">Filter by Volume</label>
+                    <br>
                 @foreach (var mod in items.OfType<Microwave>().Select(c => c.Volume).Distinct())
                 {
                     <input type="checkbox" name="selectedVolume" value="@mod" id="@mod" class="brand-checkbox" ) />
@@ -348,6 +350,7 @@
         <br />
         <button class="btn btn-primary" type="submit" id="filterButton">Filter</button>
     </form>
+    </div>
 </div>
 @*}*@
 

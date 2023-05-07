@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Bcpg;
 using Org.BouncyCastle.Utilities;
+using System.IO;
 
 namespace PSI_Projektas_Komanda1.Controllers
 {
@@ -287,6 +288,139 @@ namespace PSI_Projektas_Komanda1.Controllers
         {
             return View("SearchForm");
         }*/
+
+
+        public IActionResult CreationForm(string SelectedType)
+        {
+            Item item;
+            switch (SelectedType)
+            {
+                case "AirConditioner":
+                    item = new AirConditioner();
+                    break;
+                case "Camera":
+                    item = new Camera();
+                    break;
+                case "Computer":
+                    item = new Computer();
+                    break;
+                case "Dishwasher":
+                    item = new Dishwasher();
+                    break;
+                case "Dryer":
+                    item = new Dryer();
+                    break;
+                case "Fridge":
+                    item = new Fridge();
+                    break;
+                case "HeatingSystem":
+                    item = new HeatingSystem();
+                    break;
+                case "Microwave":
+                    item = new Microwave();
+                    break;
+                case "Oven":
+                    item = new Oven();
+                    break;
+                case "Smartphone":
+                    item = new Smartphone();
+                    break;
+                case "Stove":
+                    item = new Stove();
+                    break;
+                case "TV":
+                    item = new TV();
+                    break;
+                case "Vacuum":
+                    item = new Vacuum();
+                    break;
+                case "WashingMashine":
+                    item = new WashingMashine();
+                    break;
+                case "Watch":
+                    item = new Watch();
+                    break;
+                default:
+                    item = null;
+                    break;
+            }
+
+            // Pass the item to the view if needed
+            return View(item);
+        }
+
+        public IActionResult AddItem(string[] itemInputs, string itemType)
+        {
+
+            switch (itemType)
+            {
+                case "AirConditioner":
+                    AirConditioner item = new AirConditioner(itemInputs);
+                    AirConditionerRepo.InsertAirConditioner(item);
+                    break;
+                case "Camera":
+                    Camera item1 = new Camera(itemInputs);
+                    CameraRepo.InsertCamera(item1);
+                    break;
+                case "Computer":
+                    Computer item2 = new Computer(itemInputs);
+                    ComputerRepo.InsertComputer(item2);
+                    break;
+                case "Dishwasher":
+                    Dishwasher item3 = new Dishwasher(itemInputs);
+                    DishwasherRepo.InsertDishwasher(item3);
+                    break;
+                case "Dryer":
+                    Dryer item4 = new Dryer(itemInputs);
+                    DryerRepo.InsertDryer(item4);
+                    break;
+                case "Fridge":
+                    Fridge item5 = new Fridge(itemInputs);
+                    FridgeRepo.InsertFridge(item5);
+                    break;
+                case "HeatingSystem":
+                    HeatingSystem item6 = new HeatingSystem(itemInputs);
+                    HeatingSystemRepo.InsertHeatingSystem(item6);
+                    break;
+                case "Microwave":
+                    Microwave item7 = new Microwave(itemInputs);
+                    MicrowaveRepo.InsertMicrowave(item7);
+                    break;
+                case "Oven":
+                    Oven item8 = new Oven(itemInputs);
+                    OvenRepo.InsertOven(item8);
+                    break;
+                case "Smartphone":
+                    Smartphone item9 = new Smartphone(itemInputs);
+                    SmartphoneRepo.InsertSmartphone(item9);
+                    break;
+                case "Stove":
+                    Stove item10 = new Stove(itemInputs);
+                    StoveRepo.InsertStove(item10);
+                    break;
+                case "TV":
+                    TV item11 = new TV(itemInputs);
+                    TVRepo.InsertTV(item11);
+                    break;
+                case "Vacuum":
+                    Vacuum item12 = new Vacuum(itemInputs);
+                    VacuumRepo.InsertVacuum(item12);
+                    break;
+                case "WashingMashine":
+                    WashingMashine item13 = new WashingMashine(itemInputs);
+                    WashingMachineRepo.InsertWashingMashine(item13);
+                    break;
+                case "Watch":
+                    Watch item14 = new Watch(itemInputs);
+                    WatchRepo.InsertWatch(item14);
+                    break;
+                default:
+                    item = null;
+                    break;
+            }
+            ReadItems();
+            return View("Manage", items);
+        }
 
         public IActionResult SearchForName(string query, string currency)
         {
@@ -627,7 +761,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             //filtered = filtereditems;
             //HttpContext.Session.Set<List<Item>>("filtered", filtereditems);
             HttpContext.Session.SetString("filtered", SerializeValue(filtereditems));
-            return View("~/Views/Home/Store.cshtml", filtereditems);
+            return View("~/Views/Home/Filter.cshtml", filtereditems);
         }
 
         public List<Item> BaseFilter(List<Item> list, string[] selectedPrices, string[] selectedBrands, string[] selectedModels)
@@ -1174,5 +1308,45 @@ namespace PSI_Projektas_Komanda1.Controllers
                 return View(UserRepo.FindUserByUsername(username));
             }
         }
+
+        //Admin management
+        public IActionResult Manage()
+        {
+            ReadItems();
+            return View(items);
+        }
+
+        public IActionResult Delete()
+        {
+            ///
+            ReadItems();
+            return View("Manage", items);
+        }
+
+        public IActionResult Create()
+        {
+            List<Type> types = new List<Type>();
+            types.Add(typeof(Fridge));
+            types.Add(typeof(Dishwasher));
+            types.Add(typeof(Microwave));
+            types.Add(typeof(Stove));
+            types.Add(typeof(Oven));
+            types.Add(typeof(Smartphone));
+            types.Add(typeof(Watch));
+            types.Add(typeof(Computer));
+            types.Add(typeof(TV));
+            types.Add(typeof(Camera));
+            types.Add(typeof(Vacuum));
+            types.Add(typeof(WashingMashine));
+            types.Add(typeof(Dryer));
+            types.Add(typeof(AirConditioner));
+            types.Add(typeof(HeatingSystem));
+            //ReadItems();
+            return View(types);
+        }
+
+        
+
     }
+
 }
