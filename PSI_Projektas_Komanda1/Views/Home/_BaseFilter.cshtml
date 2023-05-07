@@ -1,16 +1,32 @@
 ﻿@model List<Item>
+
 <head>
     <link rel="stylesheet" href="~/css/filter.css" asp-append-version="true" />
 </head>
-@using (Html.BeginForm("Filter", "Home", FormMethod.Post, new { id = "filterForm" }))
-{
+@*@using (Html.BeginForm("FilterStore", "Home", FormMethod.Post, new { id = "filterForm" }))
+{*@
     <div class="filter-container" >
-        @*<button class="btn btn-primary" onclick="location.href='@Url.Action("Computers", "Home")'">Clear Filter</button><br>
+        <div class="main-content">
+        <button class="btn btn-primary" onclick="location.href='@Url.Action("ClearFilter", "Home")'">Clear Filter</button><br>
 
-        <br>*@
+
+@*<div class="container" style="flex: 1; position: absolute; top: 20%; left: 1%; transform: translateY(-50%, -50%) overflow-y: auto;">
+    <button class="btn btn-primary" onclick="location.href='@Url.Action("ClearFilter", "Home")'">Clear Filter</button><br>*@
+
+    <br>
+    <form method="post" action="@Url.Action("FilterStore", "Home")">
         
 
-        <label style="font-size: 18px; font-weight: bold;">Filter by Price</label><br>
+
+        
+        @{
+            //ViewBag.Computers = Model.ToList();
+        }
+        @if (Model is List<Item> items && items.Count > 0)
+        {
+            <label style="font-size: 18px; font-weight: bold;">Filter by Price</label>
+
+            <br>
             @foreach (var mod in ViewBag.Prices)
             {
                 <input type="checkbox" name="selectedPrices" value="@mod" id="@mod" class="brand-checkbox" ) />
@@ -19,58 +35,16 @@
             }
             <br>
 
-        <label style="font-size: 18px; font-weight: bold;">Filter by brand:</label><br>
-        @{
-            //ViewBag.Computers = Model.ToList();
-        }
-        @if (Model is List<Item> computers)
-        {
-            @*@foreach (var item in computers)
-            {
-                if (item is Computer comp)
-                {
-                    <input type="hidden" name="items[@comp.Id].Name" value="@comp.Name" />
-                    <input type="hidden" name="items[@comp.Id].Price" value="@comp.Price" />
-                    <input type="hidden" name="items[@comp.Id].Brand" value="@comp.Brand" />
-                    <input type="hidden" name="items[@comp.Id].Model" value="@comp.Model" />
-                    <input type="hidden" name="items[@comp.Id].Amount" value="@comp.Amount" />
-                    <input type="hidden" name="items[@comp.Id].Picture" value="@comp.Picture" />
-                    <input type="hidden" name="items[@comp.Id].Description" value="@comp.Description" />
-                    <input type="hidden" name="items[@comp.Id].Id" value="@comp.Id" />
-                    <input type="hidden" name="items[@comp.Id].Processor" value="@comp.Processor" />
-                    <input type="hidden" name="items[@comp.Id].GPU" value="@comp.GPU" />
-                    <input type="hidden" name="items[@comp.Id].Motherboard" value="@comp.Motherboard" />
-                    <input type="hidden" name="items[@comp.Id].Ram" value="@comp.Ram" />
-                    <input type="hidden" name="items[@comp.Id].Memory" value="@comp.Memory" />
-                    <input type="hidden" name="items[@comp.Id].PowerSupplyWattage" value="@comp.PowerSupplyWattage" />
-                }
+            <label style="font-size: 18px; font-weight: bold;">Filter by brand:</label>
 
-            }*@
-            List<string> processors = new List<string>();
-            List<string> gpu = new List<string>();
-            List<string> motherboard = new List<string>();
-            List<int> Ram = new List<int>();
-            List<int> memory = new List<int>();
-            List<int> PowerSupply = new List<int>();
-            @foreach (var computer in computers)
+            <br>
+
+            @foreach (Item item in items)
             {
-                if (computer is Computer comp)
-                {
-                    if (!processors.Contains(comp.Processor))
-                        processors.Add(comp.Processor);
-                    if (!gpu.Contains(comp.GPU))
-                        gpu.Add(comp.GPU);
-                    if (!Ram.Contains(comp.Ram))
-                        Ram.Add(comp.Ram);
-                    if (!memory.Contains(comp.Memory))
-                        memory.Add(comp.Memory);
-                    if (!PowerSupply.Contains(comp.PowerSupplyWattage))
-                        PowerSupply.Add(comp.PowerSupplyWattage);
-                    if (!motherboard.Contains(comp.Motherboard))
-                        motherboard.Add(comp.Motherboard);
-                }
+                <input type="hidden" name="BaseList" value="@item" />
             }
-            @foreach (var brand in computers.Select(c => c.Brand).Distinct())
+
+            @foreach (var brand in items.Select(c => c.Brand).Distinct())
             {
                 <input type="checkbox" name="selectedBrands" value="@brand" id="@brand" class="brand-checkbox" />
                 <label for="@brand">@brand</label>
@@ -80,84 +54,305 @@
             <label style="font-size: 18px; font-weight: bold;">Filter by Model</label>
 
             <br>
-            @foreach (var mod in computers.Select(c => c.Model).Distinct())
+            @foreach (var mod in items.Select(c => c.Model).Distinct())
             {
                 <input type="checkbox" name="selectedModels" value="@mod" id="@mod" class="brand-checkbox" ) />
                 <label for="@mod">@mod</label>
                 <br />
             }
             <br>
-            <label style="font-size: 18px; font-weight: bold;">Filter by Processor</label>
+            if (items.OfType<Computer>().Count() == items.Count)
+            {
+                <label style="font-size: 18px; font-weight: bold;">Filter by Processor</label>
+                <br>
+                @foreach (var mod in items.OfType<Computer>().Select(c => c.Processor).Distinct())
+                {
+                    <input type="checkbox" name="selectedProcessors" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
 
-            <br>
-            @foreach (var proc in processors)
-            {
-                <input type="checkbox" name="selectedProcessors" value="@proc" id="@proc" class="brand-checkbox" ) />
-                <label for="@proc">@proc</label>
-                <br />
-            }
-            <br>
-            <label style="font-size: 18px; font-weight: bold;">Filter by GPU</label>
+                <label style="font-size: 18px; font-weight: bold;">Filter by GPU</label>
+                <br>
+                @foreach (var mod in items.OfType<Computer>().Select(c => c.GPU).Distinct())
+                {
+                    <input type="checkbox" name="selectedGPUs" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
 
-            <br>
-            @foreach (var proc in gpu)
-            {
-                <input type="checkbox" name="selectedGpu" value="@proc" id="@proc" class="brand-checkbox" ) />
-                <label for="@proc">@proc</label>
-                <br />
-            }
-            <br>
-            <label style="font-size: 18px; font-weight: bold;">Filter by MotherBoard</label>
+                <label style="font-size: 18px; font-weight: bold;">Filter by Motherboeard</label>
+                <br>
+                @foreach (var proc in items.OfType<Computer>().Select(c => c.Motherboard).Distinct())
+                {
+                    <input type="checkbox" name="selectedMotherBoard" value="@proc" id="@proc" class="brand-checkbox" ) />
+                    <label for="@proc">@proc</label>
+                    <br />
+                }
+                <br>
+                <label style="font-size: 18px; font-weight: bold;">Filter by Ram</label>
 
-            <br>
-            @foreach (var proc in motherboard)
-            {
-                <input type="checkbox" name="selectedMotherBoard" value="@proc" id="@proc" class="brand-checkbox" ) />
-                <label for="@proc">@proc</label>
-                <br />
+                <br>
+                @foreach (var proc in items.OfType<Computer>().Select(c => c.Ram).Distinct())
+                {
+                    <input type="checkbox" name="selectedRam" value="@proc" id="@proc" class="brand-checkbox" ) />
+                    <label for="@proc">@proc GB</label>
+                    <br />
+                }
+                <br>
+                <label style="font-size: 18px; font-weight: bold;">Filter by Memory</label>
+                <br>
+                @foreach (var proc in items.OfType<Computer>().Select(c => c.Memory).Distinct())
+                {
+                    <input type="checkbox" name="selectedMemory" value="@proc" id="@proc" class="brand-checkbox" ) />
+                    <label for="@proc">@proc GB</label>
+                    <br />
+                }
+                <br>
+                <label style="font-size: 18px; font-weight: bold;">Filter by Power Supply Wattage</label>
+                <br>
+                @foreach (var proc in items.OfType<Computer>().Select(c => c.PowerSupplyWattage).Distinct())
+                {
+                    <input type="checkbox" name="selectedWattage" value="@proc" id="@proc" class="brand-checkbox" ) />
+                    <label for="@proc">@proc W</label>
+                    <br />
+                }
+                <br>
             }
-            <br>
-            <label style="font-size: 18px; font-weight: bold;">Filter by Ram</label>
+            else if (items.OfType<Camera>().Count() == items.Count)
+            {
+                <label style="font-size: 18px; font-weight: bold;">Filter by MegaPixels</label>
+                @foreach (var mod in items.OfType<Camera>().Select(c => c.MegaPixels).Distinct())
+                {
+                    <input type="checkbox" name="selectedMegaPixels" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
 
-            <br>
-            @foreach (var proc in Ram)
-            {
-                <input type="checkbox" name="selectedRam" value="@proc" id="@proc" class="brand-checkbox" ) />
-                <label for="@proc">@proc GB</label>
-                <br />
+
             }
-            <br>
-            <label style="font-size: 18px; font-weight: bold;">Filter by Memory</label>
-            <br>
-            @foreach (var proc in memory)
+            else if (items.OfType<Smartphone>().Count() == items.Count)
             {
-                <input type="checkbox" name="selectedMemory" value="@proc" id="@proc" class="brand-checkbox" ) />
-                <label for="@proc">@proc GB</label>
-                <br />
+                <label style="font-size: 18px; font-weight: bold;">Filter by Processor</label>
+                <br>
+                @foreach (var mod in items.OfType<Smartphone>().Select(c => c.Processor).Distinct())
+                {
+                    <input type="checkbox" name="selectedProcessors" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+
+                <label style="font-size: 18px; font-weight: bold;">Filter by GPU</label>
+                <br>
+                @foreach (var mod in items.OfType<Smartphone>().Select(c => c.Processor).Distinct())
+                {
+                    <input type="checkbox" name="selectedGPUs" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+                <label style="font-size: 18px; font-weight: bold;">Filter by Ram</label>
+                <br>
+                @foreach (var proc in items.OfType<Smartphone>().Select(c => c.Ram).Distinct())
+                {
+                    <input type="checkbox" name="selectedRam" value="@proc" id="@proc" class="brand-checkbox" ) />
+                    <label for="@proc">@proc GB</label>
+                    <br />
+                }
+                <br>
+                <label style="font-size: 18px; font-weight: bold;">Filter by Memory</label>
+                <br>
+                @foreach (var proc in items.OfType<Smartphone>().Select(c => c.Memory).Distinct())
+                {
+                    <input type="checkbox" name="selectedMemory" value="@proc" id="@proc" class="brand-checkbox" ) />
+                    <label for="@proc">@proc GB</label>
+                    <br />
+                }
+
+
             }
-            <br>
-            <label style="font-size: 18px; font-weight: bold;">Filter by Power Supply Wattage</label>
-            <br>
-            @foreach (var proc in PowerSupply)
+            else if (items.OfType<AirConditioner>().Count() == items.Count)
             {
-                <input type="checkbox" name="selectedWattage" value="@proc" id="@proc" class="brand-checkbox" ) />
-                <label for="@proc">@proc W</label>
-                <br />
+                <label style="font-size: 18px; font-weight: bold;">Filter by MaxArea</label>
+                @foreach (var mod in items.OfType<AirConditioner>().Select(c => c.MaxArea).Distinct())
+                {
+                    <input type="checkbox" name="selectedMaxArea" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+
+                <label style="font-size: 18px; font-weight: bold;">Filter by MaxTemp</label>
+                @foreach (var mod in items.OfType<AirConditioner>().Select(c => c.MaxTemp).Distinct())
+                {
+                    <input type="checkbox" name="selectedMaxTemp" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+
+                <label style="font-size: 18px; font-weight: bold;">Filter by MinTemp</label>
+                @foreach (var mod in items.OfType<AirConditioner>().Select(c => c.MinTemp).Distinct())
+                {
+                    <input type="checkbox" name="selectedMinTemp" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
             }
-            <br>
+            else if (items.OfType<Dishwasher>().Count() == items.Count)
+            {
+                <label style="font-size: 18px; font-weight: bold;">Filter by Volume</label>
+                @foreach (var mod in items.OfType<Dishwasher>().Select(c => c.Volume).Distinct())
+                {
+                    <input type="checkbox" name="selectedVolume" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+            }
+            else if (items.OfType<Dryer>().Count() == items.Count)
+            {
+                <label style="font-size: 18px; font-weight: bold;">Filter by Volume</label>
+                @foreach (var mod in items.OfType<Dryer>().Select(c => c.Volume).Distinct())
+                {
+                    <input type="checkbox" name="selectedVolume" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+            }
+            else if (items.OfType<Dishwasher>().Count() == items.Count)
+            {
+                <label style="font-size: 18px; font-weight: bold;">Filter by Volume</label>
+                @foreach (var mod in items.OfType<Dishwasher>().Select(c => c.Volume).Distinct())
+                {
+                    <input type="checkbox" name="selectedVolume" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+            }
+            else if (items.OfType<Fridge>().Count() == items.Count)
+            {
+                <label style="font-size: 18px; font-weight: bold;">Filter by Volume</label>
+                @foreach (var mod in items.OfType<Fridge>().Select(c => c.Volume).Distinct())
+                {
+                    <input type="checkbox" name="selectedVolume" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+
+                <label style="font-size: 18px; font-weight: bold;">Has Freezer</label>
+                @foreach (var mod in items.OfType<Fridge>().Select(c => c.Volume).Distinct())
+                {
+                    <input type="checkbox" name="selectedFreezer" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+            }
+            else if (items.OfType<HeatingSystem>().Count() == items.Count)
+            {
+                <label style="font-size: 18px; font-weight: bold;">Filter by MaxArea</label>
+                @foreach (var mod in items.OfType<HeatingSystem>().Select(c => c.MaxArea).Distinct())
+                {
+                    <input type="checkbox" name="selectedMaxArea" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+            }
+            else if (items.OfType<Microwave>().Count() == items.Count)
+            {
+                <label style="font-size: 18px; font-weight: bold;">Filter by Volume</label>
+                    <br>
+                @foreach (var mod in items.OfType<Microwave>().Select(c => c.Volume).Distinct())
+                {
+                    <input type="checkbox" name="selectedVolume" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+            }
+            else if (items.OfType<Oven>().Count() == items.Count)
+            {
+                <label style="font-size: 18px; font-weight: bold;">Filter by Volume</label>
+                @foreach (var mod in items.OfType<Oven>().Select(c => c.Volume).Distinct())
+                {
+                    <input type="checkbox" name="selectedVolume" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+
+                <label style="font-size: 18px; font-weight: bold;">Filter by Type</label>
+                @foreach (var mod in items.OfType<Oven>().Select(c => c.Type).Distinct())
+                {
+                    <input type="checkbox" name="selectedType" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+            }
+            else if (items.OfType<TV>().Count() == items.Count)
+            {
+                <label style="font-size: 18px; font-weight: bold;">Filter by Diagonal</label>
+                @foreach (var mod in items.OfType<TV>().Select(c => c.Diagonal).Distinct())
+                {
+                    <input type="checkbox" name="selectedDiagonal" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+            }
+            else if (items.OfType<Vacuum>().Count() == items.Count)
+            {
+                <label style="font-size: 18px; font-weight: bold;">Filter by Volume</label>
+                @foreach (var mod in items.OfType<Vacuum>().Select(c => c.Volume).Distinct())
+                {
+                    <input type="checkbox" name="selectedVolume" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+            }
+            else if (items.OfType<WashingMashine>().Count() == items.Count)
+            {
+                <label style="font-size: 18px; font-weight: bold;">Filter by Volume</label>
+                @foreach (var mod in items.OfType<WashingMashine>().Select(c => c.Volume).Distinct())
+                {
+                    <input type="checkbox" name="selectedVolume" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+            }
+            else if (items.OfType<Watch>().Count() == items.Count)
+            {
+                <label style="font-size: 18px; font-weight: bold;">Filter by Days Charged</label>
+                @foreach (var mod in items.OfType<Watch>().Select(c => c.DaysCharged).Distinct())
+                {
+                    <input type="checkbox" name="selectedDaysCharged" value="@mod" id="@mod" class="brand-checkbox" ) />
+                    <label for="@mod">@mod</label>
+                    <br />
+                }
+                <br>
+            }
         }
         <br>
 
-        
-
-        @*<input type="checkbox" name="selectedBrands" value="@brand" id="@brand" class="brand-checkbox" ) />
-        <label for="@brand">@brand</label>
-        <br />*@
-
         <br />
         <button class="btn btn-primary" type="submit" id="filterButton">Filter</button>
+    </form>
     </div>
-}
+</div>
+@*}*@
 
 <script>
     $(document).ready(function () {

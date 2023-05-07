@@ -50,6 +50,10 @@ public abstract class Item
 
     abstract public List<string> Print();
 
+    abstract public List<string> GetProperties();
+
+
+
     public override bool Equals(object? obj)
     {
         if (obj == null)
