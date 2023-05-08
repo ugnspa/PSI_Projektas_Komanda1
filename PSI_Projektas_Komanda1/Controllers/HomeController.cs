@@ -247,7 +247,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             // Convert all item prices to the new currency
             foreach (var item in items)
             {
-                item.Price = ConvertPrice(item.Price, currency);
+                item.Price = ConvertPrice(item.Price, "eur");
             }
             ViewBag.prices = GetPrices(items);
             ViewBag.RecentItems = GetRecent();
