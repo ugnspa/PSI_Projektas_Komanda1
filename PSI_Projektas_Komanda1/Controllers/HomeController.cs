@@ -874,7 +874,7 @@ namespace PSI_Projektas_Komanda1.Controllers
         {
             var model = SmartphoneRepo.ReadSmartphones();
             //var model = filterByType(typeof(Smartphone));
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -894,7 +894,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             //var model = filterByType(typeof(Watch));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -909,9 +909,9 @@ namespace PSI_Projektas_Komanda1.Controllers
             //var model = filterByType(typeof(Computer));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
-                
+                Console.WriteLine("AAAA");
                 item.Price = ConvertPrice(item.Price, currency);
             }
             ViewBag.Prices = GetPrices(model);
@@ -924,7 +924,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             //var model = filterByType(typeof(TV));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -938,7 +938,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             //var model = filterByType(typeof(Camera));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -952,7 +952,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             //var model = filterByType(typeof(Fridge));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -966,7 +966,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             //var model = filterByType(typeof(Dishwasher));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -980,7 +980,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             //var model = filterByType(typeof(Microwave));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -994,7 +994,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             //var model = filterByType(typeof(Stove));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -1008,7 +1008,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             //var model = filterByType(typeof(Oven));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -1022,7 +1022,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             //var model = filterByType(typeof(Vacuum));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -1037,7 +1037,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -1051,7 +1051,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             //var model = filterByType(typeof(Dryer));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -1065,7 +1065,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             //var model = filterByType(typeof(AirConditioner));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -1079,7 +1079,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             //var model = filterByType(typeof(HeatingSystem));
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
-            foreach (var item in items)
+            foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
             }
@@ -1089,6 +1089,7 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult Electronics(string currency)
         {
+            ReadItems();
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             List<Type> types = new List<Type>();
@@ -1109,6 +1110,7 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult KitchenAppliances(string currency)
         {
+            ReadItems();
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             List<Type> types = new List<Type>();
@@ -1129,6 +1131,7 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
         public IActionResult HouseholdAppliances(string currency)
         {
+            ReadItems();
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
             List<Type> types = new List<Type>();
@@ -1344,9 +1347,6 @@ namespace PSI_Projektas_Komanda1.Controllers
             //ReadItems();
             return View(types);
         }
-
-        
-
     }
 
 }
