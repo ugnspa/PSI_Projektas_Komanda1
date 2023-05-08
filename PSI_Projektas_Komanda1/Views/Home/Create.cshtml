@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Create Item";
+}
+<h1>@ViewData["Title"]</h1>
+<div class="container">
+<form action="@Url.Action("CreationForm")">
+
+    <select name="SelectedType">
+        <option value="">Select a device type</option>
+        @foreach (Type type in Model)
+        {
+            <option value="@type.FullName">@type.Name</option>
+        }
+    </select>
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+    <p> <p/>
+
+</form>
+</div>

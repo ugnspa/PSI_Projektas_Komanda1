@@ -76,5 +76,15 @@
 			stove.Id = id;
 			ItemRepo.InsertItem(stove);
 		}
-	}
+
+        public static void DeleteStove(int itemId)
+        {
+            var query = $@"DELETE FROM `stoves` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }
 }

@@ -72,5 +72,15 @@
 			tv.Id = id;
 			ItemRepo.InsertItem(tv);
 		}
-	}	
+
+        public static void DeleteTV(int itemId)
+        {
+            var query = $@"DELETE FROM `tvs` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }	
 }

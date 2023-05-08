@@ -73,5 +73,15 @@
 			microwave.Id = id;
 			ItemRepo.InsertItem(microwave);
 		}
-	}
+
+        public static void DeleteMicrowave(int itemId)
+        {
+            var query = $@"DELETE FROM `microwaves` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }
 }

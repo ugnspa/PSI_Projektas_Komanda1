@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Manage";
+}
+<h1>@ViewData["Title"]</h1>
+
+<br />
+
+@* content header *@
+<div class="main-content-header">
+	<span class="actions">
+		<a href="@Url.Action("Create")" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create</a>
+	</span>
+</div>
+
+<br />
+
+@* content itself *@
+<div class="container">
+    <table class="entity-list" style="border-collapse: collapse; width: 100%;">
+        <thead>
+            <tr>
+                <th>
+                    <label>Id</label>
+                </th>
+                <th>
+                    <label>Type</label>
+                </th>
+                <th>
+                    <label>Name</label>
+                </th>
+                <th>
+                    <label>Brand</label>
+                </th>
+                <th>
+                    <label>Model</label>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Item item in Model)
+            {
+                var itemType = item.GetType().ToString();
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => item.Id)
+                    </td>
+                    <td>
+                        @itemType
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Brand)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Model)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Delete", new { id = item.Id, type = itemType })" class="btn btn-danger">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+</div>

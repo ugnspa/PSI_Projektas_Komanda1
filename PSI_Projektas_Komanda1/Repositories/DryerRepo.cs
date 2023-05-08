@@ -73,5 +73,15 @@
 			dryer.Id = id;
 			ItemRepo.InsertItem(dryer);
 		}
-	}
+
+        public static void DeleteDryer(int itemId)
+        {
+            var query = $@"DELETE FROM `dryers` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }
 }
