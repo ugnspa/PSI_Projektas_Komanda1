@@ -117,5 +117,17 @@
 			ItemRepo.InsertItem(computer);
 		}
 
-	}
+        public static void DeleteComputer(int itemId)
+        {
+            var query = $@"DELETE FROM `computers` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+
+    }
+
+    
 }

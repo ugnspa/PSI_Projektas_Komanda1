@@ -73,5 +73,15 @@
 			washingMashine.Id = id;
 			ItemRepo.InsertItem(washingMashine);
 		}
-	}
+
+        public static void DeleteWashingMashine(int itemId)
+        {
+            var query = $@"DELETE FROM `washingmachines` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }
 }

@@ -52,7 +52,7 @@
                             @*<a href="@Url.Action("Edit", new { id = item.Id })"
                            class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> Edit</a>*@
 
-                            <a href="@Url.Action("Delete", new { id = item.Id })"
+                            <a href="@Url.Action("Delete", new { id = item.Id, type = item.GetType().ToString() })"
                            class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</a>
                         </td>
                     </tr>

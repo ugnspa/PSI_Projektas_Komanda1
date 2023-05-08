@@ -73,5 +73,15 @@
 			vacuum.Id = id;
 			ItemRepo.InsertItem(vacuum);
 		}
-	}
+
+        public static void DeleteVacuum(int itemId)
+        {
+            var query = $@"DELETE FROM `vacuums` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }
 }
