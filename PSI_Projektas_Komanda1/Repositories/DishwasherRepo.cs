@@ -73,5 +73,15 @@
 			dishwasher.Id = id;
 			ItemRepo.InsertItem(dishwasher);
 		}
-	}
+
+        public static void DeleteDishwasher(int itemId)
+        {
+            var query = $@"DELETE FROM `dishwashers` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }
 }

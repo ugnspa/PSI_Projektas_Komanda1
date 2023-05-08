@@ -82,5 +82,15 @@
 			smartphone.Id = id;
 			ItemRepo.InsertItem(smartphone);
 		}
-	}
+
+        public static void DeleteSmartphone(int itemId)
+        {
+            var query = $@"DELETE FROM `smartphones` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }
 }

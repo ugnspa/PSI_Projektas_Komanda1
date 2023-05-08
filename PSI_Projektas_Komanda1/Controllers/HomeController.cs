@@ -911,7 +911,6 @@ namespace PSI_Projektas_Komanda1.Controllers
             ViewBag.ShowRecentItems = true;
             foreach (var item in model)
             {
-                Console.WriteLine("AAAA");
                 item.Price = ConvertPrice(item.Price, currency);
             }
             ViewBag.Prices = GetPrices(model);
@@ -1114,6 +1113,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             model.AddRange(OvenRepo.ReadOvens());
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
+          
             foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -1131,6 +1131,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             model.AddRange(HeatingSystemRepo.ReadHeatingSystems());
             ViewBag.RecentItems = GetRecent();
             ViewBag.ShowRecentItems = true;
+           
             foreach (var item in model)
             {
                 item.Price = ConvertPrice(item.Price, currency);
@@ -1304,13 +1305,74 @@ namespace PSI_Projektas_Komanda1.Controllers
         //Admin management
         public IActionResult Manage()
         {
-            ReadItems();
-            return View(items);
+            string username = HttpContext.Session.GetString("username");
+            if (username == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (username.Equals("admin"))
+            {
+                ReadItems();
+                return View(items);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult Delete()
+        public IActionResult Delete(string id, string type)
         {
-            ///
+            int iid = int.Parse(id);
+            int itemid = ItemRepo.GetItemId(iid, type);
+            ItemRepo.DeleteItem(itemid);
+            switch (type)
+            {
+                case "AirConditioner":
+                    AirConditionerRepo.DeleteAirConditioner(iid);
+                    break;
+                case "Camera":
+                    CameraRepo.DeleteCamera(iid);
+                    break;
+                case "Computer":
+                    ComputerRepo.DeleteComputer(iid);
+                    break;
+                case "Dishwasher":
+                    DishwasherRepo.DeleteDishwasher(iid);
+                    break;
+                case "Dryer":
+                    DryerRepo.DeleteDryer(iid);
+                    break;
+                case "Fridge":
+                    FridgeRepo.DeleteFridge(iid);
+                    break;
+                case "HeatingSystem":
+                    HeatingSystemRepo.DeleteHeatingSystem(iid);
+                    break;
+                case "Microwave":
+                    MicrowaveRepo.DeleteMicrowave(iid);
+                    break;
+                case "Oven":
+                    OvenRepo.DeleteOvens(iid);
+                    break;
+                case "Smartphone":
+                    SmartphoneRepo.DeleteSmartphone(iid);
+                    break;
+                case "Stove":
+                    StoveRepo.DeleteStove(iid);
+                    break;
+                case "TV":
+                    TVRepo.DeleteTV(iid);
+                    break;
+                case "Vacuum":
+                    VacuumRepo.DeleteVacuum(iid);
+                    break;
+                case "WashingMashine":
+                    WashingMachineRepo.DeleteWashingMashine(iid);
+                    break;
+                case "Watch":
+                    WatchRepo.DeleteWatch(iid);
+                    break;
+                default:
+                    break;
+            }
             ReadItems();
             return View("Manage", items);
         }

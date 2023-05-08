@@ -73,5 +73,15 @@
 			camera.Id = id;
 			ItemRepo.InsertItem(camera);
 		}
-	}
+
+        public static void DeleteCamera(int itemId)
+        {
+            var query = $@"DELETE FROM `cameras` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }
 }
