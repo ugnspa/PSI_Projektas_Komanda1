@@ -1,5 +1,38 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model User
+@using Microsoft.AspNetCore.Mvc
 @{
+    ViewData["Title"] = "Account";
 }
+
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body >
+    <h1>Account</h1>
+    <main>
+        @if (Model == null)
+    {
+        <p>Your haven't logged in</p>
+    }
+    else
+    {
+        <p>Logged in as: @Model.UserName</p>
+        <div >
+            <form method="post" action="/Login/Logout">
+                <button type="submit" class="btn btn-primary">Logout</button>
+            </form>
+        </div>
+        if (Model.UserName.Equals("admin"))
+        {   
+            <div class="ButtonDiv">
+                <a asp-area="" asp-controller="Home" asp-action="Manage" class="btn btn-primary">Manage Items</a>
+            </div>
+        }
+
+    }
+    </main>
+</body>
+</html>

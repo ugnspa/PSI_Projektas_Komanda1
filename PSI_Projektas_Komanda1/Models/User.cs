@@ -9,13 +9,14 @@
 
 	public string Password { get; set; }
 
-	//public User(string id, string name, string surname, string email, string username, string password) {
-	//    Id = id;
-	//    Name = name;
-	//    SurName= surname;
-	//    Email = email;
-	//    UserName = username;
-	//    Password = password;
+	//public User(int id, string name, string surname, string email, string username, string password)
+	//{
+	//	ID = id;
+	//	Name = name;
+	//	SurName = surname;
+	//	Email = email;
+	//	UserName = username;
+	//	Password = password;
 
 	//}
 

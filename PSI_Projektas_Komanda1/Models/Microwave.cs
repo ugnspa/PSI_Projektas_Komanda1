@@ -36,6 +36,21 @@ public class Microwave : Item
         return list;
     }
 
+    public override List<string> GetProperties()
+    {
+        List<string> list = new List<string>();
+        list.Add("Nuotrauka");
+        list.Add("Id");
+        list.Add("Gamintojas");
+        list.Add("Modelis");
+        list.Add("Pavadinimas");
+        list.Add("Aprašymas");
+        list.Add("Kiekis");
+        list.Add("Kaina");
+        list.Add("Tūris");
+        return list;
+    }
+
     public override string ToString()
     {
         return "Microwave;" + base.ToString() + string.Format(";{0}", this.Volume);
