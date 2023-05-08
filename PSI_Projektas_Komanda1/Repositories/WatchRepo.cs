@@ -76,5 +76,15 @@
 			watch.Id = id;
 			ItemRepo.InsertItem(watch);
 		}
-	}
+
+        public static void DeleteWatch(int itemId)
+        {
+            var query = $@"DELETE FROM `watches` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }
 }

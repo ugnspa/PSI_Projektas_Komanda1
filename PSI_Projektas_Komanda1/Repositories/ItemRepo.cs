@@ -96,10 +96,21 @@ namespace PSI_Projektas_Komanda1.Repositories
             });
         }
 
-		//public static int GetItemId(int fk_id, string type)
-		//{
-  //          var query = $@"SELECT id FROM `items` WHERE type=?type AND fk_id=?fk_id";
+		public static int GetItemId(int fk_id, string type)
+		{
+			var query = $@"SELECT id FROM `items` WHERE type=?type AND fk_id=?fk_id";
+            var drc = Sql.Query(query, args =>
+            {
+				args.Add("?type", type);
+				args.Add("?fk_id", fk_id);
+            });
 
-  //      }
-    }
+            var a = Sql.MapOne<ItemID>(drc, (dre, t) => {
+                t.ID = dre.From<int>("id");
+
+            });
+			return a.ID;
+
+        }
+	}
 }

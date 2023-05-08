@@ -74,5 +74,15 @@
 			heatingSystem.Id = id;
 			ItemRepo.InsertItem(heatingSystem);
 		}
-	}
+
+        public static void DeleteHeatingSystem(int itemId)
+        {
+            var query = $@"DELETE FROM `heatingsystems` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }
 }

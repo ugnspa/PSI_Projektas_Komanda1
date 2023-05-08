@@ -76,5 +76,15 @@
 			oven.Id = id;
 			ItemRepo.InsertItem(oven);
 		}
-	}
+
+        public static void DeleteOvens(int itemId)
+        {
+            var query = $@"DELETE FROM `ovens` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }
 }
