@@ -55,7 +55,7 @@
 		public static void InsertHeatingSystem(HeatingSystem heatingSystem)
 		{
 			var query = $@"INSERT INTO `heatingsystems` 
-            (pic, brand, model, name, description, amount, price, max_areap ) VALUES 
+            (pic, brand, model, name, description, amount, price, max_area ) VALUES 
             (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?max_area)";
 
 			int id = (int)Sql.Insert(query, args =>
