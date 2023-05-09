@@ -1398,6 +1398,11 @@ namespace PSI_Projektas_Komanda1.Controllers
             //ReadItems();
             return View(types);
         }
+	
+	public IActionResult CreateOrder()
+        {      
+            return View();
+        }
     }
 
 }
