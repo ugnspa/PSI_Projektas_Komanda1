@@ -1231,7 +1231,7 @@ namespace PSI_Projektas_Komanda1.Controllers
             cart.DeserializeCart(HttpContext.Session.GetString("cart"));
             Item item = GetItemByName(productName);
             item.Price = ConvertPrice(item.Price, "eur");
-            cart.Update(GetItemByName(productName), amount);         
+            cart.Update(item, amount);         
             HttpContext.Session.SetString("cart", cart.SerializeCart());
             return RedirectToAction("Cart");
         }
