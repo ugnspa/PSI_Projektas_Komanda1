@@ -228,8 +228,23 @@ const changeCurrencyBtn = document.getElementById('change-currency-btn');
 
 // Get the previously selected currency from sessionStorage
 const storedCurrency = sessionStorage.getItem('selectedCurrency');
+const cookies = document.cookie.split(";"); // Split cookies into an array
+
+
+console.log(storedCurrency);
 if (storedCurrency) {
   currencySelect.value = storedCurrency;
+}else{
+    // in case there is no selected currency in session, we also check the cookies
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim(); // Remove leading/trailing spaces
+            if (cookie.startsWith("SelectedCurrency=")) {
+                const cookieCurrency = cookie.substring("SelectedCurrency=".length);
+                currencySelect.value = cookieCurrency;
+                console.log(cookieCurrency); // Output the value of the cookie
+                break;
+            }
+        }
 }
 
 currencyForm.addEventListener('submit', (event) => {
@@ -259,10 +274,31 @@ changeCurrencyBtn.addEventListener('click', () => {
     var priceElements = document.querySelectorAll(".price");
     priceElements.forEach(function(element) {
       var price = parseFloat(element.innerText);
+      var convertedPrice = convertPrice(price, currencyCode);
       var symbol = getCurrencySymbol(currencyCode);
-      element.innerText = price.toFixed(2) + symbol
+      element.innerText = convertedPrice.toFixed(2) + symbol
     });
   }
+
+    function convertPrice(price, currencyCode) {
+        // retrieve the exchange rate for the selected currency code
+        var exchangeRate = getExchangeRate(currencyCode);
+        // convert the price using the exchange rate
+        var convertedPrice = price * exchangeRate;
+        return convertedPrice;
+    }
+
+    function getExchangeRate(currencyCode) {
+        var exchangeRate = 1;
+        switch (currencyCode) {
+            case "usd":
+                return exchangeRate * 1.07;
+            case "eur":
+                return exchangeRate * 1;
+            case "gbp":
+                return exchangeRate * 0.88;       
+        }    
+}
 
     function getCurrencySymbol(currencyCode) {
         switch (currencyCode) {
@@ -277,8 +313,7 @@ changeCurrencyBtn.addEventListener('click', () => {
                 return currencyCode;
         }
     }
-
-
+   
   // attach the function to the dropdown list
   //document.getElementById("currency-select").onchange = updatePrices;
 
