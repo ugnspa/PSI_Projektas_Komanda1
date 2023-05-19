@@ -1318,6 +1318,17 @@ namespace PSI_Projektas_Komanda1.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public IActionResult DeleteConfirmation(int id, string type)
+        {
+            var model = new
+            {
+                Id = id,
+                Type = type
+            };
+
+            return View(model);
+        }
+
         public IActionResult Delete(string id, string type)
         {
             int iid = int.Parse(id);
@@ -1401,8 +1412,39 @@ namespace PSI_Projektas_Komanda1.Controllers
 	
 	public IActionResult CreateOrder()
         {      
-            return View();
+            if (!HttpContext.Session.Keys.Contains("username"))
+            {
+                return View("Login");
+            }
+            //Order order = new Order();
+            cart.DeserializeCart(HttpContext.Session.GetString("cart"));
+
+            return View(cart);
+        }
+
+        public IActionResult AddOrder(string Address)
+        {
+            Order order = new Order();
+            cart.DeserializeCart(HttpContext.Session.GetString("cart"));
+            foreach (KeyValuePair<Item, int> item in cart.Items)
+            {
+                order.Add(item.Key, item.Value);
+            }
+            order.Price = cart.Price();
+            User user = UserRepo.FindUserByUsername(HttpContext.Session.GetString("username"));
+            order.User = user;
+            order.Adress = Address;
+            OrderRepo.InsertOrder(order);
+
+            ///
+
+
+            popular.AddRange(ComputerRepo.SelectFirstTen());
+
+            return View("index", popular);
         }
     }
+
+    
 
 }
