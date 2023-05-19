@@ -118,7 +118,7 @@ namespace PSI_Projektas_Komanda1.Repositories
 
 		public static void InsertOrder(Order order)
 		{
-			var query = "INSERT INTO orders (fk_userID, adress, price) VALUES (?userID, ?adress,?price)";
+			var query = "INSERT INTO orders (fk_userID, address, price) VALUES (?userID, ?adress,?price)";
 			var drc = Sql.Query(query, args =>
 			{
 				args.Add("?userID", order.User.ID);
