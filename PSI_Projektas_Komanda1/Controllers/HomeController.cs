@@ -15,6 +15,7 @@ using PayPal.Api;
 using Mysqlx.Crud;
 using Org.BouncyCastle.Asn1.X509;
 using System.Globalization;
+using System.Reflection.Metadata;
 
 namespace PSI_Projektas_Komanda1.Controllers
 {
@@ -1444,7 +1445,6 @@ namespace PSI_Projektas_Komanda1.Controllers
             order.Adress = Address;
             order.Status = "Processing";
             order = OrderRepo.InsertOrder(order);
-            Console.WriteLine(order.ToString());
             var config = new Dictionary<string, string>
             {
                 { "mode", "sandbox" }, // "live" or "sandbox"
@@ -1470,7 +1470,7 @@ namespace PSI_Projektas_Komanda1.Controllers
                         invoice_number = order.ID.ToString(),
                         amount = new Amount
                         {
-                            currency = "USD",
+                            currency = "EUR",
                             total = order.Price.ToString("F2",CultureInfo.InvariantCulture) 
                         },
                         item_list = new ItemList
@@ -1478,7 +1478,7 @@ namespace PSI_Projektas_Komanda1.Controllers
                             items = order.items.Select(i => new PayPal.Api.Item
                             {
                                 name = i.Key.Name,
-                                currency = "USD",
+                                currency = "EUR",
                                 price = i.Key.Price.ToString("F2",CultureInfo.InvariantCulture), 
                                 quantity = i.Value.ToString(),
                                 sku = i.Key.Id.ToString()
@@ -1503,13 +1503,12 @@ namespace PSI_Projektas_Komanda1.Controllers
             }
             else
             {
-                popular.AddRange(ComputerRepo.SelectFirstTen());
                 //failure
                 order.Status = "Failed";
                 OrderRepo.InsertOrder(order);
-                return View("index", popular);
+				return RedirectToAction("Index", "Home");
 
-            }
+			}
 
         }
 
@@ -1539,30 +1538,32 @@ namespace PSI_Projektas_Komanda1.Controllers
                 {
                     //success
                      order.Status = "Success";
+                    TempData["Message"] = "Order successfully placed!";
                     OrderRepo.InsertOrder(order);
                     cart.DeserializeCart(HttpContext.Session.GetString("cart"));
                     cart.RemoveAll();
                     HttpContext.Session.SetString("cart", cart.SerializeCart());
 
-            }
+                }
                 else
                 {
                     //failure
                      order.Status = "Failed";
-                    OrderRepo.InsertOrder(order);
+                     TempData["Message"] = "Order placement failed. Please try again.";
+                     OrderRepo.InsertOrder(order);
                 }
-            popular.AddRange(ComputerRepo.SelectFirstTen());
-            return View("index", popular);
 
-        }
+			return RedirectToAction("Index", "Home");
+
+		}
 
         public IActionResult CancelPayment()
         {
             Order order = OrderRepo.GetLastOrder(); // very bad
             order.Status = "Cancelled";
             OrderRepo.InsertOrder(order);
-            popular.AddRange(ComputerRepo.SelectFirstTen());
-            return View("index", popular);
+			TempData["Message"] = "Order Cancelled";
+            return RedirectToAction("Index", "Home");
         }
 
 

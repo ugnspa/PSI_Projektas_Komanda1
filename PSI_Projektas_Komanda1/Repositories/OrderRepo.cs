@@ -129,7 +129,7 @@ namespace PSI_Projektas_Komanda1.Repositories
 					args.Add("?status", order.Status);
 					args.Add("?ID", order.ID);
 				});
-			}
+            }
 			else if (order.Status.Equals("Processing"))
 			{
 				var query = "INSERT INTO orders (fk_userID, address, price,status) VALUES (?userID, ?adress,?price,?status)";
@@ -153,8 +153,8 @@ namespace PSI_Projektas_Komanda1.Repositories
 					args.Add("?status", order.Status);
 					args.Add("?ID", order.ID);
 				});
-
 				DeleteOrderedItems(order);
+
 			}
 			return order;
 			
