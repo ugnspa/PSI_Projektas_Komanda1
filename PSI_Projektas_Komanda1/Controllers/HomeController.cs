@@ -11,6 +11,10 @@ using Newtonsoft.Json;
 using Org.BouncyCastle.Bcpg;
 using Org.BouncyCastle.Utilities;
 using System.IO;
+using PayPal.Api;
+using Mysqlx.Crud;
+using Org.BouncyCastle.Asn1.X509;
+using System.Globalization;
 
 namespace PSI_Projektas_Komanda1.Controllers
 {
@@ -24,6 +28,7 @@ namespace PSI_Projektas_Komanda1.Controllers
         Recent recent = new Recent(); // recently viewed items
 
         Cart cart = new Cart();
+
 
 
         public void ReadItems()
@@ -195,10 +200,12 @@ namespace PSI_Projektas_Komanda1.Controllers
         }
 
         private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
             _logger = logger; ;
+            _configuration = configuration;
             //ReadItems();
         }
 
@@ -1424,6 +1431,7 @@ namespace PSI_Projektas_Komanda1.Controllers
 
         public IActionResult AddOrder(string Address)
         {
+
             Order order = new Order();
             cart.DeserializeCart(HttpContext.Session.GetString("cart"));
             foreach (KeyValuePair<Item, int> item in cart.Items)
@@ -1434,15 +1442,129 @@ namespace PSI_Projektas_Komanda1.Controllers
             User user = UserRepo.FindUserByUsername(HttpContext.Session.GetString("username"));
             order.User = user;
             order.Adress = Address;
-            OrderRepo.InsertOrder(order);
+            order.Status = "Processing";
+            order = OrderRepo.InsertOrder(order);
+            Console.WriteLine(order.ToString());
+            var config = new Dictionary<string, string>
+            {
+                { "mode", "sandbox" }, // "live" or "sandbox"
+                { "clientId", _configuration["PayPal:ClientId"] },
+                { "clientSecret", _configuration["PayPal:ClientSecret"] }
+            };
 
-            ///
+            var accessToken = new OAuthTokenCredential(config).GetAccessToken();
+            var apiContext = new APIContext(accessToken);
 
+            var payment = new Payment
+            {
+                intent = "sale",
+                payer = new Payer
+                {
+                    payment_method = "paypal"
+                },
+                        transactions = new List<Transaction>
+                {
+                    new Transaction
+                    {
+                        description = "Order payment",
+                        invoice_number = order.ID.ToString(),
+                        amount = new Amount
+                        {
+                            currency = "USD",
+                            total = order.Price.ToString("F2",CultureInfo.InvariantCulture) 
+                        },
+                        item_list = new ItemList
+                        {                         
+                            items = order.items.Select(i => new PayPal.Api.Item
+                            {
+                                name = i.Key.Name,
+                                currency = "USD",
+                                price = i.Key.Price.ToString("F2",CultureInfo.InvariantCulture), 
+                                quantity = i.Value.ToString(),
+                                sku = i.Key.Id.ToString()
+                            }).ToList()
+                        }
+                    }
+                },
+                        redirect_urls = new RedirectUrls
+                        {
+                            return_url = Url.Action("ExecutePayment", "Home", null, Request.Scheme),
+                            cancel_url = Url.Action("CancelPayment", "Home", null, Request.Scheme)
+                        }
+                    };
+            var createdPayment = payment.Create(apiContext);
 
-            popular.AddRange(ComputerRepo.SelectFirstTen());
+            var approvalUrl = createdPayment.links.FirstOrDefault(link => link.rel == "approval_url")?.href;
 
-            return View("index", popular);
+            if (approvalUrl != null)
+            {
+                return Redirect(approvalUrl);
+                
+            }
+            else
+            {
+                popular.AddRange(ComputerRepo.SelectFirstTen());
+                //failure
+                order.Status = "Failed";
+                OrderRepo.InsertOrder(order);
+                return View("index", popular);
+
+            }
+
         }
+
+        public IActionResult ExecutePayment(string paymentId, string PayerID)
+        {
+            var config = new Dictionary<string, string>
+
+            
+        {
+            { "mode", "sandbox" }, // "live" or "sandbox"
+            { "clientId", _configuration["PayPal:ClientId"] },
+            { "clientSecret", _configuration["PayPal:ClientSecret"] }
+        };
+
+            Order order = OrderRepo.GetLastOrder(); // very bad
+                var accessToken = new OAuthTokenCredential(config).GetAccessToken();
+                var apiContext = new APIContext(accessToken);
+
+                var paymentExecution = new PaymentExecution
+                {
+                    payer_id = PayerID
+                };
+                var payment = new Payment { id = paymentId };
+                var executedPayment = payment.Execute(apiContext, paymentExecution);
+
+                if (executedPayment.state.ToLower() == "approved")
+                {
+                    //success
+                     order.Status = "Success";
+                    OrderRepo.InsertOrder(order);
+                    cart.DeserializeCart(HttpContext.Session.GetString("cart"));
+                    cart.RemoveAll();
+                    HttpContext.Session.SetString("cart", cart.SerializeCart());
+
+            }
+                else
+                {
+                    //failure
+                     order.Status = "Failed";
+                    OrderRepo.InsertOrder(order);
+                }
+            popular.AddRange(ComputerRepo.SelectFirstTen());
+            return View("index", popular);
+
+        }
+
+        public IActionResult CancelPayment()
+        {
+            Order order = OrderRepo.GetLastOrder(); // very bad
+            order.Status = "Cancelled";
+            OrderRepo.InsertOrder(order);
+            return View("Error");
+        }
+
+
     }
 
     

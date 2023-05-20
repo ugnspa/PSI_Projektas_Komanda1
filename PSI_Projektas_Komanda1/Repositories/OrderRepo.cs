@@ -1,4 +1,6 @@
-﻿using PSI_Projektas_Komanda1.Models;
+﻿using Org.BouncyCastle.Asn1.X509;
+using Org.BouncyCastle.Tls;
+using PSI_Projektas_Komanda1.Models;
 
 namespace PSI_Projektas_Komanda1.Repositories
 {
@@ -116,24 +118,47 @@ namespace PSI_Projektas_Komanda1.Repositories
 			return dict;
 		}
 
-		public static void InsertOrder(Order order)
+		public static Order  InsertOrder(Order order)
 		{
-			var query = "INSERT INTO orders (fk_userID, address, price) VALUES (?userID, ?adress,?price)";
-			var drc = Sql.Query(query, args =>
+			if (order.Status.Equals("Success"))
 			{
-				args.Add("?userID", order.User.ID);
-				args.Add("adress", order.Adress);
-				args.Add("?price", order.Price);
-			});
 
-			int ID = (int)Sql.Insert(query, args =>
+				var query = "UPDATE orders SET status = ?status WHERE id = ?ID and status = 'Processing'";
+				var drc = Sql.Query(query, args =>
+				{
+					args.Add("?status", order.Status);
+					args.Add("?ID", order.ID);
+				});
+			}
+			else if (order.Status.Equals("Processing"))
 			{
-				args.Add("?userID", order.User.ID);
-				args.Add("adress", order.Adress);
-				args.Add("?price", order.Price);
-			});
-			order.ID = ID;
-			InsertOrderedItems(order);
+				var query = "INSERT INTO orders (fk_userID, address, price,status) VALUES (?userID, ?adress,?price,?status)";
+
+
+				int ID = (int)Sql.Insert(query, args =>
+				{
+					args.Add("?userID", order.User.ID);
+					args.Add("adress", order.Adress);
+					args.Add("?price", order.Price);
+                    args.Add("?status", order.Status);
+                });
+				order.ID = ID;
+				InsertOrderedItems(order);
+			}
+			else if (order.Status.Equals("Failed") || order.Status.Equals("Cancelled"))
+			{
+				var query = "UPDATE orders SET status = ?status WHERE id = ?ID and status = 'Processing'";
+				var drc = Sql.Query(query, args =>
+				{
+					args.Add("?status", order.Status);
+					args.Add("?ID", order.ID);
+				});
+
+				DeleteOrderedItems(order);
+			}
+			return order;
+			
+
 		}
 
 		public static void InsertOrderedItems(Order order)
@@ -157,5 +182,30 @@ namespace PSI_Projektas_Komanda1.Repositories
 				args.Add("?amount", amount);
 			});
 		}
+
+		public static void DeleteOrderedItems(Order order) 
+		{
+            var query = "DELETE FROM item_order WHERE fk_orderID = ?orderID";
+            var drc = Sql.Query(query, args =>
+            {
+                args.Add("?orderID", order.ID);
+            });
+        }
+
+		public static Order GetLastOrder() 
+		{
+            var query = "SELECT * FROM orders WHERE ID = (SELECT MAX(ID) FROM orders)";
+            var drc = Sql.Query(query);
+
+            var order = Sql.MapOne<Order>(drc, (dre, t) => {
+				Console.WriteLine(t.ID);
+                t.ID = dre.From<int>("id");
+                t.Adress = dre.From<string>("address");
+                t.Price = dre.From<decimal>("price");
+                t.Status = dre.From<string>("status");
+            });
+			return order;
+        }
+
 	}
 }
