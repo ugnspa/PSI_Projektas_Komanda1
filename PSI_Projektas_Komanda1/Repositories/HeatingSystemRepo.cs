@@ -55,7 +55,7 @@
 		public static void InsertHeatingSystem(HeatingSystem heatingSystem)
 		{
 			var query = $@"INSERT INTO `heatingsystems` 
-            (pic, brand, model, name, description, amount, price, max_areap ) VALUES 
+            (pic, brand, model, name, description, amount, price, max_area ) VALUES 
             (?pic, ?brand, ?model, ?name, ?description, ?amount, ?price, ?max_area)";
 
 			int id = (int)Sql.Insert(query, args =>
@@ -74,5 +74,15 @@
 			heatingSystem.Id = id;
 			ItemRepo.InsertItem(heatingSystem);
 		}
-	}
+
+        public static void DeleteHeatingSystem(int itemId)
+        {
+            var query = $@"DELETE FROM `heatingsystems` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }
 }

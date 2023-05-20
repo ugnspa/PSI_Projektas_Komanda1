@@ -1,9 +1,9 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "CreationForm";
 }
 <h1>@ViewData["Title"]</h1>
 
-<divclass="container">
+<div class="container">
     @if (Model is Item item)
     {
         <form method="post" action="@Url.Action("AddItem")">
@@ -40,7 +40,7 @@
                     //string
                     <label>@prop</label>
                     <br />
-                    <input type="text" name="itemInputs" value="@prop" />
+                    <input type="text" name="itemInputs" value="" />
                 }
                 else
                 {
@@ -49,8 +49,11 @@
                 <br />
             }
             <input type="hidden" name="itemType" value="@item.GetType()" />
+            <br />
             <!-- Add more hidden input fields for other properties if necessary -->
-            <button type="submit">Submit</button>
+            <button class="btn btn-primary" type="submit">Submit</button>
+            <br />
+            <p> <p/>
         </form>
     }
 </div>

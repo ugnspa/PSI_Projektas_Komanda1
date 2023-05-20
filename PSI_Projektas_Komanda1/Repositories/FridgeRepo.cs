@@ -79,5 +79,15 @@
 			fridge.Id = id;
 			ItemRepo.InsertItem(fridge);
 		}
-	}
+
+        public static void DeleteFridge(int itemId)
+        {
+            var query = $@"DELETE FROM `fridges` WHERE id = ?id";
+
+            Sql.Delete(query, args =>
+            {
+                args.Add("?id", itemId);
+            });
+        }
+    }
 }
