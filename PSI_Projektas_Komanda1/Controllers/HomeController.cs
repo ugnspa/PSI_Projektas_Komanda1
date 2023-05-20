@@ -1561,7 +1561,8 @@ namespace PSI_Projektas_Komanda1.Controllers
             Order order = OrderRepo.GetLastOrder(); // very bad
             order.Status = "Cancelled";
             OrderRepo.InsertOrder(order);
-            return View("Error");
+            popular.AddRange(ComputerRepo.SelectFirstTen());
+            return View("index", popular);
         }
 
 
