@@ -6,7 +6,7 @@ public class Order
     public User User { get; set; }
     public string Adress { get; set; }
     public decimal Price { get; set; }
-    
+    public string Status { get; set; }    
     public Dictionary<Item, int> items { get; set; }
     
     public Order()
@@ -76,6 +76,11 @@ public class Order
         {
             return items.Count;
         }
+
+    public override string ToString()
+    {
+        return $"{ID}, {User.ID},  {Adress}, {Price.ToString("F2")}, {Status}";
+    }
 
 }
 
