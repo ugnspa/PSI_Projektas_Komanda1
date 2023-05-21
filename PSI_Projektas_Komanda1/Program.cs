@@ -1,6 +1,7 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
+using PSI_Projektas_Komanda1.Models;
 
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
@@ -11,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.Configure<PayPalConfig>(builder.Configuration.GetSection("PayPal"));
 
 builder.Services.AddDistributedMemoryCache();
 // Add session middleware

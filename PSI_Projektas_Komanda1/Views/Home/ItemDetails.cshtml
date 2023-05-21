@@ -26,11 +26,22 @@
             url: '@Url.Action("AddToCart", "Home")',
             data: { id: id, name: name },
             success: function () {
-                alert('Item added to cart!');
+                var message = $('<div>').addClass('popup-message').text('Item added to cart!');
+                $('body').append(message);
+
+                setTimeout(function () {
+                    message.fadeOut('fast');
+                }, 2000);
             },
             error: function () {
-                alert('Error adding item to cart.');
+                var message = $('<div>').addClass('popup-message').text('Error adding item to cart!');
+                $('body').append(message);
+
+                setTimeout(function () {
+                    message.fadeOut('fast');
+                }, 2000);
             }
         });
     }
+
 </script>
