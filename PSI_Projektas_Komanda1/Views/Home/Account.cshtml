@@ -14,17 +14,22 @@
     <h1>Account</h1>
     <main>
         @if (Model == null)
-    {
-        <p>Your haven't logged in</p>
-    }
-    else
-    {
-        <p>Logged in as: @Model.UserName</p>
-        <div >
-            <form method="post" action="/Login/Logout">
-                <button type="submit" class="btn btn-primary">Logout</button>
-            </form>
-        </div>
+        {
+            <p>Your haven't logged in</p>
+        }
+        else
+        {
+            <p>Logged in as: @Model.UserName</p>
+
+            <div>
+            @Html.ActionLink("Orders", "Orders", "Order", null, new { @class = "btn btn-primary" })
+            </div>
+
+            <div style="padding:30px 0px 30px 0px">
+                <form method="post" action="/Login/Logout">
+                    <button type="submit" class="btn btn-primary">Logout</button>
+                </form>
+            </div>
         if (Model.UserName.Equals("admin"))
         {   
             <div class="ButtonDiv">
