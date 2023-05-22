@@ -1430,6 +1430,18 @@ namespace PSI_Projektas_Komanda1.Controllers
             return View(cart);
         }
 
+        public Order ConvertCurrency(Order order, string currency)
+        {
+            order.Price = ConvertPrice(order.Price, currency.ToLower());
+            for(int i = 0; i < order.Count(); i++) 
+            {
+                Item temp = order.Get(i);
+                temp.Price = ConvertPrice(temp.Price, currency.ToLower());
+            }
+
+            return order;
+        }
+
         public IActionResult AddOrder(string Address)
         {
 
@@ -1439,12 +1451,16 @@ namespace PSI_Projektas_Komanda1.Controllers
             {
                 order.Add(item.Key, item.Value);
             }
+            string currency = "EUR";
+            string selectedCurrency = HttpContext.Session.GetString("SelectedCurrency") ?? Request.Cookies["SelectedCurrency"];
+            currency = String.IsNullOrEmpty(selectedCurrency) ? currency : selectedCurrency.ToUpper();
             order.Price = cart.Price();
             User user = UserRepo.FindUserByUsername(HttpContext.Session.GetString("username"));
             order.User = user;
             order.Adress = Address;
             order.Status = "Processing";
             order = OrderRepo.InsertOrder(order);
+            order = ConvertCurrency(order, currency);
             var config = new Dictionary<string, string>
             {
                 { "mode", "sandbox" }, // "live" or "sandbox"
@@ -1470,7 +1486,7 @@ namespace PSI_Projektas_Komanda1.Controllers
                         invoice_number = order.ID.ToString(),
                         amount = new Amount
                         {
-                            currency = "EUR",
+                            currency = currency,
                             total = order.Price.ToString("F2",CultureInfo.InvariantCulture) 
                         },
                         item_list = new ItemList
@@ -1478,7 +1494,7 @@ namespace PSI_Projektas_Komanda1.Controllers
                             items = order.items.Select(i => new PayPal.Api.Item
                             {
                                 name = i.Key.Name,
-                                currency = "EUR",
+                                currency = currency,
                                 price = i.Key.Price.ToString("F2",CultureInfo.InvariantCulture), 
                                 quantity = i.Value.ToString(),
                                 sku = i.Key.Id.ToString()
