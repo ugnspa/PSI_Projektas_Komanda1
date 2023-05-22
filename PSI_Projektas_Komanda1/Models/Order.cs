@@ -1,12 +1,19 @@
 ﻿using System;
+using System.ComponentModel;
+
 [Serializable]
 public class Order
 {
+    [DisplayName("Order ID")]
     public int ID { get; set; }
     public User User { get; set; }
     public string Adress { get; set; }
-    public decimal Price { get; set; }
-    public string Status { get; set; }    
+
+	[DisplayName("Price")]
+	public decimal Price { get; set; }
+
+	[DisplayName("Status")]
+	public string Status { get; set; }    
     public Dictionary<Item, int> items { get; set; }
     
     public Order()
@@ -72,12 +79,20 @@ public class Order
         {
             return (double)item.Price * items[item];
         }
-        public int count()
+        public int Count()
         {
             return items.Count;
         }
+    public Item Get(int i)
+    {
+        return items.ElementAt(i).Key;
+    }
 
-    public override string ToString()
+	public int GetAmount(int i)
+	{
+		return items.ElementAt(i).Value;
+	}
+	public override string ToString()
     {
         return $"{ID}, {User.ID},  {Adress}, {Price.ToString("F2")}, {Status}";
     }
