@@ -54,6 +54,10 @@ namespace PSI_Projektas_Komanda1.Models
 		{
 			return Items.Count;
 		}
+		public void RemoveAll() 
+		{
+			Items.Clear();
+		}
 
         public decimal Price()
         {
