@@ -58,7 +58,7 @@
                         @Html.DisplayFor(m => item.Model)
                     </td>
                     <td>
-                        <a href="@Url.Action("Delete", new { id = item.Id, type = itemType })" class="btn btn-danger">
+                        <a href="@Url.Action("DeleteConfirmation", new { id = item.Id, type = itemType })" class="btn btn-danger">
                             <i class="fa-solid fa-trash"></i> Delete
                         </a>
                     </td>

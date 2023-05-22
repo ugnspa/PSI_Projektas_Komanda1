@@ -6,7 +6,7 @@ public class Order
     public User User { get; set; }
     public string Adress { get; set; }
     public decimal Price { get; set; }
-    
+    public string Status { get; set; }    
     public Dictionary<Item, int> items { get; set; }
     
     public Order()
@@ -27,6 +27,19 @@ public class Order
             items[item]++;
         }
     }
+
+    public void Add(Item item, int amount)
+    {
+        if (!items.ContainsKey(item))
+        {
+            items.Add(item, amount);
+        }
+        else
+        {
+            items[item] = items[item] + amount;
+        }
+    }
+
     public void Remove(Item item)
     {
         if(items.ContainsKey(item))
@@ -63,6 +76,11 @@ public class Order
         {
             return items.Count;
         }
+
+    public override string ToString()
+    {
+        return $"{ID}, {User.ID},  {Adress}, {Price.ToString("F2")}, {Status}";
+    }
 
 }
 
