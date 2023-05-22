@@ -1,8 +1,7 @@
 # Architecture:
 The project uses ASP.NET MVC architecture:
 
-![Working-of-MVC-1024x686](https://github.com/ugnspa/PSI_Projektas_Komanda1/assets/25864361/cb46d63e-1b49-450d-8ae1-3dbb2d9a53cb)
-
+![Untitled Workspace](https://github.com/ugnspa/PSI_Projektas_Komanda1/assets/25864361/83855599-08de-41f0-8231-076e410def47)
 
 The architecture consists of:
 <ul>
