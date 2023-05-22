@@ -22,8 +22,8 @@ The architecture consists of:
   
 Tools used:
 <ul>
-  <li>C# - programming</li>
-  <li>JavaScript(HTML and CSS) for front-end- </li>
+  <li>C# - programming (back-end)</li>
+  <li>JavaScript(HTML and CSS) for front-end</li>
   <li>GIT - version control</li>
 </ul>
 
