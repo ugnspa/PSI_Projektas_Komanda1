@@ -55,7 +55,6 @@
                     t.UserName = dre.From<string>("Name");
                     t.Password = dre.From<string>("Password");
                 });
-				Console.WriteLine(result.Password);
 			}
 			catch
 			{
