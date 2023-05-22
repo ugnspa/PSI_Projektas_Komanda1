@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Order>
+@using Microsoft.AspNetCore.Mvc
+@{
+    ViewData["Title"] = "User";
+}
+
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body >
+    <h1>Orders</h1>
+    <main>
+        @if (Model == null)
+        {
+            <p>Your haven't logged in</p>
+        }
+        else
+        {
+			<table class="my-table">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.ID)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Price)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Status)
+						</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(model => item.ID)
+							</td>
+							<td>
+								@Html.DisplayFor(model => item.Price)
+							</td>
+							<td>
+								@Html.DisplayFor(model => item.Status)
+							</td>
+							<td>
+
+								<div>
+									@Html.ActionLink("Order Details", "OrderDetails", "Order", new {id = item.ID}, new { @class = "btn btn-primary" })
+								</div>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+        }
+    </main>
+</body>
+</html>
