@@ -1,5 +1,6 @@
 ﻿using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Tls;
+using PayPal.Api;
 using PSI_Projektas_Komanda1.Models;
 
 namespace PSI_Projektas_Komanda1.Repositories
@@ -26,6 +27,7 @@ namespace PSI_Projektas_Komanda1.Repositories
 				t.User.Password = dre.From<string>("password");
 				t.Adress = dre.From<string>("address");
 				t.Price = dre.From<decimal>("price");
+				t.Status = dre.From<string>("status");
 			});
 
 			
@@ -34,10 +36,62 @@ namespace PSI_Projektas_Komanda1.Repositories
 			{
 				item.items = ReadOrderedItems(item);
 			}
+			return result;
+		}
+
+		public static List<Order> ReadUserOrders(User user)
+		{
+			var query = $@"SELECT orders.* FROM orders WHERE fk_userID=?id AND status='Success'";
+
+			var drc = Sql.Query(query, args =>
+			{
+				args.Add("?id", user.ID);
+			});
+
+			var result = Sql.MapAll<Order>(drc, (dre, t) =>
+			{
+				t.ID = dre.From<int>("id");
+				t.User = user;
+				t.Adress = dre.From<string>("address");
+				t.Price = dre.From<decimal>("price");
+				t.Status = dre.From<string>("status");
+			});
+
 			foreach (var item in result)
 			{
-				Console.WriteLine(string.Format("{0} {1} {2} {3}", item.ID, item.Price, item.User.Name, item.items.Count));
+				item.items = ReadOrderedItems(item);
 			}
+
+			return result;
+		}
+
+
+		public static Order FindOrder(int id)
+		{
+			var query = $@"SELECT orders.*, u.id as userID, u.Name as name, u.Surname as surname, 
+						u.Email as email, u.Username as username, u.Password as password FROM orders
+							LEFT JOIN users u ON u.id=fk_userID WHERE orders.id=?id";
+
+			var drc = Sql.Query(query, args =>
+			{
+				args.Add("?id", id);
+			});
+
+			var result = Sql.MapOne<Order>(drc, (dre, t) =>
+			{
+				t.ID = dre.From<int>("id");
+				t.User = new User();
+				t.User.ID = dre.From<int>("userID");
+				t.User.Name = dre.From<string>("name");
+				t.User.SurName = dre.From<string>("surname");
+				t.User.Email = dre.From<string>("email");
+				t.User.UserName = dre.From<string>("username");
+				t.User.Password = dre.From<string>("password");
+				t.Adress = dre.From<string>("address");
+				t.Price = dre.From<decimal>("price");
+				t.Status = dre.From<string>("status");
+			});
+			result.items = ReadOrderedItems(result);
 			return result;
 		}
 
@@ -198,7 +252,6 @@ namespace PSI_Projektas_Komanda1.Repositories
             var drc = Sql.Query(query);
 
             var order = Sql.MapOne<Order>(drc, (dre, t) => {
-				Console.WriteLine(t.ID);
                 t.ID = dre.From<int>("id");
                 t.Adress = dre.From<string>("address");
                 t.Price = dre.From<decimal>("price");
